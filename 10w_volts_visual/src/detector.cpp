@@ -1,6 +1,8 @@
 #include "detector.h"
+#include <ctime>
 
 using namespace cv;
+clock_t start, end;
 
 void Detector::cameraCaptureCb(const sensor_msgs::ImageConstPtr &data)
 {
@@ -9,7 +11,8 @@ void Detector::cameraCaptureCb(const sensor_msgs::ImageConstPtr &data)
     {
         cv_ptr = cv_bridge::toCvCopy(data, sensor_msgs::image_encodings::BGR8);
         cv_ptr->image.copyTo(img_);
-        ROS_INFO("Transform SUCCESS!"); //打印消息
+        //ROS_INFO("Transform SUCCESS!"); //打印消息
+        //ROS_INFO("Img Rows: %d. Img Cols: %d", img_.rows, img_.cols);
     }
     catch (cv_bridge::Exception &e)
     {
@@ -21,26 +24,32 @@ void Detector::cameraCaptureCb(const sensor_msgs::ImageConstPtr &data)
 
 void Detector::detectLightCb(const std_msgs::String::ConstPtr &msg)
 {
-    switch (msg.data)
+    if (msg->data == "a")
     {
-    case 'a':
         current_location_ = 1;
-        break;
-    case 'b':
+        ROS_INFO("Detector has heard \"Pos.a\"!");
+    }
+    else if (msg->data == "b")
+    {
         current_location_ = 2;
-        break;
-    case 'c':
+        ROS_INFO("Detector has heard \"Pos.b\"!");
+    }
+    else if (msg->data == "c")
+    {
         current_location_ = 3;
-        break;
-    default:
+        ROS_INFO("Detector has heard \"Pos.c\"!");
+    }
+    else
+    {
         current_location_ = 0;
-        break;
+        ROS_INFO("Detector has not heard!");
     }
 
     if (current_location_ != 0 && img_.data != NULL)
     {
         circle_center_.data = detectCircle(img_);
         cir_center_pub_.publish(circle_center_);
+        ROS_INFO("Detector has published the center point!");
         current_location_ = 0;
     }
     else
@@ -49,38 +58,43 @@ void Detector::detectLightCb(const std_msgs::String::ConstPtr &msg)
 
 std::vector<double> Detector::detectCircle(Mat img)
 {
-    std::vector<double> data;
-    data.push_back(0);
-    data.push_back(0);
-    int ERODE_KERNEL_SIZE = 33;
-    int MIN_CIRCLE_DISTANCE = int(pow((pow(img.rows, 2) + pow(img.cols, 2)), 0.5));
-    int MIN_RADIUS = 150;
-    int MAX_RADIUS = 600;
+    start = clock();
 
-    Mat img_gray, img_thresh, img_erode, img_canny;
+    std::vector<double> data;
+    int MIN_CIRCLE_DISTANCE = int(pow((pow(img.rows, 2) + pow(img.cols, 2)), 0.5));
+    int MIN_RADIUS = 50;
+    int MAX_RADIUS = 200;
+
+    Mat img_gray;
 
     cvtColor(img, img_gray, CV_BGR2GRAY);
-    threshold(img_gray, img_thresh, 1000, 255, THRESH_BINARY);
-    Mat kernel_erode = getStructuringElement(MORPH_RECT, Size(ERODE_KERNEL_SIZE, ERODE_KERNEL_SIZE));
-    erode(img_thresh, img_erode, kernel_erode);
-
-    cvCanny(img_erode, img_canny, 50, 150, 3);
 
     std::vector<Vec3f> cir;
     /*
-    param1 - 第一个方法特定的参数。在CV_HOUGH_GRADIENT的情况下， 两个传递给Canny（）边缘检测器的阈值较高（较小的两个小于两倍）。
+    param1 - 第一个方法特定的参数。在CV_HOUGH_GRADIENT的情况下， 两个传递给Canny（）边缘检测器的阈值较高（较小的小于两倍）。
     param2 - 第二种方法参数。在CV_HOUGH_GRADIENT的情况下，它是检测阶段的圆心的累加器阈值。越小，可能会检测到越多的虚假圈子。首先返回对应于较大累加器值的圈子。
     */
-    HoughCircles(img_canny, cir, CV_HOUGH_GRADIENT, 1, MIN_CIRCLE_DISTANCE, 100, 20, MIN_RADIUS, MAX_RADIUS);
+    HoughCircles(img_gray, cir, CV_HOUGH_GRADIENT, 1, MIN_CIRCLE_DISTANCE, 200, 30, MIN_RADIUS, MAX_RADIUS);
     if (cir.empty())
+    {
+        ROS_INFO("No circle detected!");
         return data;
-    data.push_back(cir[0][0]);
-    data.push_back(cir[0][1]);
-    // for (size_t i = 0; i < cir.size(); i++)
-    // {
-    //     Scalar color = Scalar(rng.uniform(0, 255), rng.uniform(0, 255), rng.uniform(0, 255));
-    //     circle(t1, Point(cir[i][0], cir[i][1]), cir[i][2], color, 1, 8);
-    // }
+    }
+
+    ROS_INFO("Circle num: %d", cir.size());
+    ROS_INFO("Center Point: (%d, %d).", int(cir[0][0]), int(cir[0][1]));
+
+    int PIC_HEIGHT = img.rows;
+    int PIC_WIDTH = img.cols;
+
+    data.push_back((cir[0][0] - PIC_WIDTH / 2) / (PIC_WIDTH / 2));
+    data.push_back(-(cir[0][1] - PIC_HEIGHT / 2) / (PIC_HEIGHT / 2));
+
+    end = clock();
+    double endtime = (double)(end - start) / CLOCKS_PER_SEC;
+    ROS_INFO("Run time: %f ms.", endtime * 1000);
+
+    // return [normalize_x, normalize_y]
     return data;
 }
 

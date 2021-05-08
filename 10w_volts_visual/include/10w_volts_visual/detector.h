@@ -30,24 +30,23 @@ private:
     ros::Subscriber locate_sub_;
     ros::Publisher cir_center_pub_;
 
-    Detector() : it_(nh_)
-    {
-        current_location_ = 0;
-        circle_center_.data.push_back(0);
-        circle_center_.data.push_back(0);
-        img_sub_ = it_.subscribe("/usb_cam_nodelet/image_raw", 1, &ImageConverter::cameraCaptureCb, this);
-        locate_sub_ = nh_.subscribe("gap_type_req", 10, detectLightCb);
-        cir_center_pub_ = nh_.advertise<std_msgs::Float64MultiArray>("gap", 10);
-    }
-    ~Detector()
-    {
-    }
-
     void cameraCaptureCb(const sensor_msgs::ImageConstPtr &data);
     void detectLightCb(const std_msgs::String::ConstPtr &msg);
     std::vector<double> detectCircle(Mat);
 
 public:
-}
+    Detector() : it_(nh_)
+    {
+        current_location_ = 0;
+        circle_center_.data.push_back(0);
+        circle_center_.data.push_back(0);
+        img_sub_ = it_.subscribe("/usb_cam_nodelet/image_raw", 1, &Detector::cameraCaptureCb, this);
+        locate_sub_ = nh_.subscribe("gap_type_req", 10, &Detector::detectLightCb, this);
+        cir_center_pub_ = nh_.advertise<std_msgs::Float64MultiArray>("gap", 10);
+    }
+    ~Detector()
+    {
+    }
+};
 
 #endif // !DETECTOR
