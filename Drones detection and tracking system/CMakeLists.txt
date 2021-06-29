@@ -154,6 +154,7 @@ add_executable(car_detect src/detect.cpp src/get_image.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(car_detect
   ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 #############
