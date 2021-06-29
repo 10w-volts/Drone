@@ -6,6 +6,7 @@ using namespace std;
 Mat background_filter(Mat img, int low_threshold, int high_threshold);
 Mat erode_dilate(Mat img, int kernel_size);
 Point2i get_mid_point(Mat img, int size_threshold);
+Point2i get_mid_point2(Mat img, int size_threshold);
 Point2f get_ratio(Mat img, Point2i mid_point);
 
 /*************************************************
@@ -13,7 +14,7 @@ Function:       detect
 Author:			Junpeng Chen
 Description:    If there is car in the image ,return mid point ratio, else return (-2, -2)
 Input:          Standard image
-Output:         Mid point ratio, x in (-1, 1) y in (-1, 1)
+Output:         Mid point ratio, x in (-1, 1)£¬y in (-1, 1)
 *************************************************/
 Point2f detect(Mat img) {
 	Mat hsv, s_channel, binary, dst;
@@ -23,8 +24,18 @@ Point2f detect(Mat img) {
 	s_channel = channels[1];
 	binary = background_filter(s_channel, 120, 255);
 	dst = erode_dilate(binary, 5);
+
+	namedWindow("hsv", 2);
+	imshow("hsv", binary);
+	waitKey(1);
+
+	namedWindow("dst", 2);
+	imshow("dst", dst);
+	waitKey(0);
+
 	Point2i mid_point;
-	mid_point = get_mid_point(dst, 100);
+	//mid_point = get_mid_point(dst, 100);
+	mid_point = get_mid_point2(dst, 100);
 	Point2f mid_point_ratio;
 	if (mid_point.x != -1)
 		mid_point_ratio = get_ratio(img, mid_point);
@@ -77,7 +88,8 @@ Output:         Mid point
 *************************************************/
 Point2i get_mid_point(Mat img, int size_threshold) {
 	vector<vector<Point>> contours;
-	findContours(img, contours, RETR_EXTERNAL, CHAIN_APPROX_NONE);
+	Mat hierarchy;
+	findContours(img, contours, hierarchy, RETR_EXTERNAL, CHAIN_APPROX_NONE);
 	int contour_num = contours.size();
 	int max_index = 0;
 	int max_size = 0;
@@ -103,11 +115,44 @@ Point2i get_mid_point(Mat img, int size_threshold) {
 }
 
 /*************************************************
+Function:       get_mid_point2
+Author:			Junpeng Chen
+Description:    Find the mid point
+Input:          Standard image and the threshold of contour size
+Output:         Mid point
+*************************************************/
+Point2i get_mid_point2(Mat img, int size_threshold) {
+	Mat labels, stats, centroids;
+	int max_index = 0;
+	int max_size = 0;
+	int num = connectedComponentsWithStats(img, labels, stats, centroids);
+	Point2i mid_point;
+	if (num > 0)
+	{
+		for (int i = 1; i < num; i++)
+		{
+			if (stats.at<int>(i, CC_STAT_AREA) > max_size)
+			{
+				max_index = i;
+				max_size = stats.at<int>(i, CC_STAT_AREA);
+			}
+		}
+		if (max_size > size_threshold)
+			mid_point = Point2i(centroids.at<Point2d>(max_index, 0).x, centroids.at<Point2d>(max_index, 0).y);
+		else
+			mid_point = Point2i(-1, -1);
+	}
+	else
+		mid_point = Point2i(-1, -1);
+	return mid_point;
+}
+
+/*************************************************
 Function:       get_ratio
 Author:			Junpeng Chen
-Description:    Get the mid point ratio, x in (-1, 1) y in (-1, 1)
+Description:    Get the mid point ratio, x in (-1, 1)£¬y in (-1, 1)
 Input:          Standard image and the mid point
-Output:         Mid point ratio, x in (-1, 1) y in (-1, 1)
+Output:         Mid point ratio, x in (-1, 1)£¬y in (-1, 1)
 *************************************************/
 Point2f get_ratio(Mat img, Point2i mid_point) {
 	int col, row;
