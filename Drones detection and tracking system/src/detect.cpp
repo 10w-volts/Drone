@@ -21,7 +21,7 @@ Point2f detect(Mat img) {
 	vector<Mat> channels;
 	split(hsv, channels);
 	s_channel = channels[1];
-	binary = background_filter(s_channel, 150, 255);
+	binary = background_filter(s_channel, 120, 255);
 	dst = erode_dilate(binary, 5);
 	Point2i mid_point;
 	mid_point = get_mid_point(dst, 100);
