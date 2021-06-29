@@ -7,7 +7,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 
-#include "std_msgs/Bool.h"
+#include "std_msgs/String.h"
 #include "std_msgs/Float64MultiArray.h"
 #include "detect.h"
 
@@ -28,8 +28,8 @@ class CGet_image
         :mImageTrans(mNh)
         {
             mImageRecv = mImageTrans.subscribe("/usb_cam/image_raw", 1, &CGet_image::image_transform, this);
-            mStartProcess = mNh.subscribe("start", 1, &CGet_image::image_process, this);
-            mRatioPub = mNh.advertise<std_msgs::Float64MultiArray>("result", 10);
+            mStartProcess = mNh.subscribe("/vision/type", 1, &CGet_image::image_process, this);
+            mRatioPub = mNh.advertise<std_msgs::Float64MultiArray>("/vision/gap", 10);
         }
 
         ~CGet_image()
@@ -64,14 +64,17 @@ class CGet_image
         Input:          Ros bool message
         Output:         Publish result into ros topic
         *************************************************/
-        void image_process(const std_msgs::Bool::ConstPtr &msg)
+        void image_process(const std_msgs::String::ConstPtr &msg)
         {
-            if(msg->data == true)
+            if(msg->data == "car")
             {
                 mMidPointRatio = detect(mImage);
                 std::vector<double> data;
-                data.push_back(mMidPointRatio.x);
-                data.push_back(mMidPointRatio.y);
+                if(mMidPointRatio.x != -2)
+                {
+                    data.push_back(mMidPointRatio.x);
+                    data.push_back(mMidPointRatio.y);
+                }
                 std_msgs::Float64MultiArray mid_point_ratio;
                 mid_point_ratio.data = data;
                 mRatioPub.publish(mid_point_ratio);
