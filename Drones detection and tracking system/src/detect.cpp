@@ -4,7 +4,7 @@ using namespace cv;
 using namespace std;
 
 Mat background_filter(Mat img, int low_threshold, int high_threshold);
-Mat erode_dilate(Mat img, int kernel_size);
+Mat dilate_erode(Mat img, int kernel_size);
 Point2i get_mid_point(Mat img, int size_threshold);
 Point2i get_mid_point2(Mat img, int size_threshold);
 Point2f get_ratio(Mat img, Point2i mid_point);
@@ -23,7 +23,7 @@ Point2f detect(Mat img) {
 	split(hsv, channels);
 	s_channel = channels[1];
 	binary = background_filter(s_channel, 120, 255);
-	dst = erode_dilate(binary, 5);
+	dst = dilate_erode(binary, 5);
 	Point2i mid_point;
 	//mid_point = get_mid_point(dst, 100);
 	mid_point = get_mid_point2(dst, 100);
@@ -52,13 +52,13 @@ Mat background_filter(Mat img, int low_threshold, int high_threshold) {
 }
 
 /*************************************************
-Function:       erode_dilate
+Function:       dilate_erode
 Author:			Junpeng Chen
 Description:    Erode and dilate the image
 Input:          Standard image and kernel size
 Output:         Result image
 *************************************************/
-Mat erode_dilate(Mat img, int kernel_size) {
+Mat dilate_erode(Mat img, int kernel_size) {
 	Mat dst;
 	Mat kernel;
 	Size size;
@@ -77,6 +77,7 @@ Description:    Find the mid point
 Input:          Standard image and the threshold of contour size
 Output:         Mid point
 *************************************************/
+/*
 Point2i get_mid_point(Mat img, int size_threshold) {
 	vector<vector<Point>> contours;
 	Mat hierarchy;
@@ -104,6 +105,7 @@ Point2i get_mid_point(Mat img, int size_threshold) {
 		mid_point = Point2i(-1, -1);
 	return mid_point;
 }
+*/
 
 /*************************************************
 Function:       get_mid_point2
@@ -150,6 +152,6 @@ Point2f get_ratio(Mat img, Point2i mid_point) {
 	col = img.cols;
 	row = img.rows;
 	Point2f mid_point_ratio;
-	mid_point_ratio = Point2f((float)mid_point.x / col * 2 - 1, (float)mid_point.y / row * 2 - 1);
+	mid_point_ratio = Point2f((float)mid_point.x / col * 2 - 1, -((float)mid_point.y / row * 2 - 1));
 	return mid_point_ratio;
 }
