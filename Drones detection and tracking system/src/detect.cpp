@@ -152,6 +152,6 @@ Point2f get_ratio(Mat img, Point2i mid_point) {
 	col = img.cols;
 	row = img.rows;
 	Point2f mid_point_ratio;
-	mid_point_ratio = Point2f((float)mid_point.x / col * 2 - 1, (float)mid_point.y / row * 2 - 1);
+	mid_point_ratio = Point2f((float)mid_point.x / col * 2 - 1, -((float)mid_point.y / row * 2 - 1));
 	return mid_point_ratio;
 }
