@@ -1,0 +1,4 @@
+<launch>
+  <include file="/home/cjp/Code/catkin_ws/src/usb_cam/launch/usb_cam-test.launch" />
+  <node name="car_detect" pkg="car_detect" type="car_detect" />
+</launch>

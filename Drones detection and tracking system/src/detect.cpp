@@ -13,7 +13,7 @@ Function:       detect
 Author:			Junpeng Chen
 Description:    If there is car in the image ,return mid point ratio, else return (-2, -2)
 Input:          Standard image
-Output:         Mid point ratio, x in (-1, 1)£¬y in (-1, 1)
+Output:         Mid point ratio, x in (-1, 1) y in (-1, 1)
 *************************************************/
 Point2f detect(Mat img) {
 	Mat hsv, s_channel, binary, dst;
@@ -105,9 +105,9 @@ Point2i get_mid_point(Mat img, int size_threshold) {
 /*************************************************
 Function:       get_ratio
 Author:			Junpeng Chen
-Description:    Get the mid point ratio, x in (-1, 1)£¬y in (-1, 1)
+Description:    Get the mid point ratio, x in (-1, 1) y in (-1, 1)
 Input:          Standard image and the mid point
-Output:         Mid point ratio, x in (-1, 1)£¬y in (-1, 1)
+Output:         Mid point ratio, x in (-1, 1) y in (-1, 1)
 *************************************************/
 Point2f get_ratio(Mat img, Point2i mid_point) {
 	int col, row;
