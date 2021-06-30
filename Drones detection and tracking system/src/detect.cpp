@@ -1,4 +1,5 @@
 #include <opencv2/opencv.hpp>
+#include "detect.h"
 
 using namespace cv;
 using namespace std;
@@ -16,7 +17,7 @@ Description:    If there is car in the image ,return mid point ratio, else retur
 Input:          Standard image
 Output:         Mid point ratio, x in (-1, 1)��y in (-1, 1)
 *************************************************/
-Point2f detect(Mat img, Mat dst) {
+result detect(Mat img) {
 
 	Mat Lab, lab_a_channel, lab_a_binary, lab_a_dst;
 	cvtColor(img, Lab, cv::COLOR_RGB2Lab);
@@ -34,8 +35,7 @@ Point2f detect(Mat img, Mat dst) {
 	hsv_binary = background_filter(hsv_s_channel, 120, 255);
 	hsv_dst = erode_dilate(hsv_binary, 5);
 
-	//Mat dst = hsv_dst.mul(lab_a_dst);
-	dst = hsv_dst.mul(lab_a_dst);
+	Mat dst = hsv_dst.mul(lab_a_dst);
 	Point2i mid_point;
 	//mid_point = get_mid_point(dst, 100);
 	mid_point = get_mid_point2(dst, 100);
@@ -44,7 +44,14 @@ Point2f detect(Mat img, Mat dst) {
 		mid_point_ratio = get_ratio(img, mid_point);
 	else
 		mid_point_ratio = Point2f(-9999, -9999);
-	return mid_point_ratio;
+	struct result Result;
+	Result.result_point = mid_point_ratio;
+<<<<<<< HEAD
+	Result.result_mat = dst;
+=======
+	Result.result_mat = hsv;
+>>>>>>> cfda04ed6c51d5459037cbe7e9dc63cbec8fb53c
+	return Result;
 }
 
 /*************************************************
