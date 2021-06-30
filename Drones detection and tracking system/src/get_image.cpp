@@ -125,7 +125,11 @@ class CGet_image
                     ROS_INFO("start pub image");
                     cv_bridge::CvImage out_msg;
                     out_msg.header.stamp = ros::Time::now();
+<<<<<<< HEAD
+                    out_msg.encoding = sensor_msgs::image_encodings::TYPE_8SC1;//BGR8;
+=======
                     out_msg.encoding = sensor_msgs::image_encodings::BGR8;//TYPE_8SC1;
+>>>>>>> cfda04ed6c51d5459037cbe7e9dc63cbec8fb53c
                     out_msg.image = mProcessingImage;
                     // sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "rgb8", mProcessingImage).toImageMsg();
                     mImagePub.publish(out_msg.toImageMsg());
