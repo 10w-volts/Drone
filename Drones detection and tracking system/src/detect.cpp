@@ -47,7 +47,6 @@ result detect(Mat img) {
 	struct result Result;
 	Result.result_point = mid_point_ratio;
 	Result.result_mat = dst;
-	Result.result_mat = hsv;
 	return Result;
 }
 
