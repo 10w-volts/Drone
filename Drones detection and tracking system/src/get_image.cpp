@@ -72,8 +72,8 @@ class CGet_image
                 std::vector<double> data;
                 if(mMidPointRatio.x != -9999)
                 {
-                    data.push_back(mMidPointRatio.x * 4);
-                    data.push_back(mMidPointRatio.y * 3);
+                    data.push_back(mMidPointRatio.x);
+                    data.push_back(mMidPointRatio.y);
                 }
                 std_msgs::Float64MultiArray mid_point_ratio;
                 mid_point_ratio.data = data;
