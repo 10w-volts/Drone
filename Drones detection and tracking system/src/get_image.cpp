@@ -70,7 +70,7 @@ class CGet_image
             {
                 mMidPointRatio = detect(mImage);
                 std::vector<double> data;
-                if(mMidPointRatio.x != -2)
+                if(mMidPointRatio.x != -9999)
                 {
                     data.push_back(mMidPointRatio.x);
                     data.push_back(mMidPointRatio.y);
