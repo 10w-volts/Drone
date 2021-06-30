@@ -12,7 +12,7 @@ Point2f get_ratio(Mat img, Point2i mid_point);
 /*************************************************
 Function:       detect
 Author:			Junpeng Chen
-Description:    If there is car in the image ,return mid point ratio, else return (-2, -2)
+Description:    If there is car in the image ,return mid point ratio, else return (-9999, -9999)
 Input:          Standard image
 Output:         Mid point ratio, x in (-1, 1)��y in (-1, 1)
 *************************************************/
@@ -42,7 +42,7 @@ Point2f detect(Mat img) {
 	if (mid_point.x != -1)
 		mid_point_ratio = get_ratio(img, mid_point);
 	else
-		mid_point_ratio = Point2f(-2, -2);
+		mid_point_ratio = Point2f(-9999, -9999);
 	return mid_point_ratio;
 }
 
