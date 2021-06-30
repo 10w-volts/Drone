@@ -4,7 +4,7 @@ using namespace cv;
 using namespace std;
 
 Mat background_filter(Mat img, int low_threshold, int high_threshold);
-Mat dilate_erode(Mat img, int kernel_size);
+Mat erode_dilate(Mat img, int kernel_size);
 Point2i get_mid_point(Mat img, int size_threshold);
 Point2i get_mid_point2(Mat img, int size_threshold);
 Point2f get_ratio(Mat img, Point2i mid_point);
@@ -17,13 +17,24 @@ Input:          Standard image
 Output:         Mid point ratio, x in (-1, 1)��y in (-1, 1)
 *************************************************/
 Point2f detect(Mat img) {
-	Mat hsv, s_channel, binary, dst;
+
+	Mat Lab, lab_a_channel, lab_a_binary, lab_a_dst;
+	cvtColor(img, Lab, cv::COLOR_RGB2Lab);
+	vector<Mat> Lab_channels;
+	split(Lab, Lab_channels);
+	lab_a_channel = Lab_channels[1];
+	lab_a_binary = background_filter(lab_a_channel, 120, 255);
+	lab_a_dst = erode_dilate(lab_a_binary, 5);
+
+	Mat hsv, hsv_s_channel, hsv_binary, hsv_dst;
 	cvtColor(img, hsv, COLOR_BGR2HSV);
-	vector<Mat> channels;
-	split(hsv, channels);
-	s_channel = channels[1];
-	binary = background_filter(s_channel, 120, 255);
-	dst = dilate_erode(binary, 5);
+	vector<Mat> hsv_channels;
+	split(hsv, hsv_channels);
+	hsv_s_channel = hsv_channels[1];
+	hsv_binary = background_filter(hsv_s_channel, 120, 255);
+	hsv_dst = erode_dilate(hsv_binary, 5);
+
+	Mat dst = hsv_dst.mul(lab_a_dst);
 	Point2i mid_point;
 	//mid_point = get_mid_point(dst, 100);
 	mid_point = get_mid_point2(dst, 100);
@@ -52,13 +63,13 @@ Mat background_filter(Mat img, int low_threshold, int high_threshold) {
 }
 
 /*************************************************
-Function:       dilate_erode
+Function:       erode_dilate
 Author:			Junpeng Chen
 Description:    Erode and dilate the image
 Input:          Standard image and kernel size
 Output:         Result image
 *************************************************/
-Mat dilate_erode(Mat img, int kernel_size) {
+Mat erode_dilate(Mat img, int kernel_size) {
 	Mat dst;
 	Mat kernel;
 	Size size;
