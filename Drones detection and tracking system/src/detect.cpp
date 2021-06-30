@@ -46,11 +46,8 @@ result detect(Mat img) {
 		mid_point_ratio = Point2f(-9999, -9999);
 	struct result Result;
 	Result.result_point = mid_point_ratio;
-<<<<<<< HEAD
 	Result.result_mat = dst;
-=======
 	Result.result_mat = hsv;
->>>>>>> cfda04ed6c51d5459037cbe7e9dc63cbec8fb53c
 	return Result;
 }
 
