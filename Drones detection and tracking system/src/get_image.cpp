@@ -117,12 +117,10 @@ class CGet_image
         *************************************************/
         void image_pub_timer(const ros::TimerEvent &event)
         {
-            ROS_INFO("start value is: %d", mStartPub);
             if(mStartPub)
             {
                 if(mProcessingImage.data)
                 {
-                    ROS_INFO("start pub image");
                     cv_bridge::CvImage out_msg;
                     out_msg.header.stamp = ros::Time::now();
                     out_msg.encoding = sensor_msgs::image_encodings::TYPE_8SC1;//BGR8;
@@ -131,8 +129,6 @@ class CGet_image
                     mImagePub.publish(out_msg.toImageMsg());
                     // mImagePub.publish(msg);
                 }
-                else
-                    ROS_INFO("there is no data in image");
             }
         }
 };
