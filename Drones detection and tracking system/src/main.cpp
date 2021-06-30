@@ -10,7 +10,7 @@ void main() {
 	Point2f mid_point_ratio;
 	img = imread("./img/car.jpg");
 	mid_point_ratio = detect(img);
-	if (mid_point_ratio.x != -2)
+	if (mid_point_ratio.x != -9999)
 		cout << "x: " << mid_point_ratio.x * 4 << " y: " << mid_point_ratio.y * 3 << endl;
 	system("pause");
 }
