@@ -37,7 +37,7 @@ class CGet_image
             mStartPubImage = mNh.subscribe("/imagepub/start", 1, &CGet_image::image_pub, this);
             mStartProcess = mNh.subscribe("/vision/type", 1, &CGet_image::image_process, this);
             mRatioPub = mNh.advertise<std_msgs::Float64MultiArray>("/vision/gap", 10);
-            mImagePub = mImageTrans.advertise("/processing_image", 10);
+            mImagePub = mImageTrans.advertise("/processing_image", 1);
             mImagePubTimer = mNh.createTimer(ros::Duration(0.1), &CGet_image::image_pub_timer, this);
             mStartPub = 0;
         }
@@ -78,7 +78,9 @@ class CGet_image
         {
             if(msg->data == "car")
             {
-                mMidPointRatio = detect(mImage, mProcessingImage);
+                struct result Result = detect(mImage);
+                mMidPointRatio = Result.result_point;
+                mProcessingImage = Result.result_mat;
                 std::vector<double> data;
                 if(mMidPointRatio.x != -9999)
                 {
@@ -115,13 +117,22 @@ class CGet_image
         *************************************************/
         void image_pub_timer(const ros::TimerEvent &event)
         {
+            ROS_INFO("start value is: %d", mStartPub);
             if(mStartPub)
             {
-                cv_bridge::CvImage out_msg;
-                out_msg.header.stamp = ros::Time::now();
-                out_msg.encoding = sensor_msgs::image_encodings::TYPE_8SC1;
-                out_msg.image = mProcessingImage;
-                mImagePub.publish(out_msg.toImageMsg());
+                if(mProcessingImage.data)
+                {
+                    ROS_INFO("start pub image");
+                    cv_bridge::CvImage out_msg;
+                    out_msg.header.stamp = ros::Time::now();
+                    out_msg.encoding = sensor_msgs::image_encodings::BGR8;//TYPE_8SC1;
+                    out_msg.image = mProcessingImage;
+                    // sensor_msgs::ImagePtr msg = cv_bridge::CvImage(std_msgs::Header(), "rgb8", mProcessingImage).toImageMsg();
+                    mImagePub.publish(out_msg.toImageMsg());
+                    // mImagePub.publish(msg);
+                }
+                else
+                    ROS_INFO("there is no data in image");
             }
         }
 };
@@ -132,3 +143,4 @@ int main(int argc, char** argv)
     CGet_image obj;
     ros::spin();
 }
+
