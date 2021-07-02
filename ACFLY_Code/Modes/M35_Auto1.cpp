@@ -22,24 +22,27 @@ M35_Auto1::M35_Auto1():Mode_Base( "Auto1", 35 )
 
 ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 {
-	//ÈÎÎñË÷Òı
+	//æ¨¡å¼è®°å½•
+	static int last_mode = 0;
+
+	//ä»»åŠ¡ç´¢å¼•
 	const uint8_t mavlink_control = 0;
 	const uint8_t custom_nav = 1;
 	const uint8_t altitude_adjust = 2;
 	const uint8_t yaw_adjust = 3;
 	const uint8_t land = 4;
 
-	//Êı¾İ¼ÇÂ¼
+	//æ•°æ®è®°å½•
 	ModeMsg last_nav_takeoff_local_msg;
 	ModeMsg last_user1_msg;
 	ModeMsg last_condition_change_alt_msg;
 	ModeMsg last_condition_yaw_msg;
 	ModeMsg last_nav_land_local_msg;
 	
-	//altitude_adjust¿ØÖÆÖ¸Áî±êÖ¾£º0ÎªÆğ·É£¬1Îªµ÷Õû¸ß¶È
+	//altitude_adjustæ§åˆ¶æŒ‡ä»¤æ ‡å¿—ï¼š0ä¸ºèµ·é£ï¼Œ1ä¸ºè°ƒæ•´é«˜åº¦
 	uint8_t altitude_adjust_flag;
 
-	//MAV_CMD_USER_1ÑÓÊ±¼ÆÊı
+	//MAV_CMD_USER_1å»¶æ—¶è®¡æ•°
 	const uint8_t max_delay_counter = 25;
 	uint8_t delay_counter = 0;
 	
@@ -52,11 +55,11 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 	uint16_t exit_mode_Gcounter = 0;
 	uint32_t RollOverProtectCounter = 0;
 	
-	//¶ÁÈ¡Ä£Ê½ÅäÖÃ
+	//è¯»å–æ¨¡å¼é…ç½®
 	ModeFuncCfg MFunc_cfg;
 	ReadParamGroup( "MFunc", (uint64_t*)&MFunc_cfg, 0 );
 	
-	//ÈÎÎñÄ£Ê½
+	//ä»»åŠ¡æ¨¡å¼
 	bool mode_switched = true;
 	#define change_Mode(x) {cMode=x; mode_switched = true;}
 	uint16_t current_mission_ind;
@@ -65,33 +68,34 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 	uint8_t RTLButtonZone = 255;
 	uint8_t cMode = AFunc_PosHold;
 	
-	//µ±Ç°Ö´ĞĞÈÎÎñµÄĞòºÅ
+	//å½“å‰æ‰§è¡Œä»»åŠ¡çš„åºå·
 	uint16_t mission_ind = 0;
-	//ÈÎÎñ×´Ì¬»ú
+	//ä»»åŠ¡çŠ¶æ€æœº
 	NavCmdInf navInf;
 	init_NavCmdInf(&navInf);
+
 	while(1)
 	{
 		os_delay(0.02);
 		
 		if( get_CrashedState() )
-		{	//²à·­¼ÓËø
+		{	//ä¾§ç¿»åŠ é”
 			Attitude_Control_Disable();
 			return MR_Err;
 		}
 		
-		//»ñÈ¡½ÓÊÕ»ú
+		//è·å–æ¥æ”¶æœº
 		Receiver rc;
 		getReceiver( &rc, 0, 0.02 );
 		
-		//»ñÈ¡ÏûÏ¢
+		//è·å–æ¶ˆæ¯
 		bool msg_available;
 		ModeMsg msg;
 		msg_available = ModeReceiveMsg( &msg, 0 );
 		bool msg_handled = false;
 		
 		if( msg_available && msg.cmd==MAV_CMD_COMPONENT_ARM_DISARM )
-		{	//µØÃæÕ¾¼ÓËø
+		{	//åœ°é¢ç«™åŠ é”
 			if( msg.params[0] == 0 )
 			{
 				if( (msg.cmd_type & CMD_TYPE_MASK) == CMD_TYPE_MAVLINK )
@@ -135,7 +139,7 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 			msg_handled = 2;
 		}
 		if( get_CrashedState() )
-		{	//²à·­¼ÓËø
+		{	//ä¾§ç¿»åŠ é”
 			Attitude_Control_Disable();
 			return MR_Err;
 		}
@@ -143,46 +147,46 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 
 		uint8_t reqMode = cMode;
 		if( msg_available && msg.cmd==176 )
-		{	//Ö¸Áî¸ü¸ÄÄ£Ê½
+		{	//æŒ‡ä»¤æ›´æ”¹æ¨¡å¼
 			if( (int)msg.params[0] & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED )
-			{	//mavlink¶¨ÒåÄ£Ê½
+			{	//mavlinkå®šä¹‰æ¨¡å¼
 				px4_custom_mode t_mav_mode;
 				t_mav_mode.data = msg.params[1];
 				if( t_mav_mode.main_mode==PX4_CUSTOM_MAIN_MODE_POSCTL )
-				{	//Ö¸Áî½øÈëÊÖ¶¯
+				{	//æŒ‡ä»¤è¿›å…¥æ‰‹åŠ¨
 					reqMode = AFunc_PosHold;
 					msg_handled = 1;
 				}
 				else if( (t_mav_mode.main_mode==PX4_CUSTOM_MAIN_MODE_AUTO || t_mav_mode.main_mode==0) && t_mav_mode.sub_mode==PX4_CUSTOM_SUB_MODE_AUTO_MISSION )
-				{	//Ö¸Áî½øÈëÈÎÎñÄ£Ê½
+				{	//æŒ‡ä»¤è¿›å…¥ä»»åŠ¡æ¨¡å¼
 					reqMode = AFunc_Mission;
 					msg_handled = 1;
 				}
 				else if( (t_mav_mode.main_mode==PX4_CUSTOM_MAIN_MODE_AUTO || t_mav_mode.main_mode==0) && t_mav_mode.sub_mode==PX4_CUSTOM_SUB_MODE_AUTO_RTL )
-				{	//Ö¸Áî½øÈë·µº½Ä£Ê½
+				{	//æŒ‡ä»¤è¿›å…¥è¿”èˆªæ¨¡å¼
 					reqMode = AFunc_RTL;
 					msg_handled = 1;
 				}
 			}
 		}
 		if( rc.available )
-		{	//½ÓÊÕ»ú¿ÉÓÃ
+		{	//æ¥æ”¶æœºå¯ç”¨
 			
 			uint8_t new_ModeButtonZone = get_RcButtonZone( rc.data[4], ModeButtonZone );
 			if( ModeButtonZone<=5 && new_ModeButtonZone!=ModeButtonZone )
-			{	//Ä£Ê½°´Å¥¸Ä±ä¸ü¸ÄÄ£Ê½
+			{	//æ¨¡å¼æŒ‰é’®æ”¹å˜æ›´æ”¹æ¨¡å¼
 				reqMode = MFunc_cfg.Bt1AFunc1[8*new_ModeButtonZone];			
 			}
 			ModeButtonZone = new_ModeButtonZone;
 			
-			//Ê¹ÓÃÒ£¿ØÆ÷¸üĞÂ·ÉĞĞÄ£Ê½
+			//ä½¿ç”¨é¥æ§å™¨æ›´æ–°é£è¡Œæ¨¡å¼
 			bool sticks_in_neutral = 
 				in_symmetry_range_mid( rc.data[0] , 50 , MFunc_cfg.NeutralZone[0] ) &&
 				in_symmetry_range_mid( rc.data[1] , 50 , MFunc_cfg.NeutralZone[0] ) &&
 				in_symmetry_range_mid( rc.data[2] , 50 , MFunc_cfg.NeutralZone[0] ) &&
 				in_symmetry_range_mid( rc.data[3] , 50 , MFunc_cfg.NeutralZone[0] );
 			if( !sticks_in_neutral )
-			{	//Ò¡¸ËÃ»»ØÖĞ²»ÔÊĞí×Ô¶¯²Ù×÷
+			{	//æ‘‡æ†æ²¡å›ä¸­ä¸å…è®¸è‡ªåŠ¨æ“ä½œ
 				if( is_AFunc_auto(cMode) )
 				{
 					if( is_AFunc_auto(MFunc_cfg.Bt1AFunc1[8*ModeButtonZone]) == false )
@@ -193,18 +197,18 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 				}					
 			}
 			else
-			{	//Ò¡¸Ë»ØÖĞ¿ÉÖ´ĞĞ×Ô¶¯²Ù×÷	
+			{	//æ‘‡æ†å›ä¸­å¯æ‰§è¡Œè‡ªåŠ¨æ“ä½œ	
 				
-				/*ÅĞ¶ÏÖ´ĞĞÈÎÎñ*/
+				/*åˆ¤æ–­æ‰§è¡Œä»»åŠ¡*/
 					if( MFunc_cfg.MissionBt[0]>=2 && MFunc_cfg.MissionBt[0]<=4 )
-					{	//°´Å¥°´ÏÂÖ´ĞĞÈÎÎñ
+					{	//æŒ‰é’®æŒ‰ä¸‹æ‰§è¡Œä»»åŠ¡
 						if( rc.available_channels >= MFunc_cfg.MissionBt[0]+4 )
 						{			
-							//»ñÈ¡°´Å¥×´Ì¬
+							//è·å–æŒ‰é’®çŠ¶æ€
 							double btn_value = rc.data[MFunc_cfg.MissionBt[0]-1+4];
 							uint8_t new_MissionButtonZone = get_RcButtonZone( btn_value, MissionButtonZone );									
 							if( new_MissionButtonZone!=MissionButtonZone )
-							{	//°´Å¥×´Ì¬·¢Éú±ä»¯
+							{	//æŒ‰é’®çŠ¶æ€å‘ç”Ÿå˜åŒ–
 								if( new_MissionButtonZone>=4 )
 									reqMode = AFunc_Mission;
 								else
@@ -214,14 +218,14 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 						}
 					}
 					else if( MFunc_cfg.MissionBt[0]>=12 && MFunc_cfg.MissionBt[0]<=14 )
-					{	//°´Å¥±ä»¯Ö´ĞĞÈÎÎñ
+					{	//æŒ‰é’®å˜åŒ–æ‰§è¡Œä»»åŠ¡
 						if( rc.available_channels >= MFunc_cfg.MissionBt[0]-10+4 )
 						{
-							//»ñÈ¡°´Å¥×´Ì¬
+							//è·å–æŒ‰é’®çŠ¶æ€
 							double btn_value = rc.data[MFunc_cfg.MissionBt[0]-11+4];
 							uint8_t new_MissionButtonZone = get_RcButtonZone( btn_value, MissionButtonZone );
 							if( MissionButtonZone<=5 && new_MissionButtonZone!=MissionButtonZone )
-							{	//°´Å¥×´Ì¬·¢Éú±ä»¯
+							{	//æŒ‰é’®çŠ¶æ€å‘ç”Ÿå˜åŒ–
 								if( cMode != AFunc_Mission )
 									reqMode = AFunc_Mission;
 								else
@@ -230,18 +234,18 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 							MissionButtonZone = new_MissionButtonZone;
 						}
 					}
-				/*ÅĞ¶ÏÖ´ĞĞÈÎÎñ*/
+				/*åˆ¤æ–­æ‰§è¡Œä»»åŠ¡*/
 				
-				/*ÅĞ¶Ï·µº½*/
+				/*åˆ¤æ–­è¿”èˆª*/
 					if( MFunc_cfg.RTLBt[0]>=2 && MFunc_cfg.RTLBt[0]<=4 )
-					{	//°´Å¥°´ÏÂ·µº½
+					{	//æŒ‰é’®æŒ‰ä¸‹è¿”èˆª
 						if( rc.available_channels >= MFunc_cfg.RTLBt[0]+4 )
 						{
-							//»ñÈ¡°´Å¥×´Ì¬
+							//è·å–æŒ‰é’®çŠ¶æ€
 							double btn_value = rc.data[MFunc_cfg.RTLBt[0]-1+4];
 							uint8_t new_RTLButtonZone = get_RcButtonZone( btn_value, RTLButtonZone );		
 							if( new_RTLButtonZone!=RTLButtonZone )
-							{	//°´Å¥×´Ì¬·¢Éú±ä»¯
+							{	//æŒ‰é’®çŠ¶æ€å‘ç”Ÿå˜åŒ–
 								if( new_RTLButtonZone>=4 )
 									reqMode = AFunc_RTL;
 								else
@@ -251,14 +255,14 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 						}
 					}
 					else if( MFunc_cfg.RTLBt[0]>=12 && MFunc_cfg.RTLBt[0]<=14 )
-					{	//°´Å¥±ä»¯·µº½
+					{	//æŒ‰é’®å˜åŒ–è¿”èˆª
 						if( rc.available_channels >= MFunc_cfg.RTLBt[0]-10+4 )
 						{
-							//»ñÈ¡°´Å¥×´Ì¬
+							//è·å–æŒ‰é’®çŠ¶æ€
 							double btn_value = rc.data[MFunc_cfg.RTLBt[0]-11+4];
 							uint8_t new_RTLButtonZone = get_RcButtonZone( btn_value, RTLButtonZone );	
 							if( RTLButtonZone<=5 && new_RTLButtonZone!=RTLButtonZone )
-							{	//°´Å¥×´Ì¬·¢Éú±ä»¯
+							{	//æŒ‰é’®çŠ¶æ€å‘ç”Ÿå˜åŒ–
 								if( cMode != AFunc_RTL )
 									reqMode = AFunc_RTL;
 								else
@@ -267,26 +271,26 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 							RTLButtonZone = new_RTLButtonZone;
 						}
 					}
-				/*ÅĞ¶Ï·µº½*/
+				/*åˆ¤æ–­è¿”èˆª*/
 					
 				if( reqMode == 0 )
-				{	//ÓĞ°´Å¥ËÉ¿ªÖØĞÂ¼ì²â°´Å¥Î»ÖÃ
+				{	//æœ‰æŒ‰é’®æ¾å¼€é‡æ–°æ£€æµ‹æŒ‰é’®ä½ç½®
 					
-					/*ÅĞ¶ÏÖ´ĞĞÈÎÎñ*/
+					/*åˆ¤æ–­æ‰§è¡Œä»»åŠ¡*/
 						if( MFunc_cfg.MissionBt[0]>=2 && MFunc_cfg.MissionBt[0]<=4 )
-						{	//°´Å¥°´ÏÂÖ´ĞĞÈÎÎñ
+						{	//æŒ‰é’®æŒ‰ä¸‹æ‰§è¡Œä»»åŠ¡
 							if( MissionButtonZone>=4 )
 								reqMode = AFunc_Mission;
 						}
-					/*ÅĞ¶ÏÖ´ĞĞÈÎÎñ*/
+					/*åˆ¤æ–­æ‰§è¡Œä»»åŠ¡*/
 						
-					/*ÅĞ¶Ï·µº½*/
+					/*åˆ¤æ–­è¿”èˆª*/
 						if( MFunc_cfg.RTLBt[0]>=2 && MFunc_cfg.RTLBt[0]<=4 )
-						{	//°´Å¥°´ÏÂ·µº½
+						{	//æŒ‰é’®æŒ‰ä¸‹è¿”èˆª
 							if( RTLButtonZone>=4 )
 								reqMode = AFunc_RTL;
 						}
-					/*ÅĞ¶Ï·µº½*/
+					/*åˆ¤æ–­è¿”èˆª*/
 						
 					if( reqMode == 0 )
 						reqMode = MFunc_cfg.Bt1AFunc1[8*ModeButtonZone];
@@ -294,15 +298,15 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 			}
 		}
 		else
-		{	//½ÓÊÕ»ú²»¿ÉÓÃÖØÖÃÒ£¿Ø×´Ì¬
+		{	//æ¥æ”¶æœºä¸å¯ç”¨é‡ç½®é¥æ§çŠ¶æ€
 			ModeButtonZone = MissionButtonZone = RTLButtonZone = 255;
-			//Èç¹û²»ÊÇ×Ô¶¯Ä£Ê½ÔòÇĞ»»µ½·µº½Ä£Ê½
+			//å¦‚æœä¸æ˜¯è‡ªåŠ¨æ¨¡å¼åˆ™åˆ‡æ¢åˆ°è¿”èˆªæ¨¡å¼
 			if( is_AFunc_auto(cMode)==false )
 				reqMode = AFunc_RTL;
 		}
 		
 		if( is_AFunc_auto(reqMode) || is_AFunc_auto(cMode) )
-		{	//½ø³ö×Ô¶¯Ä£Ê½ÖÃÎ»mode_swithced
+		{	//è¿›å‡ºè‡ªåŠ¨æ¨¡å¼ç½®ä½mode_swithced
 			if( cMode != reqMode )
 			{
 				cMode = reqMode;
@@ -317,10 +321,10 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 														reqMode = AFunc_PosHold;\
 		
 		if( cMode==AFunc_RTL )
-		{	//½øÈë°²È«Ä£Ê½·µº½
+		{	//è¿›å…¥å®‰å…¨æ¨¡å¼è¿”èˆª
 RTL:
 			enter_MSafe(true);
-			/*ÅĞ¶ÏÍË³öÄ£Ê½*/
+			/*åˆ¤æ–­é€€å‡ºæ¨¡å¼*/
 				bool inFlight;
 				get_is_inFlight(&inFlight);
 				if( inFlight==false )
@@ -328,15 +332,15 @@ RTL:
 					Attitude_Control_Disable();
 					return MR_OK;
 				}
-			/*ÅĞ¶ÏÍË³öÄ£Ê½*/
+			/*åˆ¤æ–­é€€å‡ºæ¨¡å¼*/
 		}
 		else if( cMode==AFunc_Mission )
-		{	//ÈÎÎñÄ£Ê½
+		{	//ä»»åŠ¡æ¨¡å¼
 			Position_Control_Enable();
 			bool pos_ena;
 			is_Position_Control_Enabled(&pos_ena);
 			if( pos_ena == false )
-			{	//Î»ÖÃ¿ØÖÆÆ÷ÎŞ·¨´ò¿ª·µ»ØÊÖ¶¯Ä£Ê½
+			{	//ä½ç½®æ§åˆ¶å™¨æ— æ³•æ‰“å¼€è¿”å›æ‰‹åŠ¨æ¨¡å¼
 				swManualMode
 				goto Manual_Mode;
 			}
@@ -349,7 +353,7 @@ RTL:
 					in_symmetry_range_mid( rc.data[2] , 50 , 5 ) &&
 					in_symmetry_range_mid( rc.data[3] , 50 , 5 );
 				if( !sticks_in_neutral )
-				{	//Ò¡¸Ë²»ÔÚÖĞ¼ä·µ»ØÊÖ¶¯Ä£Ê½
+				{	//æ‘‡æ†ä¸åœ¨ä¸­é—´è¿”å›æ‰‹åŠ¨æ¨¡å¼
 					init_NavCmdInf(&navInf);
 					swManualMode
 					goto Manual_Mode;
@@ -357,22 +361,22 @@ RTL:
 			}
 			
 			if( mode_switched )
-			{	//¸ÕÇĞ»»µ½ÈÎÎñÄ£Ê½
-				//Ê×ÏÈÉ²³µµÈ´ı			
+			{	//åˆšåˆ‡æ¢åˆ°ä»»åŠ¡æ¨¡å¼
+				//é¦–å…ˆåˆ¹è½¦ç­‰å¾…			
 				
 				Position_Control_set_XYLock();
 				Position_Control_set_ZLock();
 				
-				//µÈ´ıÉ²³µÍê³É
+				//ç­‰å¾…åˆ¹è½¦å®Œæˆ
 				Position_ControlMode alt_mode, pos_mode;
 				get_Altitude_ControlMode(&alt_mode);
 				get_Position_ControlMode(&pos_mode);
 				if( alt_mode==Position_ControlMode_Position && pos_mode==Position_ControlMode_Position )
-				{	//É²³µÍê³É
+				{	//åˆ¹è½¦å®Œæˆ
 					++navInf.counter2;
-					//µÈ´ı1ÃëÔÙ½øÈëÈÎÎñ·ÉĞĞ
+					//ç­‰å¾…1ç§’å†è¿›å…¥ä»»åŠ¡é£è¡Œ
 					if( navInf.counter2 >= 1*freq )
-					{	//½øÈëÈÎÎñ·ÉĞĞÄ£Ê½
+					{	//è¿›å…¥ä»»åŠ¡é£è¡Œæ¨¡å¼
 						mode_switched = false;
 					}
 				}
@@ -380,207 +384,240 @@ RTL:
 					navInf.counter2 = 0;
 			}
 			else
-			{	//ÈÎÎñ·ÉĞĞ				
+			{	//ä»»åŠ¡é£è¡Œ				
 				
-				//Éè¶¨mavlinkÄ£Ê½
+				//è®¾å®šmavlinkæ¨¡å¼
 				set_mav_mode( 
 					MAV_MODE_STABILIZE_ARMED|MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,
 					PX4_CUSTOM_MAIN_MODE_AUTO,
 					PX4_CUSTOM_SUB_MODE_AUTO_MISSION );
+
 				
-				//¸ù¾İmission_ind×´Ì¬ÅĞ¶Ïµ±Ç°ĞèÒªÖ´ĞĞÊ²Ã´·ÉĞĞ¶¯×÷
+				
+				//æ ¹æ®mission_indçŠ¶æ€åˆ¤æ–­å½“å‰éœ€è¦æ‰§è¡Œä»€ä¹ˆé£è¡ŒåŠ¨ä½œ
 				switch( mission_ind )
 				{
 					case mavlink_control:
 					{
 						if(msg_available)
 						{
-								bool inFlight;
-								get_is_inFlight(&inFlight);
-							
-								//ÅĞ¶ÏÖÍ¿Õ
-								if( inFlight==false )
+							bool inFlight;
+							get_is_inFlight(&inFlight);
+						
+							//åˆ¤æ–­æ»ç©º
+							if( inFlight==false )
+							{
+								//æœªæ»ç©º
+								if(msg.cmd == MAV_CMD_NAV_TAKEOFF_LOCAL)
 								{
-									//Î´ÖÍ¿Õ
-									if(msg.cmd == MAV_CMD_NAV_TAKEOFF_LOCAL)
+									/*
+									* MAV_CMD_NAV_TAKEOFF_LOCAL:
+									* params[0]:Minimum pitch (if airspeed sensor present), desired pitch without sensor
+									* params[1]:Empty
+									* params[2]:Takeoff ascend rate
+									* params[3]:Yaw angle (if magnetometer or another yaw estimation source present), 
+												ignored without one of these
+									* params[4]:Y-axis position
+									* params[5]:X-axis position
+									* params[6]:Z-axis position
+									*/
+									if(last_mode != 1)
 									{
-										/*
-										* MAV_CMD_NAV_TAKEOFF_LOCAL:
-										* params[0]:Minimum pitch (if airspeed sensor present), desired pitch without sensor
-										* params[1]:Empty
-										* params[2]:Takeoff ascend rate
-										* params[3]:Yaw angle (if magnetometer or another yaw estimation source present), 
-													ignored without one of these
-										* params[4]:Y-axis position
-										* params[5]:X-axis position
-										* params[6]:Z-axis position
-										*/
-										
-										//mavlink·´À¡
+										//mavlinkåé¦ˆ
 										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
 										
-										//ÉèÖÃZÖáÄ¬ÈÏËÙ¶È
+										//è®¾ç½®Zè½´é»˜è®¤é€Ÿåº¦
 										if (msg.params[2] != 0)
 											Position_Control_set_ZAutoSpeed(msg.params[2] * 100, msg.params[2] * 100);
 										
-										//¿ØÖÆÏà¶Ô¸ß¶È
+										//æ§åˆ¶ç›¸å¯¹é«˜åº¦
 										Position_Control_Takeoff_HeightRelative(msg.params[6]*100);
 										
-										//¼ÇÂ¼Êı¾İ£¬ÓÃÓÚ½áÊø·´À¡
+										//è®°å½•æ•°æ®ï¼Œç”¨äºç»“æŸåé¦ˆ
 										last_nav_takeoff_local_msg = msg;
 										altitude_adjust_flag = 0;
 										
-										//×ªµ½¸ß¶Èµ÷ÕûÈÎÎñ
+										//è½¬åˆ°é«˜åº¦è°ƒæ•´ä»»åŠ¡
 										mission_ind = altitude_adjust;
+										last_mode = 1;
 									}
 								}
-								else
+							}
+							else
+							{
+								//æ»ç©º
+								if(msg.cmd == MAV_CMD_USER_1)
 								{
-									//ÖÍ¿Õ
-									if(msg.cmd == MAV_CMD_USER_1)
+									/*
+									* MAV_CMD_USER_1:
+									* params[0]:X-axis linear velocity
+									* params[1]:Y-axis linear velocity
+									* params[2]:Z-axis linear velocity
+									* params[3]:Z-axis angular velocity
+									* params[4]:Maximum roll
+									* params[5]:Maximum pitch
+									* params[6]:Mission conversion
+									*/
+									//ä»»åŠ¡è½¬æ¢
+									if (msg.params[6] != 0)
 									{
-										/*
-										* MAV_CMD_USER_1:
-										* params[0]:X-axis linear velocity
-										* params[1]:Y-axis linear velocity
-										* params[2]:Z-axis linear velocity
-										* params[3]:Z-axis angular velocity
-										* params[4]:Maximum roll
-										* params[5]:Maximum pitch
-										* params[6]:Mission conversion
-										*/
+										//åˆ¹è½¦
+										Position_Control_set_XYLock();
+										Attitude_Control_set_YawLock();
+										Position_Control_set_ZLock();
 										
-										//ÈÎÎñ×ª»»
-										if (msg.params[6] != 0)
-										{
-											//É²³µ
-											Position_Control_set_XYLock();
-											Attitude_Control_set_YawLock();
-											Position_Control_set_ZLock();
-											
-											//mavlink·´À¡
-											mavlink_send_command_ack(msg, MAV_RESULT_ACCEPTED, 0, 0);
-										}
-										else
-										{
-											//mavlink·´À¡
-											mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
-											
-											//ÉèÖÃXYÖáÏßËÙ¶ÈÓëroll¡¢pitch½Ç¶ÈÏŞÖÆ
-											Position_Control_set_TargetVelocityBodyHeadingXY_AngleLimit(msg.params[0]*100,
-																																									msg.params[1]*100,
-																																									msg.params[4],
-																																									msg.params[5]);
-											
-											//ÉèÖÃZÖá½ÇËÙ¶È
-											Attitude_Control_set_Target_YawRate(msg.params[3]);
-											
-											//µ¼º½ÔİÊ±Îª2D
-											Position_Control_set_ZLock();
-											
-											//¼ÇÂ¼Êı¾İ£¬±£Ö¤¿ØÖÆÁ¬Ğø£¬²¢ÓÃÓÚ½áÊø·´À¡
-											last_user1_msg = msg;
-
-											//×ªµ½µ¼º½ÈÎÎñ
-											mission_ind = custom_nav;
-										}
+										//mavlinkåé¦ˆ
+										mavlink_send_command_ack(msg, MAV_RESULT_ACCEPTED, 0, 0);
 									}
-									
-									else if(msg.cmd == MAV_CMD_CONDITION_CHANGE_ALT)
+									else
 									{
-										/*
-										* MAV_CMD_CONDITION_CHANGE_ALT:
-										* params[0]:Descent/Ascend rate
-										* params[1]:Empty
-										* params[2]:Empty
-										* params[3]:Empty
-										* params[4]:Empty
-										* params[5]:Empty
-										* params[6]:Target altitude
-										*/
-										
-										//mavlink·´À¡
+										//mavlinkåé¦ˆ
 										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
 										
-										//ÉèÖÃÄ¿±ê¸ß¶È(Ïà¶Ô)
+										//è®¾ç½®XYè½´çº¿é€Ÿåº¦ä¸rollã€pitchè§’åº¦é™åˆ¶
+										Position_Control_set_TargetVelocityBodyHeadingXY_AngleLimit(msg.params[0]*100,
+																																								msg.params[1]*100,
+																																								msg.params[4],
+																																								msg.params[5]);
+										
+										//è®¾ç½®Zè½´è§’é€Ÿåº¦
+										Attitude_Control_set_Target_YawRate(msg.params[3]);
+										
+										//å¯¼èˆªæš‚æ—¶ä¸º2D
+										//Position_Control_set_ZLock();
+										double z_speed = msg.params[2] * 100;
+										z_speed = z_speed > 10 ? 10 : z_speed;
+										Position_Control_set_TargetVelocityZ(z_speed);
+										
+										//è®°å½•æ•°æ®ï¼Œä¿è¯æ§åˆ¶è¿ç»­ï¼Œå¹¶ç”¨äºç»“æŸåé¦ˆ
+										last_user1_msg = msg;
+
+										//è½¬åˆ°å¯¼èˆªä»»åŠ¡
+										mission_ind = custom_nav;
+										last_mode = 2;
+									}
+								}
+								
+								else if(msg.cmd == MAV_CMD_CONDITION_CHANGE_ALT)
+								{
+									/*
+									* MAV_CMD_CONDITION_CHANGE_ALT:
+									* params[0]:Descent/Ascend rate
+									* params[1]:Empty
+									* params[2]:Empty
+									* params[3]:Empty
+									* params[4]:Empty
+									* params[5]:Empty
+									* params[6]:Target altitude
+									*/
+									if(last_mode != 3)
+									{
+										//mavlinkåé¦ˆ
+										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+										
+										//è®¾ç½®ç›®æ ‡é«˜åº¦(ç›¸å¯¹)
 										if (msg.params[0] != 0)
-											//ËÙ¶ÈÎŞ·½Ïò
+											//é€Ÿåº¦æ— æ–¹å‘
 											Position_Control_set_TargetPositionZRelative(msg.params[6]*100, msg.params[0]*100);
 										else
 											Position_Control_set_TargetPositionZRelative(msg.params[6]*100);
 										
-										//¼ÇÂ¼Êı¾İ£¬ÓÃÓÚ½áÊø·´À¡
+										//è®°å½•æ•°æ®ï¼Œç”¨äºç»“æŸåé¦ˆ
 										last_condition_change_alt_msg = msg;
 										altitude_adjust_flag = 1;
 										
-										//×ªµ½µ÷Õû¸ß¶ÈÈÎÎñ
+										//è½¬åˆ°è°ƒæ•´é«˜åº¦ä»»åŠ¡
 										mission_ind = altitude_adjust;
-									}
-									
-									else if(msg.cmd == MAV_CMD_CONDITION_YAW)
-									{
-										/*
-										* MAV_CMD_CONDITION_YAW:
-										* params[0]:Target angle, 0 is east
-										* params[1]:Angular speed
-										* params[2]:Direction: -1: counter clockwise, 1: clockwise
-										* params[3]:0: absolute angle, 1: relative offset
-										* params[4]:Empty
-										* params[5]:Empty
-										* params[6]:Empty
-										*/
-										
-										//mavlink·´À¡
-										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
-										
-										//A9²»Ìá¹©Æ«º½½ÇËÙ¶È×Ô¶¯¿ØÖÆ½Ó¿Ú
-										//¸ù¾İmavlinkĞÅÏ¢¾ö¶¨¿ØÖÆ½Ç¶ÈÀàĞÍ
-										if (msg.params[3])
-											Attitude_Control_set_Target_YawRelative(msg.params[0]);
-										else
-											Attitude_Control_set_Target_Yaw(msg.params[0]);
-										
-										//¼ÇÂ¼Êı¾İ£¬ÓÃÓÚ½áÊø·´À¡
-										last_condition_yaw_msg = msg;
-										
-										//×ªµ½µ÷ÕûÆ«º½ÈÎÎñ
-										mission_ind = yaw_adjust;
-									}
-									
-									else if(msg.cmd == MAV_CMD_NAV_LAND_LOCAL)
-									{
-										/*
-										* MAV_CMD_NAV_LAND_LOCAL:
-										* params[0]:Landing target number (if available)
-										* params[1]:Maximum accepted offset from desired landing position - computed magnitude
-													from spherical coordinates: d = sqrt(x^2 + y^2 + z^2), which gives the
-													maximum accepted distance between the desired landing position and the 
-													position where the vehicle is about to land
-										* params[2]:Landing descend rate
-										* params[3]:Desired yaw angle
-										* params[4]:Y-axis position
-										* params[5]:X-axis position
-										* params[6]:Z-axis / ground level position
-										*/
-										
-										//mavlink·´À¡
-										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
-										
-										//¼ÇÂ¼Êı¾İ£¬ÓÃÓÚ½áÊø·´À¡
-										last_nav_land_local_msg = msg;
-										
-										//×ªµ½½µÂäÈÎÎñ
-										mission_ind = land;
+										last_mode = 3;
 									}
 								}
+								
+								else if(msg.cmd == MAV_CMD_CONDITION_YAW)
+								{
+									/*
+									* MAV_CMD_CONDITION_YAW:
+									* params[0]:Target angle, 0 is east
+									* params[1]:Angular speed
+									* params[2]:Direction: -1: counter clockwise, 1: clockwise
+									* params[3]:0: absolute angle, 1: relative offset
+									* params[4]:Empty
+									* params[5]:Empty
+									* params[6]:Empty
+									*/
+									//mavlinkåé¦ˆ
+									mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+									
+									//A9ä¸æä¾›åèˆªè§’é€Ÿåº¦è‡ªåŠ¨æ§åˆ¶æ¥å£
+									//æ ¹æ®mavlinkä¿¡æ¯å†³å®šæ§åˆ¶è§’åº¦ç±»å‹
+									if (msg.params[3])
+										Attitude_Control_set_Target_YawRelative(msg.params[0]);
+									else
+										Attitude_Control_set_Target_Yaw(msg.params[0]);
+									
+									//è®°å½•æ•°æ®ï¼Œç”¨äºç»“æŸåé¦ˆ
+									last_condition_yaw_msg = msg;
+									
+									//è½¬åˆ°è°ƒæ•´åèˆªä»»åŠ¡
+									mission_ind = yaw_adjust;
+									last_mode = 4;
+								}
+								
+								else if(msg.cmd == MAV_CMD_NAV_LAND_LOCAL)
+								{
+									/*
+									* MAV_CMD_NAV_LAND_LOCAL:
+									* params[0]:Landing target number (if available)
+									* params[1]:Maximum accepted offset from desired landing position - computed magnitude
+												from spherical coordinates: d = sqrt(x^2 + y^2 + z^2), which gives the
+												maximum accepted distance between the desired landing position and the 
+												position where the vehicle is about to land
+									* params[2]:Landing descend rate
+									* params[3]:Desired yaw angle
+									* params[4]:Y-axis position
+									* params[5]:X-axis position
+									* params[6]:Z-axis / ground level position
+									*/
+									//mavlinkåé¦ˆ
+									mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+									
+									//è®°å½•æ•°æ®ï¼Œç”¨äºç»“æŸåé¦ˆ
+									last_nav_land_local_msg = msg;
+									
+									//è½¬åˆ°é™è½ä»»åŠ¡
+									mission_ind = land;
+									last_mode = 5;
+								}
+							}
 						}
+						switch(last_mode){
+							case 1:
+							{
+								Position_Control_set_XYLock();
+								Attitude_Control_set_YawLock();
+								Position_ControlMode alt_mode;
+								get_Altitude_ControlMode(&alt_mode);
+								break;
+							}
+							case 3:
+							{
+								Position_Control_set_XYLock();
+								Attitude_Control_set_YawLock();
+								Position_ControlMode alt_mode;
+								get_Altitude_ControlMode(&alt_mode);
+								break;
+							}
+							default:
+								break;
+						}
+						/*
 						else
 						{
-							//ÎŞÖ¸Áî¿ØÖÆÔòÉ²³µ
+							//æ— æŒ‡ä»¤æ§åˆ¶åˆ™åˆ¹è½¦
 							Position_Control_set_XYLock();
 							Attitude_Control_set_YawLock();
 							Position_Control_set_ZLock();
 						}
+						*/
 						
 						break;
 					}
@@ -602,75 +639,81 @@ RTL:
 									* params[6]:Mission conversion
 									*/
 									
-									//ÈÎÎñ×ª»»
+									//ä»»åŠ¡è½¬æ¢
 									if (msg.params[6] != 0)
 									{
-										//É²³µ
+										//åˆ¹è½¦
 										Position_Control_set_XYLock();
 										Attitude_Control_set_YawLock();
 										Position_Control_set_ZLock();
 
-										//×ªµ½mavlink¿ØÖÆÈÎÎñ
+										//è½¬åˆ°mavlinkæ§åˆ¶ä»»åŠ¡
 										mission_ind = mavlink_control;
 										
-										//mavlink·´À¡
+										//mavlinkåé¦ˆ
 										mavlink_send_command_ack(msg, MAV_RESULT_ACCEPTED, 0, 0);
 									}
 									else
 									{
-										//¸üĞÂÊı¾İ
-										//ÉèÖÃXYÖáÏßËÙ¶ÈÓëroll¡¢pitch½Ç¶ÈÏŞÖÆ
+										//æ›´æ–°æ•°æ®
+										//è®¾ç½®XYè½´çº¿é€Ÿåº¦ä¸rollã€pitchè§’åº¦é™åˆ¶
 										Position_Control_set_TargetVelocityBodyHeadingXY_AngleLimit(msg.params[0]*100,
 																																								msg.params[1]*100,
 																																								msg.params[4],
 																																								msg.params[5]);
 										
-										//ÉèÖÃZÖá½ÇËÙ¶È
+										//è®¾ç½®Zè½´è§’é€Ÿåº¦
 										Attitude_Control_set_Target_YawRate(msg.params[3]);
 										
-										//µ¼º½ÔİÊ±Îª2D
-										Position_Control_set_ZLock();
+										//å¯¼èˆªæš‚æ—¶ä¸º2D
+										//Position_Control_set_ZLock();
+										double z_speed = msg.params[2] * 100;
+										z_speed = z_speed > 10 ? 10 : z_speed;
+										Position_Control_set_TargetVelocityZ(z_speed);
 										
-										//¼ÇÂ¼Êı¾İ£¬±£Ö¤¿ØÖÆÁ¬Ğø
+										//è®°å½•æ•°æ®ï¼Œä¿è¯æ§åˆ¶è¿ç»­
 										last_user1_msg = msg;
 									}
 									
-									//Çå¿Õ¼ÆÊı
+									//æ¸…ç©ºè®¡æ•°
 									delay_counter = 0;
 								}
 						}
 						else if(delay_counter < max_delay_counter)
 						{
-							//±£³ÖÁ¬Ğø
-							//ÉèÖÃXYÖáÏßËÙ¶ÈÓëroll¡¢pitch½Ç¶ÈÏŞÖÆ
+							//ä¿æŒè¿ç»­
+							//è®¾ç½®XYè½´çº¿é€Ÿåº¦ä¸rollã€pitchè§’åº¦é™åˆ¶
 							Position_Control_set_TargetVelocityBodyHeadingXY_AngleLimit(last_user1_msg.params[0]*100,
 																																					last_user1_msg.params[1]*100,
 																																					last_user1_msg.params[4],
 																																					last_user1_msg.params[5]);
 							
-							//ÉèÖÃZÖá½ÇËÙ¶È
+							//è®¾ç½®Zè½´è§’é€Ÿåº¦
 							Attitude_Control_set_Target_YawRate(last_user1_msg.params[3]);
 							
-							//µ¼º½ÔİÊ±Îª2D
-							Position_Control_set_ZLock();
+							//å¯¼èˆªæš‚æ—¶ä¸º2D
+							//Position_Control_set_ZLock();
+							double z_speed = msg.params[2] * 100;
+							z_speed = z_speed > 10 ? 10 : z_speed;
+							Position_Control_set_TargetVelocityZ(z_speed);
 							
-							//ÑÓÊ±¼ÆÊı
+							//å»¶æ—¶è®¡æ•°
 							delay_counter++;
 						}
 						else
 						{
-							//³¬Ê±£¬ÈÎÎñ×ª»»£¬É²³µ
+							//è¶…æ—¶ï¼Œä»»åŠ¡è½¬æ¢ï¼Œåˆ¹è½¦
 							Position_Control_set_XYLock();
 							Attitude_Control_set_YawLock();
 							Position_Control_set_ZLock();
 
-							//×ªµ½mavlink¿ØÖÆÈÎÎñ
+							//è½¬åˆ°mavlinkæ§åˆ¶ä»»åŠ¡
 							mission_ind = mavlink_control;
 
-							//Çå¿Õ¼ÆÊı
+							//æ¸…ç©ºè®¡æ•°
 							delay_counter = 0;
 							
-							//mavlink·´À¡
+							//mavlinkåé¦ˆ
 							mavlink_send_command_ack(last_user1_msg, MAV_RESULT_ACCEPTED, 0, 0);
 						}
 						
@@ -679,20 +722,21 @@ RTL:
 					
 					case altitude_adjust:
 					{
-						//³ı¿ØÖÆ·½ÏòÆäÓàËø¶¨
+						//é™¤æ§åˆ¶æ–¹å‘å…¶ä½™é”å®š
 						Position_Control_set_XYLock();
 						Attitude_Control_set_YawLock();
 						
-						/*
-						//·ÃÎÊ¿ØÖÆ·½Ïò¿ØÖÆÆ÷
+						
+						//è®¿é—®æ§åˆ¶æ–¹å‘æ§åˆ¶å™¨
 						Position_ControlMode alt_mode;
 						get_Altitude_ControlMode(&alt_mode);
+						/*
 						if( alt_mode == Position_ControlMode_Position )
 						{
-							//×ªµ½mavlink¿ØÖÆÈÎÎñ
+							//è½¬åˆ°mavlinkæ§åˆ¶ä»»åŠ¡
 							mission_ind = mavlink_control;
 							
-							//mavlink·´À¡
+							//mavlinkåé¦ˆ
 							if(altitude_adjust_flag == 0)
 								mavlink_send_command_ack(last_nav_takeoff_local_msg, MAV_RESULT_ACCEPTED, 0, 0);
 							else
@@ -711,19 +755,20 @@ RTL:
 					
 					case yaw_adjust:
 					{
-						//³ı¿ØÖÆ·½ÏòÆäÓàËø¶¨
+						last_mode = 3;
+						//é™¤æ§åˆ¶æ–¹å‘å…¶ä½™é”å®š
 						Position_Control_set_XYLock();
 						Position_Control_set_ZLock();
 						
-						//·ÃÎÊ¿ØÖÆ·½Ïò¿ØÖÆÆ÷
+						//è®¿é—®æ§åˆ¶æ–¹å‘æ§åˆ¶å™¨
 						double yaw_err;
 						Attitude_Control_get_YawTrackErr(&yaw_err);
 						if( yaw_err <= 0.01 )
 						{
-							//»Øµ½mavlink¿ØÖÆÄ£Ê½
+							//å›åˆ°mavlinkæ§åˆ¶æ¨¡å¼
 							mission_ind = mavlink_control;
 							
-							//mavlink·´À¡
+							//mavlinkåé¦ˆ
 							mavlink_send_command_ack(last_condition_yaw_msg, MAV_RESULT_ACCEPTED, 0, 0);
 						}
 						
@@ -732,28 +777,28 @@ RTL:
 					
 					case land:
 					{
-						//³ı¿ØÖÆ·½ÏòÆäÓàËø¶¨
+						//é™¤æ§åˆ¶æ–¹å‘å…¶ä½™é”å®š
 						Position_Control_set_XYLock();
 						Attitude_Control_set_YawLock();
 						
-						//ÉèÖÃ½µÂäËÙ¶È
+						//è®¾ç½®é™è½é€Ÿåº¦
 						if(last_nav_land_local_msg.params[2] != 0)
 							Position_Control_set_TargetVelocityZ(last_nav_land_local_msg.params[2]*100);
 						else
 							Position_Control_set_TargetVelocityZ(-40);
 						
-						//ÅĞ¶ÏÖÍ¿Õ
+						//åˆ¤æ–­æ»ç©º
 						bool inFlight;
 						get_is_inFlight(&inFlight);
 						if( inFlight==false )
 						{
-							//¹Ø±Õ½Ç¶È¿ØÖÆÆ÷
+							//å…³é—­è§’åº¦æ§åˆ¶å™¨
 							Attitude_Control_Disable();
 							
-							//»Øµ½mavlink¿ØÖÆÄ£Ê½
+							//å›åˆ°mavlinkæ§åˆ¶æ¨¡å¼
 							mission_ind = mavlink_control;
 							
-							//mavlink·´À¡
+							//mavlinkåé¦ˆ
 							mavlink_send_command_ack(last_nav_land_local_msg, MAV_RESULT_ACCEPTED, 0, 0);
 						}
 						break;
@@ -770,12 +815,12 @@ RTL:
 			}
 		}
 		else
-		{	//ÊÖ¶¯·ÉĞĞÄ£Ê½£¨°üº¬¶¨¸ß¶¨µã¿ØÖÆ£©
+		{	//æ‰‹åŠ¨é£è¡Œæ¨¡å¼ï¼ˆåŒ…å«å®šé«˜å®šç‚¹æ§åˆ¶ï¼‰
 			Manual_Mode:
 			if( rc.available )
 			{				
-				/*ÅĞ¶ÏÍË³öÄ£Ê½*/
-					//»ñÈ¡·ÉĞĞ×´Ì¬
+				/*åˆ¤æ–­é€€å‡ºæ¨¡å¼*/
+					//è·å–é£è¡ŒçŠ¶æ€
 					bool inFlight;
 					get_is_inFlight(&inFlight);
 					if( rc.data[0] > 30 )
@@ -784,7 +829,7 @@ RTL:
 						if( exit_mode_counter < exit_mode_counter_rs )
 							exit_mode_counter = exit_mode_counter_rs;
 					}
-					//½µÂäºó×Ô¶¯¼ÓËø
+					//é™è½åè‡ªåŠ¨åŠ é”
 					if( inFlight==false && rc.data[0]<30 )
 					{
 						if( ++exit_mode_counter >= 500 )
@@ -795,7 +840,7 @@ RTL:
 					}
 					else
 						exit_mode_counter = exit_mode_counter_rs;
-					//ÊÖÊÆÇ¿ÖÆ¼ÓËø
+					//æ‰‹åŠ¿å¼ºåˆ¶åŠ é”
 					if( rc.data[0] < 10 && rc.data[1] < 10 && rc.data[2] < 10 && rc.data[3] > 90 )
 					{
 						if( ++exit_mode_Gcounter >= 50 )
@@ -806,9 +851,9 @@ RTL:
 					}
 					else
 						exit_mode_Gcounter = 0;
-				/*ÅĞ¶ÏÍË³öÄ£Ê½*/
+				/*åˆ¤æ–­é€€å‡ºæ¨¡å¼*/
 				
-				/*ÅĞ¶ÏÄ£Ê½*/
+				/*åˆ¤æ–­æ¨¡å¼*/
 					uint8_t MF_mode = 0;
 					if( rc.data[4]<1.0/6*100 )
 						MF_mode = MFunc_cfg.Bt1AFunc1[0];
@@ -822,9 +867,9 @@ RTL:
 						MF_mode = MFunc_cfg.Bt1AFunc5[0];
 					else if( rc.data[4]<6.0/6*100 )
 						MF_mode = MFunc_cfg.Bt1AFunc6[0];
-				/*ÅĞ¶ÏÄ£Ê½*/
+				/*åˆ¤æ–­æ¨¡å¼*/
 					
-				//ÇĞ»»¶¨¸ß¶¨µã
+				//åˆ‡æ¢å®šé«˜å®šç‚¹
 				if( MF_mode==2 )
 					Position_Control_Enable();
 				else if( MF_mode==1 )
@@ -832,7 +877,7 @@ RTL:
 				bool pos_ena;
 				is_Position_Control_Enabled(&pos_ena);
 					
-				//ÓÍÃÅ¸Ë¿ØÖÆ´¹Ö±ËÙ¶È
+				//æ²¹é—¨æ†æ§åˆ¶å‚ç›´é€Ÿåº¦
 				if( in_symmetry_range_mid( rc.data[0] , 50 , 5 ) )
 					Position_Control_set_ZLock();
 				else
@@ -847,13 +892,13 @@ RTL:
 				
 				if( pos_ena )
 				{
-					//Éè¶¨mavlinkÄ£Ê½
+					//è®¾å®šmavlinkæ¨¡å¼
 					set_mav_mode( 
 						MAV_MODE_STABILIZE_ARMED|MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,
 						PX4_CUSTOM_MAIN_MODE_POSCTL,
 						0 );
 					
-					//¸©Ñöºá¹ö¸Ë¿ØË®Æ½ËÙ¶È
+					//ä¿¯ä»°æ¨ªæ»šæ†æ§æ°´å¹³é€Ÿåº¦
 					if( in_symmetry_range_mid( rc.data[3] , 50 , 5 ) && in_symmetry_range_mid( rc.data[2] , 50 , 5 ) )
 						Position_Control_set_XYLock();
 					else
@@ -876,13 +921,13 @@ RTL:
 				}
 				else
 				{
-					//Éè¶¨mavlinkÄ£Ê½
+					//è®¾å®šmavlinkæ¨¡å¼
 					set_mav_mode( 
 						MAV_MODE_STABILIZE_ARMED|MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,
 						PX4_CUSTOM_MAIN_MODE_ALTCTL,
 						0 );
 					
-					//²¹³¥·çÁ¦ÈÅ¶¯
+					//è¡¥å¿é£åŠ›æ‰°åŠ¨
 					vector3<double> WindDisturbance;
 					get_WindDisturbance( &WindDisturbance );
 					Quaternion attitude;
@@ -892,7 +937,7 @@ RTL:
 					fast_sin_cos( yaw, &sin_Yaw, &cos_Yaw );
 					double WindDisturbance_Bodyheading_x = ENU2BodyHeading_x( WindDisturbance.x , WindDisturbance.y , sin_Yaw , cos_Yaw );
 					double WindDisturbance_Bodyheading_y = ENU2BodyHeading_y( WindDisturbance.x , WindDisturbance.y , sin_Yaw , cos_Yaw );
-					//¸©Ñöºá¹ö¸Ë¿Ø¸©Ñöºá¹ö
+					//ä¿¯ä»°æ¨ªæ»šæ†æ§ä¿¯ä»°æ¨ªæ»š
 					double RPCtrlScale = degree2rad( get_maxLean() / 50.0 );
 	//				Attitude_Control_set_Target_RollPitch( 
 	//					( rc.data[3] - 50 )*RPCtrlScale - atan2(-WindDisturbance_Bodyheading_y , GravityAcc ),
@@ -904,8 +949,8 @@ RTL:
 					);
 				}
 				
-				//Æ«º½¸ËÔÚÖĞ¼äËøÆ«º½
-				//²»ÔÚÖĞ¼ä¿ØÖÆÆ«º½ËÙ¶È
+				//åèˆªæ†åœ¨ä¸­é—´é”åèˆª
+				//ä¸åœ¨ä¸­é—´æ§åˆ¶åèˆªé€Ÿåº¦
 				double YCtrlScale = degree2rad( get_maxYawSpeed() / 50.0 );
 				if( in_symmetry_range_mid( rc.data[1] , 50 , 5 ) )
 					Attitude_Control_set_YawLock();
@@ -913,7 +958,7 @@ RTL:
 					Attitude_Control_set_Target_YawRate( ( 50 - rc.data[1] )*YCtrlScale );
 			}
 			else
-			{	//ÎŞÒ£¿ØĞÅºÅ½øÈë°²È«Ä£Ê½
+			{	//æ— é¥æ§ä¿¡å·è¿›å…¥å®‰å…¨æ¨¡å¼
 				change_Mode(AFunc_RTL)
 				goto RTL;				
 			}
