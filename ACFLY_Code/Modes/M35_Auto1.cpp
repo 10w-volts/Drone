@@ -421,26 +421,23 @@ RTL:
 									* params[5]:X-axis position
 									* params[6]:Z-axis position
 									*/
-									if(last_mode != 1)
-									{
-										//mavlink反馈
-										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
-										
-										//设置Z轴默认速度
-										if (msg.params[2] != 0)
-											Position_Control_set_ZAutoSpeed(msg.params[2] * 100, msg.params[2] * 100);
-										
-										//控制相对高度
-										Position_Control_Takeoff_HeightRelative(msg.params[6]*100);
-										
-										//记录数据，用于结束反馈
-										last_nav_takeoff_local_msg = msg;
-										altitude_adjust_flag = 0;
-										
-										//转到高度调整任务
-										mission_ind = altitude_adjust;
-										last_mode = 1;
-									}
+									//mavlink反馈
+									mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+									
+									//设置Z轴默认速度
+									if (msg.params[2] != 0)
+										Position_Control_set_ZAutoSpeed(msg.params[2] * 100, msg.params[2] * 100);
+									
+									//控制相对高度
+									Position_Control_Takeoff_HeightRelative(msg.params[6]*100);
+									
+									//记录数据，用于结束反馈
+									last_nav_takeoff_local_msg = msg;
+									altitude_adjust_flag = 0;
+									
+									//转到高度调整任务
+									mission_ind = altitude_adjust;
+									last_mode = 1;
 								}
 							}
 							else
@@ -510,26 +507,23 @@ RTL:
 									* params[5]:Empty
 									* params[6]:Target altitude
 									*/
-									if(last_mode != 3)
-									{
-										//mavlink反馈
-										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
-										
-										//设置目标高度(相对)
-										if (msg.params[0] != 0)
-											//速度无方向
-											Position_Control_set_TargetPositionZRelative(msg.params[6]*100, msg.params[0]*100);
-										else
-											Position_Control_set_TargetPositionZRelative(msg.params[6]*100);
-										
-										//记录数据，用于结束反馈
-										last_condition_change_alt_msg = msg;
-										altitude_adjust_flag = 1;
-										
-										//转到调整高度任务
-										mission_ind = altitude_adjust;
-										last_mode = 3;
-									}
+									//mavlink反馈
+									mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+									
+									//设置目标高度(相对)
+									if (msg.params[0] != 0)
+										//速度无方向
+										Position_Control_set_TargetPositionZRelative(msg.params[6]*100, msg.params[0]*100);
+									else
+										Position_Control_set_TargetPositionZRelative(msg.params[6]*100);
+									
+									//记录数据，用于结束反馈
+									last_condition_change_alt_msg = msg;
+									altitude_adjust_flag = 1;
+									
+									//转到调整高度任务
+									mission_ind = altitude_adjust;
+									last_mode = 3;
 								}
 								
 								else if(msg.cmd == MAV_CMD_CONDITION_YAW)
@@ -743,11 +737,13 @@ RTL:
 								mavlink_send_command_ack(last_condition_change_alt_msg, MAV_RESULT_ACCEPTED, 0, 0);
 						}
 						*/
-
+						/*
 						if(altitude_adjust_flag == 0)
 							mavlink_send_command_ack(last_nav_takeoff_local_msg, MAV_RESULT_ACCEPTED, 0, 0);
 						else
 							mavlink_send_command_ack(last_condition_change_alt_msg, MAV_RESULT_ACCEPTED, 0, 0);
+						*/
+
 						mission_ind = mavlink_control;
 						
 						break;
