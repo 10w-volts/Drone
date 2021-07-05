@@ -358,7 +358,8 @@ static void Modes_Server(void* pvParameters)
 			{
 				case 31011:
 				{
-					changeMode(35, 0, 0, 0);
+					changeMode(35, &MF_mode, 0, 0,
+											&msg_available, &msg_handled, &msg);
 					mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
 					break;
 				}
