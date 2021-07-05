@@ -1,3 +1,4 @@
 <launch>
     <node pkg="gpio_ctrl" type="led_buzz_ctrl.py" name="led_buzz_ctrl" />
+    <node pkg="gpio_ctrl" type="gpio_in.py" name="gpio_in" />
 </launch>
