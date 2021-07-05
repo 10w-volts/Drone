@@ -1,0 +1,9 @@
+# link.service
+[Unit]
+Description=this is link service
+
+[Service]
+ExecStart=/home/nvidia/Drone/startup/link.sh
+
+[Install]
+WantedBy=multi-user.target
