@@ -67,6 +67,8 @@ ModeResult M35_Auto1::main_func( void* param1, uint32_t param2 )
 	uint8_t MissionButtonZone = 255;
 	uint8_t RTLButtonZone = 255;
 	uint8_t cMode = AFunc_PosHold;
+
+	change_Mode(AFunc_Mission);
 	
 	//当前执行任务的序号
 	uint16_t mission_ind = 0;

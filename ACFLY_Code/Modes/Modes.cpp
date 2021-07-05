@@ -51,7 +51,7 @@ bool ModeReceiveMsg( ModeMsg* msg, double TIMEOUT )
 static bool changeMode( uint16_t mode_index, void* param1, uint32_t param2, ModeResult* result,
 												bool* msg_available, bool* msg_handled, ModeMsg* msg )
 {
-	/*ÏÈ·µ»ØÏûÏ¢´¦Àí½á¹û*/
+	/*å…ˆè¿”å›æ¶ˆæ¯å¤„ç†ç»“æœ*/
 		if( *msg_available )
 		{
 			uint8_t port_index = msg->cmd_type & CMD_TYPE_PORT_MASK;
@@ -83,7 +83,7 @@ static bool changeMode( uint16_t mode_index, void* param1, uint32_t param2, Mode
 			
 			*msg_available = false;
 		}
-	/*ÏÈ·µ»ØÏûÏ¢´¦Àí½á¹û*/
+	/*å…ˆè¿”å›æ¶ˆæ¯å¤„ç†ç»“æœ*/
 	
 	if( modes[mode_index] != 0 )
 	{
@@ -102,21 +102,21 @@ static bool changeMode( uint16_t mode_index, void* param1, uint32_t param2, Mode
 
 static void Modes_Server(void* pvParameters)
 {
-	//µÈ´ıÇı¶¯³õÊ¼»¯Íê³É
+	//ç­‰å¾…é©±åŠ¨åˆå§‹åŒ–å®Œæˆ
 	while( getInitializationCompleted() == false )
 		os_delay(0.1);
 	setLedManualCtrl( 0, 0, 30, true, 800 );
 	os_delay(0.2);
 	setLedMode(LEDMode_Processing1);
 	
-	//µÈ´ı×ËÌ¬½âËãÏµÍ³×¼±¸Íê³É
+	//ç­‰å¾…å§¿æ€è§£ç®—ç³»ç»Ÿå‡†å¤‡å®Œæˆ
 	while( get_Attitude_MSStatus() != MS_Ready )
 		os_delay(0.1);
 	setLedManualCtrl( 0, 0, 30, true, 1000 );
 	os_delay(0.2);
 	setLedMode(LEDMode_Processing1);
 	
-	//µÈ´ıÎ»ÖÃ½âËãÏµÍ³×¼±¸Íê³É
+	//ç­‰å¾…ä½ç½®è§£ç®—ç³»ç»Ÿå‡†å¤‡å®Œæˆ
 	while( get_Altitude_MSStatus() != MS_Ready )
 		os_delay(0.1);
 	setLedManualCtrl( 0, 0, 30, true, 1200 );
@@ -124,10 +124,10 @@ static void Modes_Server(void* pvParameters)
 	setLedMode(LEDMode_Processing1);
 	sendLedSignal(LEDSignal_Start2);
 
-	//³õÊ¼»¯Aux´¦Àí
+	//åˆå§‹åŒ–Auxå¤„ç†
 	init_process_AuxFuncs();
 	
-	//½øÈëµØÃæÄ£Ê½
+	//è¿›å…¥åœ°é¢æ¨¡å¼
 	xQueueReset(message_queue);
 	set_mav_mode( 
 		MAV_MODE_STABILIZE_DISARMED | MAV_MODE_FLAG_CUSTOM_MODE_ENABLED,
@@ -137,7 +137,7 @@ static void Modes_Server(void* pvParameters)
 	uint16_t pre_enter_mode_counter = 0;
 	uint8_t last_pre_enter_mode = 0;
 	
-	//×´Ì¬
+	//çŠ¶æ€
 	AFunc MF_mode;
 	uint8_t btn_zones[4];
 	btn_zones[0] = btn_zones[1] = btn_zones[2] = btn_zones[3] = 255;
@@ -153,20 +153,20 @@ static void Modes_Server(void* pvParameters)
 	{
 		os_delay(0.02);
 		
-		//¹Ø±Õ¿ØÖÆÆ÷
+		//å…³é—­æ§åˆ¶å™¨
 		Attitude_Control_Disable();
 		
-		/*µçÑ¹¼ì²â*/		
+		/*ç”µå‹æ£€æµ‹*/		
 			float BatVoltage = get_MainBatteryVoltage_filted();
 			if( BatVoltage < 7 )
-			{	//Ã»½ÓµçÑ¹¼ì²â
+			{	//æ²¡æ¥ç”µå‹æ£€æµ‹
 				Voltage_Detected = true;
 			}
 			else
 			{
 				float STVoltage[2];
 				if( ReadParam("Bat_STVoltage", 0, 0, (uint64_t*)STVoltage, 0 ) == PR_OK )
-				{	//µçÑ¹´óÓÚ»òĞ¡ÓÚ±ê×¼µçÑ¹µÄ30%²»ÔÊĞí½âËø
+				{	//ç”µå‹å¤§äºæˆ–å°äºæ ‡å‡†ç”µå‹çš„30%ä¸å…è®¸è§£é”
 					if( STVoltage[0]<3 && (BatVoltage>STVoltage[0]*1.3f || BatVoltage<STVoltage[0]*0.7f) )
 						Voltage_Detected = false;	
 					else
@@ -174,46 +174,46 @@ static void Modes_Server(void* pvParameters)
 				}
 			}
 		
-		/*µçÑ¹¼ì²â*/		
+		/*ç”µå‹æ£€æµ‹*/		
 			
-		//»ñÈ¡½ÓÊÕ»ú
+		//è·å–æ¥æ”¶æœº
 		Receiver rc;
 		getReceiver( &rc, 0, 0.02);
 
 		if( rc.available )
-		{	//½ÓÊÕ»ú¿ÉÓÃ¸üĞÂÄ£Ê½°´Å¥×´Ì¬
+		{	//æ¥æ”¶æœºå¯ç”¨æ›´æ–°æ¨¡å¼æŒ‰é’®çŠ¶æ€
 			uint8_t new_ModeButtonZone = get_RcButtonZone( rc.data[4], ModeButtonZone );
 			if( ModeButtonZone<=5 && new_ModeButtonZone!=ModeButtonZone )
-			{	//Ä£Ê½°´Å¥¸Ä±äÖØÖÃËø¶¨×´Ì¬
+			{	//æ¨¡å¼æŒ‰é’®æ”¹å˜é‡ç½®é”å®šçŠ¶æ€
 				
 			}
 			ModeButtonZone = new_ModeButtonZone;
 		}
 		else
-		{	//½ÓÊÕ»ú²»¿ÉÓÃÖØÖÃÒ£¿Ø×´Ì¬
+		{	//æ¥æ”¶æœºä¸å¯ç”¨é‡ç½®é¥æ§çŠ¶æ€
 			ModeButtonZone = 255;
 		}
 		
-		//´¦ÀíAuxÍ¨µÀ
+		//å¤„ç†Auxé€šé“
 		process_AuxFuncs(&rc);
 		
-		//»ñÈ¡ÏûÏ¢
+		//è·å–æ¶ˆæ¯
 		bool msg_available;
 		bool msg_handled = false;
 		ModeMsg msg;
 		msg_available = ModeReceiveMsg( &msg, 0 );
 		
-		//¶ÁÈ¡Ä£Ê½ÅäÖÃ
+		//è¯»å–æ¨¡å¼é…ç½®
 		ModeFuncCfg MFunc_cfg;
 		ReadParamGroup( "MFunc", (uint64_t*)&MFunc_cfg, 0 );
 		
-		//»ñÈ¡¶¨Î»×´Ì¬
+		//è·å–å®šä½çŠ¶æ€
 		if( get_Position_MSStatus() == MS_Ready )
 			setLedMode(LEDMode_Normal2);
 		else
 			setLedMode(LEDMode_Normal1);
 		
-		/*Ä£Ê½»Ø´«ÏÔÊ¾*/
+		/*æ¨¡å¼å›ä¼ æ˜¾ç¤º*/
 			uint8_t p_mode = 0;
 			if( ModeButtonZone==0 )
 				p_mode = MFunc_cfg.Bt1PAFunc1[0];
@@ -269,18 +269,18 @@ static void Modes_Server(void* pvParameters)
 					mav_main_mode,
 					mav_sub_mode );
 			}
-		/*Ä£Ê½»Ø´«ÏÔÊ¾*/
+		/*æ¨¡å¼å›ä¼ æ˜¾ç¤º*/
 		
 		if( rc.available )
 		{
 			uint8_t pre_enter_mode = 0;
 			
 			if( (rc.data[0] < 10.0f) && (rc.data[1] < 10.0f) && (rc.data[2] < 10.0f) && (rc.data[3] < 10.0f) )
-				pre_enter_mode = 12;	//¼ÓËÙ¶ÈĞ£×¼
+				pre_enter_mode = 12;	//åŠ é€Ÿåº¦æ ¡å‡†
 			else if( (rc.data[0] < 10.0f) && (rc.data[1] < 10.0f) && (rc.data[2] > 90.0f) && (rc.data[3] < 10.0f) )
-				pre_enter_mode = 13;	//´ÅÁ¦¼ÆĞ£×¼
+				pre_enter_mode = 13;	//ç£åŠ›è®¡æ ¡å‡†
 			else if( (rc.data[0] < 10.0f) && (rc.data[1] > 90.0f) && (rc.data[2] > 45.0f) && (rc.data[2] < 55.0f) && (rc.data[3] > 90.0f) )
-				pre_enter_mode = 11;	//ÎÂ¶ÈÏµÊıĞ£×¼
+				pre_enter_mode = 11;	//æ¸©åº¦ç³»æ•°æ ¡å‡†
 			else if( (rc.data[0] < 10.0f) && (rc.data[1] > 90.0f) && (rc.data[2] < 10.0f) && (rc.data[3] < 10.0f) )
 			{
 				if( Voltage_Detected )
@@ -332,7 +332,7 @@ static void Modes_Server(void* pvParameters)
 				}
 			}
 			
-			//¼ÆÊı½øÈëÄ£Ê½
+			//è®¡æ•°è¿›å…¥æ¨¡å¼
 			if( pre_enter_mode==0 || pre_enter_mode!=last_pre_enter_mode )
 				pre_enter_mode_counter = 0;
 			else
@@ -351,11 +351,17 @@ static void Modes_Server(void* pvParameters)
 			last_pre_enter_mode = pre_enter_mode;
 		}
 		
-		//´¦ÀíÏûÏ¢
+		//å¤„ç†æ¶ˆæ¯
 		if( msg_available )
 		{
 			switch( msg.cmd )
 			{
+				case 31011:
+				{
+					changeMode(35, 0, 0, 0);
+					mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+					break;
+				}
 				case 176:
 				{	//do set mode
 					if( msg.params[0] == 0 )
@@ -365,11 +371,11 @@ static void Modes_Server(void* pvParameters)
 						reset_States;
 					}
 					else if( (int)msg.params[0] & MAV_MODE_FLAG_CUSTOM_MODE_ENABLED )
-					{	//mavlink¶¨ÒåÄ£Ê½
+					{	//mavlinkå®šä¹‰æ¨¡å¼
 						px4_custom_mode t_mav_mode;
 						t_mav_mode.data = msg.params[1];
 						if( (t_mav_mode.main_mode==PX4_CUSTOM_MAIN_MODE_AUTO || t_mav_mode.main_mode==0) && t_mav_mode.sub_mode==PX4_CUSTOM_SUB_MODE_AUTO_MISSION )
-						{	//×Ô¶¯Ä£Ê½
+						{	//è‡ªåŠ¨æ¨¡å¼
 							msg_handled = true;
 							MF_mode = AFunc_Mission;
 							if( (int)msg.params[0] & MAV_MODE_FLAG_SAFETY_ARMED )
@@ -380,17 +386,17 @@ static void Modes_Server(void* pvParameters)
 							}
 						}
 						else if( t_mav_mode.main_mode==PX4_CUSTOM_MAIN_MODE_POSCTL  )
-						{	//¶¨µãÄ£Ê½
+						{	//å®šç‚¹æ¨¡å¼
 							msg_handled = true;
 							MF_mode = AFunc_PosHold;
 						}
 						else if( t_mav_mode.main_mode==PX4_CUSTOM_MAIN_MODE_ALTCTL  )
-						{	//¶¨¸ßÄ£Ê½
+						{	//å®šé«˜æ¨¡å¼
 							msg_handled = true;
 							MF_mode = AFunc_AltHold;
 						}
 						if( (t_mav_mode.main_mode==PX4_CUSTOM_MAIN_MODE_AUTO || t_mav_mode.main_mode==0) && t_mav_mode.sub_mode==PX4_CUSTOM_SUB_MODE_AUTO_RTL )
-						{	//·µº½
+						{	//è¿”èˆª
 							msg_handled = true;
 							MF_mode = AFunc_RTL;
 						}
@@ -399,7 +405,7 @@ static void Modes_Server(void* pvParameters)
 				}
 				
 				case 22:
-				{	//takeoffÆğ·É
+				{	//takeoffèµ·é£
 					msg_handled = true;
 					MF_mode = AFunc_TakeOff;
 					changeMode( 32, &MF_mode, msg.params[6]*100, 0,
@@ -409,7 +415,7 @@ static void Modes_Server(void* pvParameters)
 				}
 				
 				case MAV_CMD_COMPONENT_ARM_DISARM:
-				{	//½âËø
+				{	//è§£é”
 					if( msg.params[0] == 1 )
 					{
 						msg_handled = true;
@@ -423,7 +429,7 @@ static void Modes_Server(void* pvParameters)
 			}
 		}
 		
-		/*·µ»ØÏûÏ¢´¦Àí½á¹û*/
+		/*è¿”å›æ¶ˆæ¯å¤„ç†ç»“æœ*/
 			if( msg_available )
 			{
 				uint8_t port_index = msg.cmd_type & CMD_TYPE_PORT_MASK;
@@ -453,7 +459,7 @@ static void Modes_Server(void* pvParameters)
 					}
 				}
 			}
-		/*·µ»ØÏûÏ¢´¦Àí½á¹û*/
+		/*è¿”å›æ¶ˆæ¯å¤„ç†ç»“æœ*/
 	}
 }
 
@@ -465,7 +471,7 @@ void ModeRegister( Mode_Base* mode, uint8_t id )
 
 void init_Modes()
 {
-	//×¢²áÄ£Ê½
+	//æ³¨å†Œæ¨¡å¼
 	new M10_RCCalib();
 	new M11_TempCalib();
 	new M12_AccCalib();
@@ -475,100 +481,100 @@ void init_Modes()
 	new M32_PosCtrl();
 	new M35_Auto1();
 	
-	//×¢²á²ÎÊı
+	//æ³¨å†Œå‚æ•°
 	ModeFuncCfg initial_cfg;
-	//°´Å¥1½âËøÇ°¹¦ÄÜ£¨Ä£Ê½ĞòºÅ£©
+	//æŒ‰é’®1è§£é”å‰åŠŸèƒ½ï¼ˆæ¨¡å¼åºå·ï¼‰
 	initial_cfg.Bt1PAFunc1[0] = 32;
 	initial_cfg.Bt1PAFunc2[0] = 32;
 	initial_cfg.Bt1PAFunc3[0] = 35;
 	initial_cfg.Bt1PAFunc4[0] = 35;
 	initial_cfg.Bt1PAFunc5[0] = 32;
 	initial_cfg.Bt1PAFunc6[0] = 32;
-	//°´Å¥1½âËøºó¹¦ÄÜ
+	//æŒ‰é’®1è§£é”ååŠŸèƒ½
 	initial_cfg.Bt1AFunc1[0] = 1;
 	initial_cfg.Bt1AFunc2[0] = 1;
 	initial_cfg.Bt1AFunc3[0] = 0;
 	initial_cfg.Bt1AFunc4[0] = 0;
 	initial_cfg.Bt1AFunc5[0] = 2;
 	initial_cfg.Bt1AFunc6[0] = 2;
-	//ÈÎÎñÖ´ĞĞ°´Å¥
+	//ä»»åŠ¡æ‰§è¡ŒæŒ‰é’®
 	initial_cfg.MissionBt[0] = 12;
-	//·µº½°´Å¥
+	//è¿”èˆªæŒ‰é’®
 	initial_cfg.RTLBt[0] = 13;
-	//°²È«°´Å¥
+	//å®‰å…¨æŒ‰é’®
 	initial_cfg.SafeBt[0] = 0;
-	//ÖĞÎ»ËÀÇø
+	//ä¸­ä½æ­»åŒº
 	initial_cfg.NeutralZone[0] = 5.0;
-	//Î»ÖÃËÙ¶ÈÏìÓ¦ÇúÏßÏµÊı
+	//ä½ç½®é€Ÿåº¦å“åº”æ›²çº¿ç³»æ•°
 	initial_cfg.PosVelAlpha[0] = 1.6;
-	//×ËÌ¬ÏìÓ¦ÇúÏßÏµÊı
+	//å§¿æ€å“åº”æ›²çº¿ç³»æ•°
 	initial_cfg.AttAlpha[0] = 1.5;
-	//ÖØÖÃº½µã
+	//é‡ç½®èˆªç‚¹
 	initial_cfg.RstWp0[0] = 0;
 	
 	MAV_PARAM_TYPE param_types[] = {
-		//°´Å¥1½âËøÇ°¹¦ÄÜ£¨Ä£Ê½ĞòºÅ£©
+		//æŒ‰é’®1è§£é”å‰åŠŸèƒ½ï¼ˆæ¨¡å¼åºå·ï¼‰
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
-		//°´Å¥1½âËøºó¹¦ÄÜ
+		//æŒ‰é’®1è§£é”ååŠŸèƒ½
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
 		MAV_PARAM_TYPE_UINT8 ,
-		//ÈÎÎñÖ´ĞĞ°´Å¥
+		//ä»»åŠ¡æ‰§è¡ŒæŒ‰é’®
 		MAV_PARAM_TYPE_UINT8 ,
-		//·µº½°´Å¥
+		//è¿”èˆªæŒ‰é’®
 		MAV_PARAM_TYPE_UINT8 ,
-		//°²È«°´Å¥
+		//å®‰å…¨æŒ‰é’®
 		MAV_PARAM_TYPE_UINT8 ,
-		//ÖĞÎ»ËÀÇø
+		//ä¸­ä½æ­»åŒº
 		MAV_PARAM_TYPE_REAL32 ,
-		//Î»ÖÃËÙ¶ÈÏìÓ¦ÇúÏßÏµÊı
+		//ä½ç½®é€Ÿåº¦å“åº”æ›²çº¿ç³»æ•°
 		MAV_PARAM_TYPE_REAL32 ,
-		//×ËÌ¬ÏìÓ¦ÇúÏßÏµÊı
+		//å§¿æ€å“åº”æ›²çº¿ç³»æ•°
 		MAV_PARAM_TYPE_REAL32 ,
-		//½âËøÊ¹ÓÃ0ºÅº½µã
+		//è§£é”ä½¿ç”¨0å·èˆªç‚¹
 		MAV_PARAM_TYPE_UINT8 ,
 	};
 	SName param_names[] = {
-		//°´Å¥1½âËøÇ°¹¦ÄÜ£¨Ä£Ê½ĞòºÅ£©
+		//æŒ‰é’®1è§£é”å‰åŠŸèƒ½ï¼ˆæ¨¡å¼åºå·ï¼‰
 		"MFunc_Bt1PAF1" ,
 		"MFunc_Bt1PAF2" ,
 		"MFunc_Bt1PAF3" ,
 		"MFunc_Bt1PAF4" ,
 		"MFunc_Bt1PAF5" ,
 		"MFunc_Bt1PAF6" ,
-		//°´Å¥1½âËøºó¹¦ÄÜ
+		//æŒ‰é’®1è§£é”ååŠŸèƒ½
 		"MFunc_Bt1AF1" ,
 		"MFunc_Bt1AF2" ,
 		"MFunc_Bt1AF3" ,
 		"MFunc_Bt1AF4" ,
 		"MFunc_Bt1AF5" ,
 		"MFunc_Bt1AF6" ,
-		//ÈÎÎñÖ´ĞĞ°´Å¥
+		//ä»»åŠ¡æ‰§è¡ŒæŒ‰é’®
 		"MFunc_MissionBt" ,
-		//·µº½°´Å¥
+		//è¿”èˆªæŒ‰é’®
 		"MFunc_RTLBt" ,
-		//°²È«°´Å¥
+		//å®‰å…¨æŒ‰é’®
 		"MFunc_SafeBt" ,
-		//ÖĞÎ»ËÀÇø
+		//ä¸­ä½æ­»åŒº
 		"MFunc_NeutralZ" ,
-		//Î»ÖÃËÙ¶ÈÏìÓ¦ÇúÏßÏµÊı
+		//ä½ç½®é€Ÿåº¦å“åº”æ›²çº¿ç³»æ•°
 		"MFunc_PVAlpha" ,
-		//×ËÌ¬ÏìÓ¦ÇúÏßÏµÊı
+		//å§¿æ€å“åº”æ›²çº¿ç³»æ•°
 		"MFunc_AttAlpha" ,
-		//½âËøÊ¹ÓÃ0ºÅº½µã
+		//è§£é”ä½¿ç”¨0å·èˆªç‚¹
 		"MFunc_RstWp0"
 	};
 	ParamGroupRegister( "MFunc", 2, sizeof(ModeFuncCfg)/8, param_types, param_names, (uint64_t*)&initial_cfg );
 	
-	//×¢²áµ±Ç°º½µãĞÅÏ¢
+	//æ³¨å†Œå½“å‰èˆªç‚¹ä¿¡æ¯
 	CurrentWpInf initial_CurrentWpInf;
 	initial_CurrentWpInf.CurrentWp[0] = 0;
 	initial_CurrentWpInf.line_x = 0;

@@ -9,8 +9,8 @@
 #define CMD_TYPE_PORT_MASK 0x0f
 struct ModeMsg
 {
-	//¸ß4Î»£º1-mavlinkÏûÏ¢
-	//µÍ4Î»£º½ÓÊÕport
+	//é«˜4ä½ï¼š1-mavlinkæ¶ˆæ¯
+	//ä½4ä½ï¼šæ¥æ”¶port
 	uint8_t cmd_type;
 	uint8_t sd_sysid;
 	uint8_t sd_compid;
@@ -21,10 +21,10 @@ struct ModeMsg
 bool ModeReceiveMsg( ModeMsg* msg, double TIMEOUT );
 bool SendMsgToMode( ModeMsg msg, double TIMEOUT );
 
-//Ä£Ê½¹¦ÄÜÑ¡Ïî
+//æ¨¡å¼åŠŸèƒ½é€‰é¡¹
 struct ModeFuncCfg
 {
-	//PA-°´Å¥1½âËøÇ°¹¦ÄÜ£¨Ä£Ê½ĞòºÅ£©
+	//PA-æŒ‰é’®1è§£é”å‰åŠŸèƒ½ï¼ˆæ¨¡å¼åºå·ï¼‰
 	uint8_t Bt1PAFunc1[8];
 	uint8_t Bt1PAFunc2[8];
 	uint8_t Bt1PAFunc3[8];
@@ -32,7 +32,7 @@ struct ModeFuncCfg
 	uint8_t Bt1PAFunc5[8];
 	uint8_t Bt1PAFunc6[8];
 	
-	//A-°´Å¥1½âËøºó¹¦ÄÜ£¨1-¶¨¸ßÄ£Ê½ 2-Î»ÖÃÄ£Ê½ 3-ÔË¶¯Ä£Ê½ 22-ÈÎÎñÄ£Ê½ 23-·µº½Ä£Ê½£©
+	//A-æŒ‰é’®1è§£é”ååŠŸèƒ½ï¼ˆ1-å®šé«˜æ¨¡å¼ 2-ä½ç½®æ¨¡å¼ 3-è¿åŠ¨æ¨¡å¼ 22-ä»»åŠ¡æ¨¡å¼ 23-è¿”èˆªæ¨¡å¼ï¼‰
 	uint8_t Bt1AFunc1[8];
 	uint8_t Bt1AFunc2[8];
 	uint8_t Bt1AFunc3[8];
@@ -40,30 +40,30 @@ struct ModeFuncCfg
 	uint8_t Bt1AFunc5[8];
 	uint8_t Bt1AFunc6[8];
 	
-	//ÈÎÎñÖ´ĞĞ°´Å¥
-	//2-4£º¶ÔÓ¦°´Å¥°´ÏÂ(100%)Ö´ĞĞÈÎÎñ
-	//12-14£º¶ÔÓ¦°´Å¥±ä»¯Ö´ĞĞÈÎÎñ
+	//ä»»åŠ¡æ‰§è¡ŒæŒ‰é’®
+	//2-4ï¼šå¯¹åº”æŒ‰é’®æŒ‰ä¸‹(100%)æ‰§è¡Œä»»åŠ¡
+	//12-14ï¼šå¯¹åº”æŒ‰é’®å˜åŒ–æ‰§è¡Œä»»åŠ¡
 	uint8_t MissionBt[8];
 	
-	//·µº½°´Å¥
-	//2-4£º¶ÔÓ¦°´Å¥°´ÏÂ(100%)·µº½
-	//12-14£º¶ÔÓ¦°´Å¥±ä»¯·µº½
+	//è¿”èˆªæŒ‰é’®
+	//2-4ï¼šå¯¹åº”æŒ‰é’®æŒ‰ä¸‹(100%)è¿”èˆª
+	//12-14ï¼šå¯¹åº”æŒ‰é’®å˜åŒ–è¿”èˆª
 	uint8_t RTLBt[8];
 	
-	//°²È«°´Å¥
-	//0£ºÎŞ
-	//2-4£º¶ÔÓ¦°´Å¥°´ÏÂ(100%)Ç¿ÖÆËø¶¨µç»ú
-	//10£ºÓÍÃÅ×îÏÂÆ«º½×î×öÇ¿ÖÆËø¶¨µç»ú
+	//å®‰å…¨æŒ‰é’®
+	//0ï¼šæ— 
+	//2-4ï¼šå¯¹åº”æŒ‰é’®æŒ‰ä¸‹(100%)å¼ºåˆ¶é”å®šç”µæœº
+	//10ï¼šæ²¹é—¨æœ€ä¸‹åèˆªæœ€åšå¼ºåˆ¶é”å®šç”µæœº
 	uint8_t SafeBt[8];
 	
-	//ÖĞÎ»ËÀÇø
+	//ä¸­ä½æ­»åŒº
 	float NeutralZone[2];
-	//Î»ÖÃËÙ¶ÈÏìÓ¦ÇúÏßÏµÊı
+	//ä½ç½®é€Ÿåº¦å“åº”æ›²çº¿ç³»æ•°
 	float PosVelAlpha[2];
-	//×ËÌ¬ÏìÓ¦ÇúÏßÏµÊı
+	//å§¿æ€å“åº”æ›²çº¿ç³»æ•°
 	float AttAlpha[2];
 	
-	//½âËøÊ¹ÓÃ0ºÅº½µã
+	//è§£é”ä½¿ç”¨0å·èˆªç‚¹
 	uint8_t RstWp0[8];
 }__PACKED;
 #define is_AFunc_auto(x) (x>=20)
@@ -78,7 +78,7 @@ enum AFunc
 	AFunc_RTL = 23,
 };
 	
-//»ñÈ¡Ò£¿Ø°´Å¥¶ÔÓ¦µÄÇøÓò£¨0-5£©
+//è·å–é¥æ§æŒ‰é’®å¯¹åº”çš„åŒºåŸŸï¼ˆ0-5ï¼‰
 inline int8_t get_RcButtonZone( double rc, uint8_t current_zone )
 {
 	double st = 1.0/6*100;
@@ -119,9 +119,9 @@ class Mode_Base
 			this->name = name;
 			ModeRegister( this, mode_id );
 		}		
-		//Ä£Ê½Ö÷º¯Êı
+		//æ¨¡å¼ä¸»å‡½æ•°
 		virtual ModeResult main_func( void* param1, uint32_t param2 ) = 0;
-		//»ñÈ¡Ä£Ê½MavlinkÄ£Ê½±êºÅ
+		//è·å–æ¨¡å¼Mavlinkæ¨¡å¼æ ‡å·
 		virtual void get_MavlinkMode( ModeFuncCfg cfg, Receiver rc, 
 																	uint8_t btn_zones[4], AFunc* mode )
 		{
@@ -132,18 +132,18 @@ class Mode_Base
 		}
 };
 
-//µ±Ç°º½µã¼ÇÂ¼£¨ÓÃÓÚ¶ÏµãĞø·É£©
+//å½“å‰èˆªç‚¹è®°å½•ï¼ˆç”¨äºæ–­ç‚¹ç»­é£ï¼‰
 struct CurrentWpInf
 {
-	//µ±Ç°º½µãĞòºÅ
+	//å½“å‰èˆªç‚¹åºå·
 	uint32_t CurrentWp[2];
-	//º½ÏßÏòÁ¿AB A-Ä¿±ê BÆğµã
+	//èˆªçº¿å‘é‡AB A-ç›®æ ‡ Bèµ·ç‚¹
 	double line_x;
 	double line_y;
 	double line_z;
-	//º½ÏßÍê³É¾àÀë
+	//èˆªçº¿å®Œæˆè·ç¦»
 	double line_fs;
-	//¶¨¾àÅÄÕÕ¾àÀë
+	//å®šè·æ‹ç…§è·ç¦»
 	double CamTrigDist;
 }__PACKED;
 

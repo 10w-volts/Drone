@@ -3,16 +3,16 @@
 #include "stm32h7xx.h"
 #include "TimeBase.hpp"
 
-//∂Êª˙Õ®µ¿∆µ¬ 
+//ËàµÊú∫ÈÄöÈÅìÈ¢ëÁéá
 #define AUX_FREQ 50
-//÷˜µÁª˙∏ˆ ˝
+//‰∏ªÁîµÊú∫‰∏™Êï∞
 static uint8_t MainMotorCount = 8;
-//ªÒ»°AuxÕ®µ¿∏ˆ ˝
+//Ëé∑ÂèñAuxÈÄöÈÅì‰∏™Êï∞
 uint8_t get_AuxChannelCount()
 {
 	return PWMChannelsCount - MainMotorCount;
 }
-//ªÒ»°÷˜µÁª˙∏ˆ ˝
+//Ëé∑Âèñ‰∏ªÁîµÊú∫‰∏™Êï∞
 uint8_t get_MainMotorCount()
 {
 	return MainMotorCount;
@@ -20,7 +20,7 @@ uint8_t get_MainMotorCount()
 
 void set_MainMotorCount( uint8_t count )
 {
-	//µÁª˙ ˝±ÿ–Î «≈º ˝
+	//ÁîµÊú∫Êï∞ÂøÖÈ°ªÊòØÂÅ∂Êï∞
 	if( count & 1 )
 		++count;
 	if( MainMotorCount != count )
@@ -179,8 +179,8 @@ void PWM_PullUpAll()
 */
 void init_drv_PWMOut()
 {
-/*≈‰÷√TIM*/ 	
-  // πƒ‹TIM ±÷”
+/*ÈÖçÁΩÆTIM*/ 	
+  //‰ΩøËÉΩTIMÊó∂Èíü
 	RCC->APB1LENR|=(1<<2)|(1<<1);
   RCC->APB2ENR|=(1<<16)|(1<<1);
 	os_delay(0.01);
@@ -217,14 +217,14 @@ void init_drv_PWMOut()
 	TIM15->BDTR = (1<<15);
   TIM15->EGR = (1<<0);                    
   TIM15->CR1 = (1<<7)|(1<<0);   
-/*≈‰÷√TIM*/ 
+/*ÈÖçÁΩÆTIM*/ 
 
-/*≈‰÷√GPIO*/  	
-	// πƒ‹GPIO ±÷”
+/*ÈÖçÁΩÆGPIO*/  	
+	//‰ΩøËÉΩGPIOÊó∂Èíü
 	RCC->AHB4ENR |= (1<<4)|(1<<1)|(1<<2)|(1<<3);
 	os_delay(0.01);
 
-	//Õ∆ÕÏ ‰≥ˆ
+	//Êé®ÊåΩËæìÂá∫
 	set_register( GPIOB->OTYPER, 0, 4, 1 );	//PB4
 	set_register( GPIOB->OTYPER, 0, 5, 1 );	//PB5
 	set_register( GPIOC->OTYPER, 0, 6, 1 );	//PC6
@@ -234,7 +234,7 @@ void init_drv_PWMOut()
 	set_register( GPIOE->OTYPER, 0, 5, 1 );	//PE5
 	set_register( GPIOE->OTYPER, 0, 6, 1 );	//PE6
 	
-	//Œﬁ…œ¿≠
+	//Êó†‰∏äÊãâ
 	set_register( GPIOB->PUPDR, 0b00, 4*2, 2 );	//PB4
 	set_register( GPIOB->PUPDR, 0b00, 5*2, 2 );	//PB5
 	set_register( GPIOC->PUPDR, 0b00, 6*2, 2 );	//PC6
@@ -244,7 +244,7 @@ void init_drv_PWMOut()
 	set_register( GPIOE->PUPDR, 0b00, 5*2, 2 );	//PE5
 	set_register( GPIOE->PUPDR, 0b00, 6*2, 2 );	//PE6
 	
-	//ÀŸ∂»
+	//ÈÄüÂ∫¶
 	set_register( GPIOB->OSPEEDR, 0b01, 4*2, 2 );	//PB4
 	set_register( GPIOB->OSPEEDR, 0b01, 5*2, 2 );	//PB5
 	set_register( GPIOC->OSPEEDR, 0b01, 6*2, 2 );	//PC6
@@ -254,7 +254,7 @@ void init_drv_PWMOut()
 	set_register( GPIOE->OSPEEDR, 0b01, 5*2, 2 );	//PE5
 	set_register( GPIOE->OSPEEDR, 0b01, 6*2, 2 );	//PE6
 	
-	//∏¥”√π¶ƒ‹≈‰÷√
+	//Â§çÁî®ÂäüËÉΩÈÖçÁΩÆ
 	set_register( GPIOB->AFR[0], 2, 4*4, 4 );	//PB4
 	set_register( GPIOB->AFR[0], 2, 5*4, 4 );	//PB5
 	set_register( GPIOC->AFR[0], 3, 6*4, 4 );	//PC6
@@ -264,7 +264,7 @@ void init_drv_PWMOut()
 	set_register( GPIOE->AFR[0], 4, 5*4, 4 );	//PE5
 	set_register( GPIOE->AFR[0], 4, 6*4, 4 );	//PE6
 	
-	//∏¥”√ƒ£ Ω
+	//Â§çÁî®Ê®°Âºè
 	set_register( GPIOB->MODER, 0b10, 4*2, 2 );	//PB4
 	set_register( GPIOB->MODER, 0b10, 5*2, 2 );	//PB5
 	set_register( GPIOC->MODER, 0b10, 6*2, 2 );	//PC6
@@ -273,5 +273,5 @@ void init_drv_PWMOut()
 	set_register( GPIOD->MODER, 0b10, 15*2, 2 );	//PD15
 	set_register( GPIOE->MODER, 0b10, 5*2, 2 );	//PE5
 	set_register( GPIOE->MODER, 0b10, 6*2, 2 );	//PE6
-/*≈‰÷√GPIO*/    
+/*ÈÖçÁΩÆGPIO*/    
 }

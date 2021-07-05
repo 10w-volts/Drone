@@ -6,7 +6,7 @@
 #include <string.h>
 #include "Basic.h"
 
-/*µÍÓÅÏÈ¼¶ÊØ»¤Ïß³Ì*/
+/*ä½ä¼˜å…ˆçº§å®ˆæŠ¤çº¿ç¨‹*/
 	void xLPDaemonTaskCallFromISR( void (*task)( void *pvParameter1, uint32_t ulParameter2 ),
 																	void* pvParameter1,
 																	uint32_t ulParameter2,
@@ -16,11 +16,11 @@
 																	void* pvParameter1,
 																	uint32_t ulParameter2,
 																	TickType_t xTicksToWait );
-/*µÍÓÅÏÈ¼¶ÊØ»¤Ïß³Ì*/
+/*ä½ä¼˜å…ˆçº§å®ˆæŠ¤çº¿ç¨‹*/
 
 /*
-	¿É±È½Ï¶¨³¤Ãû³ÆÀà
-	ÓÃÓÚÃû³Æ´æ´¢£¬Ë÷Òı
+	å¯æ¯”è¾ƒå®šé•¿åç§°ç±»
+	ç”¨äºåç§°å­˜å‚¨ï¼Œç´¢å¼•
 */
 class SName
 {
@@ -41,7 +41,7 @@ class SName
 			memset( &this->name[i] , 0 , 16-i );
 		}
 		
-		//»ñÈ¡×Ö·û´®£¨17×Ö½Ú³¤¶È£©
+		//è·å–å­—ç¬¦ä¸²ï¼ˆ17å­—èŠ‚é•¿åº¦ï¼‰
 		void get_CharStr( char* str )
 		{
 			str[16] = 0;
@@ -72,7 +72,7 @@ class SName
 			return false;
 		}
 		
-		//±È½ÏÔËËã·ûÓÃÓÚÅÅĞò
+		//æ¯”è¾ƒè¿ç®—ç¬¦ç”¨äºæ’åº
 		bool operator<(const SName& name) const
 		{
 			for( uint8_t i = 0; i < 16; ++i )
@@ -87,7 +87,7 @@ class SName
 			return false;
 		}
 		
-		//Ãû³ÆÆ´½Ó
+		//åç§°æ‹¼æ¥
 		SName operator+(const SName &n)
     {
 			uint8_t i;
@@ -109,19 +109,19 @@ class SName
     }
 };
 
-//³õÊ¼»¯Íê³ÉÖ¸Ê¾
-//³õÊ¼»¯Íê³É²»ÄÜ½øĞĞ³õÊ¼»¯²Ù×÷
+//åˆå§‹åŒ–å®ŒæˆæŒ‡ç¤º
+//åˆå§‹åŒ–å®Œæˆä¸èƒ½è¿›è¡Œåˆå§‹åŒ–æ“ä½œ
 bool getInitializationCompleted();
 void setInitializationCompleted();
 void LockInitializationStatus();
 void UnLockInitializationStatus();
 
 /*
-	ÅäÖÃ¼Ä´æÆ÷
-	reg:¼Ä´æÆ÷Ö¸Õë
-	value:ÒªÌîÈëÖ¸¶¨Î»ÖĞµÄÖµ
-	offset:ÒªÌîÈëµÄÎ»µÄÆ«ÒÆ
-	value_length:ÒªÌîÈëµÄÎ»Êı
+	é…ç½®å¯„å­˜å™¨
+	reg:å¯„å­˜å™¨æŒ‡é’ˆ
+	value:è¦å¡«å…¥æŒ‡å®šä½ä¸­çš„å€¼
+	offset:è¦å¡«å…¥çš„ä½çš„åç§»
+	value_length:è¦å¡«å…¥çš„ä½æ•°
 */
 inline void set_register( volatile unsigned int& reg , const unsigned char value , const unsigned char offset , const unsigned char value_length )
 {
