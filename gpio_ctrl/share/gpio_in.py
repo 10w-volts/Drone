@@ -4,6 +4,7 @@
 import rospy
 from rospy.core import rospyinfo
 from std_msgs.msg import Bool
+from std_msgs.msg import Int32
 import Jetson.GPIO as GPIO
 
 class GpioIn:
@@ -21,8 +22,9 @@ class GpioIn:
 
         self.mode = 0
         self.start = 0
-        rospy.set_param('/mode', 0)
-        rospy.set_param('/start', 0)
+
+        self.mode_pub = rospy.Publisher('/mode', Int32, queue_size = 1)
+        self.start_pub = rospy.Publisher('/start', Int32, queue_size = 1)
 
         GPIO.setmode(GPIO.BOARD)
         GPIO.setwarnings(False)
@@ -41,7 +43,7 @@ class GpioIn:
                 self.mode = self.mode + 1
             else:
                 self.mode = 0
-            rospy.set_param('/mode', self.mode)
+            self.mode_pub.publish(self.mode)
             # print("Button1 have been pressed")
         
         self.value2_bat = self.value2
@@ -54,7 +56,7 @@ class GpioIn:
                 self.start = self.start + 1
             else:
                 self.start = 0
-            rospy.set_param('/start', self.start)
+            self.start_pub.publish(self.start)
             # print("Button2 have been pressed")
 
 def main():
