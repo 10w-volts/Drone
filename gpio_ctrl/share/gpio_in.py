@@ -39,7 +39,7 @@ class GpioIn:
             self.value1_mode = 1
         if self.value1_mode == 1 and self.value1 == GPIO.LOW and self.value1_bat == GPIO.HIGH:
             self.value1_mode = 0
-            if(self.mode < 3):
+            if(self.mode < 6):
                 self.mode = self.mode + 1
             else:
                 self.mode = 0
@@ -52,10 +52,11 @@ class GpioIn:
             self.value2_mode = 1
         if self.value2_mode == 1 and self.value2 == GPIO.LOW and self.value2_bat == GPIO.HIGH:
             self.value2_mode = 0
-            if(self.start < 1):
-                self.start = self.start + 1
-            else:
-                self.start = 0
+            # if(self.start < 1):
+            #     self.start = self.start + 1
+            # else:
+            #     self.start = 0
+            self.start = 1
             self.start_pub.publish(self.start)
             # print("Button2 have been pressed")
 

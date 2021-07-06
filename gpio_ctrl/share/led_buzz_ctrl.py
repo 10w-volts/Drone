@@ -41,32 +41,32 @@ class LedBuzzCtrl:
     def mode_callback(self, data):
         for i in range(data.data + 1):
             GPIO.output(self.pin[0], GPIO.HIGH)
-            time.sleep(0.3)
+            time.sleep(0.1)
             GPIO.output(self.pin[0], GPIO.LOW)
-            time.sleep(0.3)
+            time.sleep(0.1)
 
     def start_callback(self, data):
         for i in range(data.data + 1):
             GPIO.output(self.pin[0], GPIO.HIGH)
-            time.sleep(0.3)
+            time.sleep(0.1)
             GPIO.output(self.pin[0], GPIO.LOW)
-            time.sleep(0.3)
+            time.sleep(0.1)
     
     def startup(self):
         GPIO.output(self.pin[0], GPIO.HIGH)
-        time.sleep(0.3)
+        time.sleep(0.1)
         GPIO.output(self.pin[0], GPIO.LOW)
-        time.sleep(0.3)
+        time.sleep(0.1)
 
         GPIO.output(self.pin[0], GPIO.HIGH)
-        time.sleep(0.3)
+        time.sleep(0.1)
         GPIO.output(self.pin[0], GPIO.LOW)
-        time.sleep(0.3)
+        time.sleep(0.1)
 
         GPIO.output(self.pin[0], GPIO.HIGH)
-        time.sleep(0.3)
+        time.sleep(0.1)
         GPIO.output(self.pin[0], GPIO.LOW)
-        time.sleep(0.3)
+        time.sleep(0.1)
 
 def main():
     rospy.init_node("gpio_ctrl", anonymous = True)
