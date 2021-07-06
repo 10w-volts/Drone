@@ -441,6 +441,13 @@ RTL:
 									mission_ind = altitude_adjust;
 									last_mode = 1;
 								}
+								else if(msg.cmd == MAV_CMD_USER_3)
+								{
+									//mavlink反馈
+									mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+									Attitude_Control_Disable();
+									return MR_OK;
+								}
 							}
 							else
 							{
