@@ -16,83 +16,83 @@
 
 #include "StorageSystem.hpp"
 
-/*²ÎÊı*/
-	//¿ØÖÆ²ÎÊı
+/*å‚æ•°*/
+	//æ§åˆ¶å‚æ•°
 	struct PosCtrlCfg
 	{
-		//Ä¬ÈÏXYº½ÏßËÙ¶È
+		//é»˜è®¤XYèˆªçº¿é€Ÿåº¦
 		float AutoVXY[2];
-		//Ä¬ÈÏZÏòÉÏº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸Šèˆªçº¿é€Ÿåº¦
 		float AutoVZUp[2];
-		//Ä¬ÈÏZÏòÏÂº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸‹èˆªçº¿é€Ÿåº¦
 		float AutoVZDown[2];
-		//Ä¬ÈÏXYZº½ÏßËÙ¶È
+		//é»˜è®¤XYZèˆªçº¿é€Ÿåº¦
 		float AutoVXYZ[2];
 		
-		//¸ß¶ÈÇ°À¡ÂË²¨Æ÷
+		//é«˜åº¦å‰é¦ˆæ»¤æ³¢å™¨
 		float Z_TD4P1[2];
 		float Z_TD4P2[2];
 		float Z_TD4P3[2];
 		float Z_TD4P4[2];
 		
-		//Î»ÖÃ·´À¡ÔöÒæ
+		//ä½ç½®åé¦ˆå¢ç›Š
 		float P1[2];
-		//ËÙ¶È·´À¡ÔöÒæ
+		//é€Ÿåº¦åé¦ˆå¢ç›Š
 		float P2[2];
-		//¼ÓËÙ¶È·´À¡ÔöÒæ
+		//åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		float P3[2];
-		//Ë®Æ½ËÙ¶È¿ØÖÆËÙ¶È·´À¡ÔöÒæ
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶é€Ÿåº¦åé¦ˆå¢ç›Š
 		float P2_VelXY[2];
-		//Ë®Æ½ËÙ¶È¿ØÖÆ¼ÓËÙ¶È·´À¡ÔöÒæ
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		float P3_VelXY[2];
 		
-		//×î´óË®Æ½ËÙ¶È
+		//æœ€å¤§æ°´å¹³é€Ÿåº¦
 		float maxVelXY[2];
-		//×î´óË®Æ½¼ÓËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		float maxAccXY[2];
-		//×î´óË®Æ½¼Ó¼ÓËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
 		float maxJerkXY[2];
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½ËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³é€Ÿåº¦
 		float maxAutoVelXY[2];
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		float maxAutoAccXY[2];
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
 		float maxAutoJerkXY[2];
 		
-		//×î´óÏòÉÏËÙ¶È
+		//æœ€å¤§å‘ä¸Šé€Ÿåº¦
 		float maxVelUp[2];
-		//×î´óÏòÏÂËÙ¶È
+		//æœ€å¤§å‘ä¸‹é€Ÿåº¦
 		float maxVelDown[2];
-		//×î´óÏòÉÏ¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
 		float maxAccUp[2];
-		//×î´óÏòÏÂ¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
 		float maxAccDown[2];
-		//×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
 		float maxJerkUp[2];
-		//×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		float maxJerkDown[2];
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸Šé€Ÿåº¦
 		float maxAutoVelUp[2];
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹é€Ÿåº¦
 		float maxAutoVelDown[2];
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
 		float maxAutoAccUp[2];
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
 		float maxAutoAccDown[2];
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
 		float maxAutoJerkUp[2];
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		float maxAutoJerkDown[2];
 		
-		//µ½´ïÄ¿±êµã·¶Î§
+		//åˆ°è¾¾ç›®æ ‡ç‚¹èŒƒå›´
 		float WPRange[2];
-		//½µÂäËÙ¶È
+		//é™è½é€Ÿåº¦
 		float LandVel[2];
 	}__PACKED;
 	static PosCtrlCfg cfg;
-/*²ÎÊı*/	
+/*å‚æ•°*/	
 
-/*²ÎÊı½Ó¿Ú*/
+/*å‚æ•°æ¥å£*/
 	float get_maxVelUp()
 	{
 		return cfg.maxVelUp[0];
@@ -113,20 +113,20 @@
 	{
 		return cfg.LandVel[0];
 	}
-/*²ÎÊı½Ó¿Ú*/
+/*å‚æ•°æ¥å£*/
 	
-/*¿ØÖÆ½Ó¿Ú*/
+/*æ§åˆ¶æ¥å£*/
 	static bool Altitude_Control_Enabled = false;
 	static bool Position_Control_Enabled = false;
 	
-	//Î»ÖÃ¿ØÖÆÄ£Ê½
+	//ä½ç½®æ§åˆ¶æ¨¡å¼
 	static Position_ControlMode Altitude_ControlMode = Position_ControlMode_Position;
 	static Position_ControlMode HorizontalPosition_ControlMode = Position_ControlMode_Position;
 	
-	//ÆÚÍûTD4ÂË²¨Æ÷
+	//æœŸæœ›TD4æ»¤æ³¢å™¨
 	static TD4_SL Target_tracker[3];
 	static TD3_2DSL Target_tracker_xy;
-	//ÆÚÍûËÙ¶ÈµÍÍ¨ÂË²¨Æ÷
+	//æœŸæœ›é€Ÿåº¦ä½é€šæ»¤æ³¢å™¨
 	static Filter_Butter4_LP TargetVelocityFilter[3];
 	
 	static vector3<double> target_position;
@@ -134,7 +134,7 @@
 	static double VelCtrlMaxRoll = -1 , VelCtrlMaxPitch = -1;
 	static double VelCtrlMaxAcc = -1;
 	
-	/*¸ß¶È*/
+	/*é«˜åº¦*/
 		bool is_Altitude_Control_Enabled( bool* ena, double TIMEOUT )
 		{
 			if( LockCtrl(TIMEOUT) )
@@ -153,13 +153,13 @@
 			if( LockCtrl(TIMEOUT) )
 			{
 				if( Altitude_Control_Enabled == true )
-				{	//¿ØÖÆÆ÷ÒÑ´ò¿ª
+				{	//æ§åˆ¶å™¨å·²æ‰“å¼€
 					UnlockCtrl();
 					return false;
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_ZCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -168,11 +168,11 @@
 				Altitude_ControlMode = Position_ControlMode_Locking;
 				Altitude_Control_Enabled = true;
 				
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_ZCtrlTime = TIME::now();
 				
-				//¶Á²ÎÊı
+				//è¯»å‚æ•°
 				if( ReadParamGroup( "PosCtrl", (uint64_t*)&cfg, 0, TIMEOUT ) != PR_OK )
 				{
 					UnlockCtrl();
@@ -202,7 +202,7 @@
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( ForceMSafeCtrl && !isMSafe )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					UnlockCtrl();
 					return false;
 				}
@@ -222,7 +222,7 @@
 			{
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && (Is_2DAutoMode(Altitude_ControlMode) || Is_3DAutoMode(Altitude_ControlMode)) )
-				{	//ÓÃ»§¿ØÖÆ·ÃÎÊÇÒÎª×Ô¶¯Ä£Ê½Ê±¸üĞÂ¿ØÖÆÊ±¼ä
+				{	//ç”¨æˆ·æ§åˆ¶è®¿é—®ä¸”ä¸ºè‡ªåŠ¨æ¨¡å¼æ—¶æ›´æ–°æ§åˆ¶æ—¶é—´
 					last_ZCtrlTime = TIME::now();
 				}
 				*mode = Altitude_ControlMode;
@@ -232,7 +232,7 @@
 			return false;
 		}
 		
-		//Éè¶¨Z×Ô¶¯·ÉĞĞËÙ¶È
+		//è®¾å®šZè‡ªåŠ¨é£è¡Œé€Ÿåº¦
 		static double AutoVelZUp = 200;
 		static double AutoVelZDown = 200;
 		bool Position_Control_get_ZAutoSpeed( double* SpUp, double* SpDown, double TIMEOUT )
@@ -256,7 +256,7 @@
 				AutoVelZUp = cfg.AutoVZUp[0];
 				AutoVelZDown = cfg.AutoVZDown[0];
 				
-				//·ÉĞĞËÙ¶ÈÏŞ·ù
+				//é£è¡Œé€Ÿåº¦é™å¹…
 				if( AutoVelZUp > cfg.maxAutoVelUp[0] )
 					AutoVelZUp = cfg.maxAutoVelUp[0];
 
@@ -283,7 +283,7 @@
 				if( SpDown > 0 )
 					AutoVelZDown = SpDown;
 				
-				//·ÉĞĞËÙ¶ÈÏŞ·ù
+				//é£è¡Œé€Ÿåº¦é™å¹…
 				if( AutoVelZUp > cfg.maxAutoVelUp[0] )
 					AutoVelZUp = cfg.maxAutoVelUp[0];
 
@@ -296,12 +296,12 @@
 			return false;
 		}
 		
-		//ÒÆ¶¯ZÄ¿±êÎ»ÖÃ
+		//ç§»åŠ¨Zç›®æ ‡ä½ç½®
 		bool Position_Control_move_TargetPositionZRelative( double posz, double TIMEOUT )
 		{
 			if( isnan(posz) || isinf(posz) )
 				return false;
-			//±ØĞëÎªÎ»ÖÃ»òÕß×Ô¶¯Ä£Ê½
+			//å¿…é¡»ä¸ºä½ç½®æˆ–è€…è‡ªåŠ¨æ¨¡å¼
 			if( Altitude_ControlMode!=Position_ControlMode_Position &&
 					Is_2DAutoMode(Altitude_ControlMode)==false &&
 					Is_3DAutoMode(Altitude_ControlMode)==false )
@@ -309,7 +309,7 @@
 			
 			bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 			if( !isMSafe )
-			{	//ÓÃ»§¿ØÖÆ·ÃÎÊ¸üĞÂ¿ØÖÆÊ±¼ä
+			{	//ç”¨æˆ·æ§åˆ¶è®¿é—®æ›´æ–°æ§åˆ¶æ—¶é—´
 				last_ZCtrlTime = TIME::now();
 			}
 			target_position.z += posz;
@@ -333,7 +333,7 @@
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_ZCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -342,8 +342,8 @@
 				if( Is_2DAutoMode(Altitude_ControlMode)==false && Altitude_ControlMode!=Position_ControlMode_Position )
 					Target_tracker[2].x1 = pos.z;
 				
-				//Éè¶¨·ÉĞĞËÙ¶È
-				//·ÉĞĞËÙ¶ÈÏŞ·ù
+				//è®¾å®šé£è¡Œé€Ÿåº¦
+				//é£è¡Œé€Ÿåº¦é™å¹…
 				if( target_position.z > pos.z )
 				{
 					if( vel > 10 )
@@ -365,10 +365,10 @@
 						AutoVelZDown = cfg.maxAutoVelDown[0];
 				}
 				
-				//ÇĞ»»Ä£Ê½
+				//åˆ‡æ¢æ¨¡å¼
 				Altitude_ControlMode = Position_ControlMode_RouteLine;
 			
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_ZCtrlTime = TIME::now();
 				
@@ -382,7 +382,7 @@
 			if( isnan(posz) || isinf(posz) )
 				return false;
 			
-			//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+			//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 			PosSensorHealthInf1 global_inf;
 			if( get_OptimalGlobal_Z( &global_inf ) == false )
 				return false;
@@ -400,7 +400,7 @@
 		}
 		bool Position_Control_set_TargetPositionZRA( double posz, double vel, double TIMEOUT )
 		{
-			//»ñÈ¡Æğ·ÉÎ»ÖÃZ×ø±ê
+			//è·å–èµ·é£ä½ç½®Zåæ ‡
 			double homeZ;
 			getHomeLocalZ(&homeZ);
 			return Position_Control_set_TargetPositionZ( homeZ + posz, vel, TIMEOUT );
@@ -413,13 +413,13 @@
 			if( LockCtrl(TIMEOUT) )
 			{
 				if( Altitude_Control_Enabled == false )
-				{	//¿ØÖÆÆ÷Î´´ò¿ª
+				{	//æ§åˆ¶å™¨æœªæ‰“å¼€
 					UnlockCtrl();
 					return false;
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_ZCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -427,7 +427,7 @@
 				target_velocity.z = velz;
 				Altitude_ControlMode = Position_ControlMode_Velocity;
 			
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_ZCtrlTime = TIME::now();
 				
@@ -444,13 +444,13 @@
 			if( LockCtrl(TIMEOUT) )
 			{
 				if( Altitude_Control_Enabled == false )
-				{	//¿ØÖÆÆ÷Î´´ò¿ª
+				{	//æ§åˆ¶å™¨æœªæ‰“å¼€
 					UnlockCtrl();
 					return false;
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_ZCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -459,7 +459,7 @@
 					Altitude_ControlMode = Position_ControlMode_Locking;
 				Target_tracker[2].x1 = pos.z;
 				
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_ZCtrlTime = TIME::now();
 				
@@ -469,7 +469,7 @@
 			return false;
 		}
 		
-		//Æğ·Éµ½µ±Ç°¸ß¶ÈÉÏ·½µÄheight¸ß¶È
+		//èµ·é£åˆ°å½“å‰é«˜åº¦ä¸Šæ–¹çš„heighté«˜åº¦
 		static double TakeoffHeight;
 		bool Position_Control_Takeoff_HeightRelative( double height, double TIMEOUT )
 		{
@@ -482,13 +482,13 @@
 			if( LockCtrl(TIMEOUT) )
 			{
 				if( Altitude_Control_Enabled == false )
-				{	//¿ØÖÆÆ÷Î´´ò¿ª
+				{	//æ§åˆ¶å™¨æœªæ‰“å¼€
 					UnlockCtrl();
 					return false;
 				}	
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_ZCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -497,7 +497,7 @@
 				Altitude_ControlMode = Position_ControlMode_Takeoff;
 				TakeoffHeight = height;
 			
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_ZCtrlTime = TIME::now();
 				
@@ -508,7 +508,7 @@
 		}
 		bool Position_Control_Takeoff_HeightGlobal( double height, double TIMEOUT )
 		{
-			//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+			//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 			PosSensorHealthInf1 global_inf;
 			if( get_OptimalGlobal_Z( &global_inf ) == false )
 				return false;
@@ -523,9 +523,9 @@
 			height = height - pos.z;
 			return Position_Control_Takeoff_HeightRelative( height, TIMEOUT );
 		}
-	/*¸ß¶È*/
+	/*é«˜åº¦*/
 		
-	/*Ë®Æ½Î»ÖÃ*/
+	/*æ°´å¹³ä½ç½®*/
 		bool is_Position_Control_Enabled( bool* ena, double TIMEOUT )
 		{
 			if( LockCtrl(TIMEOUT) )
@@ -544,13 +544,13 @@
 			if( LockCtrl(TIMEOUT) )
 			{
 				if( Position_Control_Enabled == true )
-				{	//¿ØÖÆÆ÷ÒÑ´ò¿ª
+				{	//æ§åˆ¶å™¨å·²æ‰“å¼€
 					UnlockCtrl();
 					return false;
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_XYCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -564,11 +564,11 @@
 				HorizontalPosition_ControlMode = Position_ControlMode_Locking;
 				Position_Control_Enabled = true;
 				
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_XYCtrlTime = TIME::now();
 				
-				//¶Á²ÎÊı	
+				//è¯»å‚æ•°	
 				Target_tracker_xy.P1 = 10;
 				Target_tracker_xy.P2 = 10;
 				Target_tracker_xy.P3 = 20;
@@ -593,7 +593,7 @@
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( ForceMSafeCtrl && !isMSafe )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					UnlockCtrl();
 					return false;
 				}
@@ -612,7 +612,7 @@
 			{
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && (Is_2DAutoMode(HorizontalPosition_ControlMode) || Is_3DAutoMode(HorizontalPosition_ControlMode)) )
-				{	//ÓÃ»§¿ØÖÆ·ÃÎÊÇÒÎª×Ô¶¯Ä£Ê½Ê±¸üĞÂ¿ØÖÆÊ±¼ä
+				{	//ç”¨æˆ·æ§åˆ¶è®¿é—®ä¸”ä¸ºè‡ªåŠ¨æ¨¡å¼æ—¶æ›´æ–°æ§åˆ¶æ—¶é—´
 					last_XYCtrlTime = TIME::now();
 				}
 				*mode = HorizontalPosition_ControlMode;
@@ -634,7 +634,7 @@
 			if( LockCtrl(TIMEOUT) )
 			{
 				if( Position_Control_Enabled == false )
-				{	//¿ØÖÆÆ÷Î´´ò¿ª
+				{	//æ§åˆ¶å™¨æœªæ‰“å¼€
 					UnlockCtrl();
 					return false;
 				}	
@@ -648,7 +648,7 @@
 				
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_XYCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -663,7 +663,7 @@
 					VelCtrlMaxRoll = 0.05;
 				VelCtrlMaxPitch = -1;
 
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_XYCtrlTime = TIME::now();
 			
@@ -684,7 +684,7 @@
 			if( LockCtrl(TIMEOUT) )
 			{
 				if( Position_Control_Enabled == false )
-				{	//¿ØÖÆÆ÷Î´´ò¿ª
+				{	//æ§åˆ¶å™¨æœªæ‰“å¼€
 					UnlockCtrl();
 					return false;
 				}	
@@ -698,7 +698,7 @@
 				
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_XYCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -725,7 +725,7 @@
 				if( VelCtrlMaxPitch>=0 && VelCtrlMaxPitch < 0.05 )
 					VelCtrlMaxPitch = 0.05;		
 
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_XYCtrlTime = TIME::now();
 			
@@ -749,7 +749,7 @@
 				}
 				bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 				if( !isMSafe && ForceMSafeCtrl )
-				{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+				{	//å±è”½ç”¨æˆ·æ§åˆ¶
 					last_XYCtrlTime = TIME::now();
 					UnlockCtrl();
 					return false;
@@ -765,7 +765,7 @@
 					}
 				}
 				
-				//¸üĞÂ¿ØÖÆÊ±¼ä
+				//æ›´æ–°æ§åˆ¶æ—¶é—´
 				if(!isMSafe)
 					last_XYCtrlTime = TIME::now();
 				
@@ -778,10 +778,10 @@
 		
 		static double AutoVelXY = 500;
 		static double AutoVelXYZ = 500;
-		/*Ö±Ïß·ÉĞĞ*/
-			//Ö±Ïß·½³ÌÏµÊı
-			//A=(x1,y1,z1)=target_positionÄ¿±êµã
-			//B=(x2,y2,z2)=Æğµã
+		/*ç›´çº¿é£è¡Œ*/
+			//ç›´çº¿æ–¹ç¨‹ç³»æ•°
+			//A=(x1,y1,z1)=target_positionç›®æ ‡ç‚¹
+			//B=(x2,y2,z2)=èµ·ç‚¹
 			static vector3<double> route_line_A_B;	//(B-A)
 			static double route_line_m;	// 1/(B-A)^2
 			static double line_track_desired = 0;
@@ -811,7 +811,7 @@
 					}
 					bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 					if( !isMSafe && ForceMSafeCtrl )
-					{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+					{	//å±è”½ç”¨æˆ·æ§åˆ¶
 						last_XYCtrlTime = TIME::now();
 						UnlockCtrl();
 						return false;
@@ -829,25 +829,25 @@
 						//calculate 1/(B-A)^2
 						route_line_m = 1.0 / route_line_A_B_sq;
 						
-						//ÉèÖÃËÙ¶È
+						//è®¾ç½®é€Ÿåº¦
 						if( vel > 10 )
 							AutoVelXY = vel;
 						else if( vel < 0 )
 							AutoVelXY = cfg.AutoVXY[0];
 						
-						//ËÙ¶ÈÏŞ·ù
+						//é€Ÿåº¦é™å¹…
 						if( AutoVelXY > cfg.maxAutoVelXY[0] )
 							AutoVelXY = cfg.maxAutoVelXY[0];
 						
 						double vel_desired = -sqrtf(route_line_m) * (route_line_A_B*cVel);
 						reset_line_track_state(AutoVelXY,cfg.maxAutoAccXY[0],vel_desired)
-						//ÇĞ»»Ä£Ê½
+						//åˆ‡æ¢æ¨¡å¼
 						HorizontalPosition_ControlMode = Position_ControlMode_RouteLine;
 					}
 					else
 						HorizontalPosition_ControlMode = Position_ControlMode_Position;
 				
-					//¸üĞÂ¿ØÖÆÊ±¼ä
+					//æ›´æ–°æ§åˆ¶æ—¶é—´
 					if(!isMSafe)
 						last_XYCtrlTime = TIME::now();
 					
@@ -874,7 +874,7 @@
 					}
 					bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 					if( !isMSafe && ForceMSafeCtrl )
-					{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+					{	//å±è”½ç”¨æˆ·æ§åˆ¶
 						last_XYCtrlTime = last_ZCtrlTime = TIME::now();
 						UnlockCtrl();
 						return false;
@@ -892,13 +892,13 @@
 						//calculate 1/(B-A)^2
 						route_line_m = 1.0 / route_line_A_B_sq;
 						
-						//ÉèÖÃËÙ¶È
+						//è®¾ç½®é€Ÿåº¦
 						if( vel > 10 )
 							AutoVelXYZ = vel;
 						else if( vel < 0 )
 							AutoVelXYZ = cfg.AutoVXYZ[0];
 						
-						/*ËÙ¶ÈÏŞ·ù*/
+						/*é€Ÿåº¦é™å¹…*/
 							double xyz_length = safe_sqrt( route_line_A_B.get_square() );
 							if( xyz_length > 1 )
 							{
@@ -912,7 +912,7 @@
 								if( AutoVelXYZ*xy_scale > cfg.maxAutoVelXY[0] )
 									scale = cfg.maxAutoVelXY[0] / (AutoVelXYZ*xy_scale);
 								if( route_line_A_B.z < 0 )
-								{	//ÏòÉÏ·É
+								{	//å‘ä¸Šé£
 									if( AutoVelXYZ*z_scale > cfg.maxAutoVelUp[0] )
 									{
 										double new_scale = cfg.maxAutoVelUp[0] / (AutoVelXYZ*z_scale);
@@ -921,7 +921,7 @@
 									}
 								}
 								else
-								{	//ÏòÏÂ·É
+								{	//å‘ä¸‹é£
 									if( AutoVelXYZ*z_scale > cfg.maxAutoVelDown[0] )
 									{
 										double new_scale = cfg.maxAutoVelDown[0] / (AutoVelXYZ*z_scale);
@@ -937,17 +937,17 @@
 								if( AutoVelXYZ > cfg.maxAutoVelXY[0] )
 									AutoVelXYZ = cfg.maxAutoVelXY[0];
 							}
-						/*ËÙ¶ÈÏŞ·ù*/
+						/*é€Ÿåº¦é™å¹…*/
 						
 						double vel_desired = -sqrtf(route_line_m) * (route_line_A_B*cVel);
 						reset_line_track_state(AutoVelXYZ,cfg.maxAutoAccXY[0],vel_desired)
-						//ÇĞ»»Ä£Ê½
+						//åˆ‡æ¢æ¨¡å¼
 						HorizontalPosition_ControlMode = Altitude_ControlMode = Position_ControlMode_RouteLine3D;
 					}
 					else
 						HorizontalPosition_ControlMode = Altitude_ControlMode = Position_ControlMode_Position;
 				
-					//¸üĞÂ¿ØÖÆÊ±¼ä
+					//æ›´æ–°æ§åˆ¶æ—¶é—´
 					if(!isMSafe)
 						last_XYCtrlTime = last_ZCtrlTime = TIME::now();
 					
@@ -975,7 +975,7 @@
 					}
 					bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 					if( !isMSafe && ForceMSafeCtrl )
-					{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+					{	//å±è”½ç”¨æˆ·æ§åˆ¶
 						last_XYCtrlTime = TIME::now();
 						UnlockCtrl();
 						return false;
@@ -991,25 +991,25 @@
 						//calculate 1/(B-A)^2
 						route_line_m = 1.0 / route_line_A_B_sq;
 						
-						//ÉèÖÃËÙ¶È
+						//è®¾ç½®é€Ÿåº¦
 						if( vel > 10 )
 							AutoVelXY = vel;
 						else if( vel < 0 )
 							AutoVelXY = cfg.AutoVXY[0];
 						
-						//ËÙ¶ÈÏŞ·ù
+						//é€Ÿåº¦é™å¹…
 						if( AutoVelXY > cfg.maxAutoVelXY[0] )
 							AutoVelXY = cfg.maxAutoVelXY[0];
 						
 						double vel_desired = -sqrtf(route_line_m) * (route_line_A_B*cVel);
 						reset_line_track_state(AutoVelXY,cfg.maxAutoAccXY[0],vel_desired)
-						//ÇĞ»»Ä£Ê½
+						//åˆ‡æ¢æ¨¡å¼
 						HorizontalPosition_ControlMode = Position_ControlMode_RouteLine;
 					}
 					else
 						HorizontalPosition_ControlMode = Position_ControlMode_Position;
 				
-					//¸üĞÂ¿ØÖÆÊ±¼ä
+					//æ›´æ–°æ§åˆ¶æ—¶é—´
 					if(!isMSafe)
 						last_XYCtrlTime = TIME::now();
 					
@@ -1037,7 +1037,7 @@
 					}
 					bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 					if( !isMSafe && ForceMSafeCtrl )
-					{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+					{	//å±è”½ç”¨æˆ·æ§åˆ¶
 						last_XYCtrlTime = last_ZCtrlTime = TIME::now();
 						UnlockCtrl();
 						return false;
@@ -1053,13 +1053,13 @@
 						//calculate 1/(B-A)^2
 						route_line_m = 1.0 / route_line_A_B_sq;
 						
-						//ÉèÖÃËÙ¶È
+						//è®¾ç½®é€Ÿåº¦
 						if( vel > 10 )
 							AutoVelXYZ = vel;
 						else if( vel < 0 )
 							AutoVelXYZ = cfg.AutoVXYZ[0];
 						
-						/*ËÙ¶ÈÏŞ·ù*/
+						/*é€Ÿåº¦é™å¹…*/
 							double xyz_length = safe_sqrt( route_line_A_B.get_square() );
 							if( xyz_length > 1 )
 							{
@@ -1073,7 +1073,7 @@
 								if( AutoVelXYZ*xy_scale > cfg.maxAutoVelXY[0] )
 									scale = cfg.maxAutoVelXY[0] / (AutoVelXYZ*xy_scale);
 								if( route_line_A_B.z < 0 )
-								{	//ÏòÉÏ·É
+								{	//å‘ä¸Šé£
 									if( AutoVelXYZ*z_scale > cfg.maxAutoVelUp[0] )
 									{
 										double new_scale = cfg.maxAutoVelUp[0] / (AutoVelXYZ*z_scale);
@@ -1082,7 +1082,7 @@
 									}
 								}
 								else
-								{	//ÏòÏÂ·É
+								{	//å‘ä¸‹é£
 									if( AutoVelXYZ*z_scale > cfg.maxAutoVelDown[0] )
 									{
 										double new_scale = cfg.maxAutoVelDown[0] / (AutoVelXYZ*z_scale);
@@ -1098,9 +1098,9 @@
 								if( AutoVelXYZ > cfg.maxAutoVelXY[0] )
 									AutoVelXYZ = cfg.maxAutoVelXY[0];
 							}
-						/*ËÙ¶ÈÏŞ·ù*/
+						/*é€Ÿåº¦é™å¹…*/
 						
-						//ÇĞ»»Ä£Ê½
+						//åˆ‡æ¢æ¨¡å¼
 						double vel_desired = -sqrtf(route_line_m) * (route_line_A_B*cVel);
 						reset_line_track_state(AutoVelXYZ,cfg.maxAutoAccXY[0],vel_desired)
 						HorizontalPosition_ControlMode = Altitude_ControlMode = Position_ControlMode_RouteLine3D;
@@ -1108,7 +1108,7 @@
 					else
 						HorizontalPosition_ControlMode = Altitude_ControlMode = Position_ControlMode_Position;
 				
-					//¸üĞÂ¿ØÖÆÊ±¼ä
+					//æ›´æ–°æ§åˆ¶æ—¶é—´
 					if(!isMSafe)
 						last_XYCtrlTime = last_ZCtrlTime = TIME::now();
 					
@@ -1118,7 +1118,7 @@
 				return false;
 			}
 			
-			//ÒÆ¶¯XYÄ¿±êÎ»ÖÃ
+			//ç§»åŠ¨XYç›®æ ‡ä½ç½®
 			bool Position_Control_move_TargetPositionXYRelative( double posx, double posy, double TIMEOUT )
 			{
 				if( isnan(posx) || isinf(posx) ||
@@ -1127,7 +1127,7 @@
 				
 				if( LockCtrl(TIMEOUT) )
 				{				
-					//±ØĞëÎªÎ»ÖÃ»òÕß×Ô¶¯Ä£Ê½
+					//å¿…é¡»ä¸ºä½ç½®æˆ–è€…è‡ªåŠ¨æ¨¡å¼
 					if( HorizontalPosition_ControlMode!=Position_ControlMode_Position &&
 							Is_2DAutoMode(HorizontalPosition_ControlMode)==false &&
 							Is_3DAutoMode(HorizontalPosition_ControlMode)==false )
@@ -1138,7 +1138,7 @@
 					
 					bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 					if( !isMSafe && ForceMSafeCtrl )
-					{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+					{	//å±è”½ç”¨æˆ·æ§åˆ¶
 						last_XYCtrlTime = TIME::now();
 						UnlockCtrl();
 						return false;
@@ -1148,7 +1148,7 @@
 					target_position.y += posy;
 					
 					if( !isMSafe )
-					{	//ÓÃ»§¿ØÖÆ·ÃÎÊ¸üĞÂ¿ØÖÆÊ±¼ä
+					{	//ç”¨æˆ·æ§åˆ¶è®¿é—®æ›´æ–°æ§åˆ¶æ—¶é—´
 						last_XYCtrlTime = TIME::now();
 					}
 					
@@ -1198,11 +1198,11 @@
 						isnan(Lon) || isinf(Lon)	)
 					return false;
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf2 global_inf;
 				if( get_OptimalGlobal_XY( &global_inf ) == false )
 					return false;
-				//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+				//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 				double x, y;
 				map_projection_project( &global_inf.mp, Lat, Lon, &x, &y );
 				x -= global_inf.HOffset.x;
@@ -1216,11 +1216,11 @@
 						isnan(posz) || isinf(posz) )
 					return false;
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf3 global_inf;
 				if( get_OptimalGlobal_XYZ( &global_inf ) == false )
 					return false;
-				//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+				//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 				double x, y;
 				map_projection_project( &global_inf.mp, Lat, Lon, &x, &y );
 				x -= global_inf.HOffset.x;
@@ -1235,16 +1235,16 @@
 						isnan(posz) || isinf(posz) )
 					return false;
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf2 global_inf;
 				if( get_OptimalGlobal_XY( &global_inf ) == false )
 					return false;
-				//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+				//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 				double x, y;
 				map_projection_project( &global_inf.mp, Lat, Lon, &x, &y );
 				x -= global_inf.HOffset.x;
 				y -= global_inf.HOffset.y;
-				//»ñÈ¡Æğ·ÉÎ»ÖÃZ×ø±ê
+				//è·å–èµ·é£ä½ç½®Zåæ ‡
 				double homeZ;
 				getHomeLocalZ(&homeZ);
 				return Position_Control_set_TargetPositionXYZ( x, y, homeZ + posz, vel, TIMEOUT );
@@ -1256,11 +1256,11 @@
 						isnan(posz) || isinf(posz) )
 					return false;
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf2 global_inf;
 				if( get_OptimalGlobal_XY( &global_inf ) == false )
 					return false;
-				//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+				//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 				double x, y, z;
 				map_projection_project( &global_inf.mp, Lat, Lon, &x, &y );
 				x -= global_inf.HOffset.x;
@@ -1280,12 +1280,12 @@
 				get_Position_Ctrl(&position);
 				if( LockCtrl(TIMEOUT) )
 				{
-					//¼ÆËã´¹×ã
+					//è®¡ç®—å‚è¶³
 					vector3<double> A_C = position - target_position;
 					double k = (A_C * route_line_A_B) * route_line_m;
 					vector3<double> foot_point = (route_line_A_B * k) + target_position;
 					
-					//¼ÆËãÆ«²î
+					//è®¡ç®—åå·®
 					vector3<double> B = target_position + route_line_A_B;
 					vector3<double> dis = foot_point - B;
 					*distance = safe_sqrt(dis.get_square());
@@ -1310,12 +1310,12 @@
 						*AB = route_line_A_B;
 					if( distance != 0 )
 					{
-						//¼ÆËã´¹×ã
+						//è®¡ç®—å‚è¶³
 						vector3<double> A_C = position - target_position;
 						double k = (A_C * route_line_A_B) * route_line_m;
 						vector3<double> foot_point = (route_line_A_B * k) + target_position;
 						
-						//¼ÆËãÆ«²î
+						//è®¡ç®—åå·®
 						vector3<double> B = target_position + route_line_A_B;
 						vector3<double> dis = foot_point - B;
 						*distance = safe_sqrt(dis.get_square());
@@ -1325,10 +1325,10 @@
 				}
 				return false;
 			}
-		/*Ö±Ïß·ÉĞĞ*/
+		/*ç›´çº¿é£è¡Œ*/
 			
 			
-		/*Éè¶¨×Ô¶¯·ÉĞĞËÙ¶È*/
+		/*è®¾å®šè‡ªåŠ¨é£è¡Œé€Ÿåº¦*/
 			bool Position_Control_get_XYAutoSpeed( double* AtVelXY, double TIMEOUT )
 			{
 				if( LockCtrl(TIMEOUT) )
@@ -1389,7 +1389,7 @@
 				{
 					AutoVelXYZ = cfg.AutoVXYZ[0];
 					
-					//ËÙ¶ÈÏŞ·ù
+					//é€Ÿåº¦é™å¹…
 					double xyz_length = safe_sqrt( route_line_A_B.get_square() );
 					if( xyz_length > 1 )
 					{
@@ -1403,7 +1403,7 @@
 						if( AutoVelXYZ*xy_scale > cfg.maxAutoVelXY[0] )
 							scale = cfg.maxAutoVelXY[0] / (AutoVelXYZ*xy_scale);
 						if( route_line_A_B.z < 0 )
-						{	//ÏòÉÏ·É
+						{	//å‘ä¸Šé£
 							if( AutoVelXYZ*z_scale > cfg.maxAutoVelUp[0] )
 							{
 								double new_scale = cfg.maxAutoVelUp[0] / (AutoVelXYZ*z_scale);
@@ -1412,7 +1412,7 @@
 							}
 						}
 						else
-						{	//ÏòÏÂ·É
+						{	//å‘ä¸‹é£
 							if( AutoVelXYZ*z_scale > cfg.maxAutoVelDown[0] )
 							{
 								double new_scale = cfg.maxAutoVelDown[0] / (AutoVelXYZ*z_scale);
@@ -1444,7 +1444,7 @@
 				{
 					AutoVelXYZ = AtVelXYZ;
 					
-					//ËÙ¶ÈÏŞ·ù
+					//é€Ÿåº¦é™å¹…
 					double xyz_length = safe_sqrt( route_line_A_B.get_square() );
 					if( xyz_length > 1 )
 					{
@@ -1458,7 +1458,7 @@
 						if( AutoVelXYZ*xy_scale > cfg.maxAutoVelXY[0] )
 							scale = cfg.maxAutoVelXY[0] / (AutoVelXYZ*xy_scale);
 						if( route_line_A_B.z < 0 )
-						{	//ÏòÉÏ·É
+						{	//å‘ä¸Šé£
 							if( AutoVelXYZ*z_scale > cfg.maxAutoVelUp[0] )
 							{
 								double new_scale = cfg.maxAutoVelUp[0] / (AutoVelXYZ*z_scale);
@@ -1467,7 +1467,7 @@
 							}
 						}
 						else
-						{	//ÏòÏÂ·É
+						{	//å‘ä¸‹é£
 							if( AutoVelXYZ*z_scale > cfg.maxAutoVelDown[0] )
 							{
 								double new_scale = cfg.maxAutoVelDown[0] / (AutoVelXYZ*z_scale);
@@ -1490,13 +1490,13 @@
 				}
 				return false;
 			}
-		/*Éè¶¨×Ô¶¯·ÉĞĞËÙ¶È*/
-	/*Ë®Æ½Î»ÖÃ*/
-/*¿ØÖÆ½Ó¿Ú*/
+		/*è®¾å®šè‡ªåŠ¨é£è¡Œé€Ÿåº¦*/
+	/*æ°´å¹³ä½ç½®*/
+/*æ§åˆ¶æ¥å£*/
 		
-/*ÂË²¨Æ÷*/
+/*æ»¤æ³¢å™¨*/
 	static Filter_Butter4_LP ThrOut_Filters[3];
-/*ÂË²¨Æ÷*/
+/*æ»¤æ³¢å™¨*/
 			
 void ctrl_Position()
 {	
@@ -1521,7 +1521,7 @@ void ctrl_Position()
 	vector3<double> AccelerationENU;	get_AccelerationENU_Ctrl(&AccelerationENU);
 	get_throttle_force(&AccelerationENU.z);	AccelerationENU.z-=GravityAcc;
 	
-	//Î»ÖÃËÙ¶ÈÂË²¨
+	//ä½ç½®é€Ÿåº¦æ»¤æ³¢
 	double Ps = cfg.P1[0];
 	double Pv = cfg.P2[0];
 	double Pa = cfg.P3[0];
@@ -1531,14 +1531,14 @@ void ctrl_Position()
 	vector3<double> TargetVelocity_1;
 	vector3<double> TargetVelocity_2;
 	
-	//XY»òZÆäÖĞÒ»¸öÎª·Ç3DÄ£Ê½ÔòÍË³ö3DÄ£Ê½
+	//XYæˆ–Zå…¶ä¸­ä¸€ä¸ªä¸ºé3Dæ¨¡å¼åˆ™é€€å‡º3Dæ¨¡å¼
 	if( Is_3DAutoMode(HorizontalPosition_ControlMode) && Is_3DAutoMode(Altitude_ControlMode)==false )
 		HorizontalPosition_ControlMode = Position_ControlMode_Locking;
 	else if( Is_3DAutoMode(HorizontalPosition_ControlMode)==false && Is_3DAutoMode(Altitude_ControlMode) )
 		Altitude_ControlMode = Position_ControlMode_Locking;
 	
 	if( Position_Control_Enabled )
-	{	//Ë®Æ½Î»ÖÃ¿ØÖÆ
+	{	//æ°´å¹³ä½ç½®æ§åˆ¶
 		if( get_Position_MSStatus() != MS_Ready )
 		{
 			Position_Control_Enabled = false;
@@ -1591,8 +1591,8 @@ void ctrl_Position()
 				}
 				else
 				{
-					//Ã»Æğ·ÉÇ°ÔÚÎ»ÖÃ¿ØÖÆÄ£Ê½
-					//ÖØÖÃÆÚÍûÎ»ÖÃ
+					//æ²¡èµ·é£å‰åœ¨ä½ç½®æ§åˆ¶æ¨¡å¼
+					//é‡ç½®æœŸæœ›ä½ç½®
 					target_position.x = Position.x;
 					target_position.y = Position.y;
 					Attitude_Control_set_Target_RollPitch( 0, 0 );
@@ -1604,7 +1604,7 @@ void ctrl_Position()
 			{
 				if( !inFlight )
 				{
-					//Ã»Æğ·ÉÊ±ÖØÖÃÆÚÍûËÙ¶È
+					//æ²¡èµ·é£æ—¶é‡ç½®æœŸæœ›é€Ÿåº¦
 					Attitude_Control_set_Target_RollPitch( 0, 0 );
 					goto PosCtrl_Finish;
 				}
@@ -1669,8 +1669,8 @@ void ctrl_Position()
 //				}
 //				else
 //				{
-//					//Ã»Æğ·ÉÇ°ÔÚÎ»ÖÃ¿ØÖÆÄ£Ê½
-//					//ÖØÖÃÆÚÍûÎ»ÖÃ
+//					//æ²¡èµ·é£å‰åœ¨ä½ç½®æ§åˆ¶æ¨¡å¼
+//					//é‡ç½®æœŸæœ›ä½ç½®
 //					target_position.x = Position.x;
 //					target_position.y = Position.y;
 //					Attitude_Control_set_Target_RollPitch( 0, 0 );
@@ -1683,7 +1683,7 @@ void ctrl_Position()
 			{
 				if( inFlight )
 				{						
-					//¼ÆËã´¹×ã	
+					//è®¡ç®—å‚è¶³	
 					vector2<double> A( target_position.x, target_position.y );					
 					vector2<double> C( Position.x, Position.y );
 					vector2<double> A_C = C - A;
@@ -1691,14 +1691,14 @@ void ctrl_Position()
 					double k = (A_C * A_B) * route_line_m;
 					vector2<double> foot_point = (A_B * k) + A;
 					
-					//¼ÆËã¸ú×ÙAµãÎ»ÖÃ
+					//è®¡ç®—è·Ÿè¸ªAç‚¹ä½ç½®
 					vector2<double> A_desired = A;
 					double A_B_length = safe_sqrt(A_B.get_square());		
 					double line_track_desired_acc = 0;
 					if( A_B_length > 0.1 )
 					{						
 						if( 0.5*line_track_desired_vel*line_track_desired_vel/line_track_desired_maxacc >= A_B_length - line_track_desired )
-						{	//ĞèÒª¼õËÙ						
+						{	//éœ€è¦å‡é€Ÿ						
 							line_track_desired_vel -= line_track_desired_maxacc*h;
 							if( line_track_desired_vel < 0 )
 								line_track_desired_vel = 0;
@@ -1706,7 +1706,7 @@ void ctrl_Position()
 								line_track_desired_acc = -line_track_desired_maxacc;
 						}
 						else
-						{	//Ç°À¡¼ÓËÙµ½×î¸ßËÙ¶È
+						{	//å‰é¦ˆåŠ é€Ÿåˆ°æœ€é«˜é€Ÿåº¦
 							if( line_track_desired_vel < line_track_desired_maxv )
 								line_track_desired_vel += line_track_desired_maxacc*h;
 							if( line_track_desired_vel > line_track_desired_maxv )
@@ -1722,50 +1722,50 @@ void ctrl_Position()
 						A_desired = B - A_B*(line_track_desired/A_B_length);
 					}
 					
-					//¼ÆËãÆ«²î
+					//è®¡ç®—åå·®
 					vector2<double> e1r = A_desired - foot_point;
 					vector2<double> e1d = foot_point - C;
 					double e1r_length = safe_sqrt(e1r.get_square());
 					double e1d_length = safe_sqrt(e1d.get_square());
 					
-					//¼ÆËãroute·½Ïòµ¥Î»ÏòÁ¿
+					//è®¡ç®—routeæ–¹å‘å•ä½å‘é‡
 					vector2<double> route_n;
 					if( e1r_length > 0.001 )
 						route_n = e1r * (1.0/e1r_length);
 					
-					//¼ÆËãd·½Ïòµ¥Î»ÏòÁ¿
+					//è®¡ç®—dæ–¹å‘å•ä½å‘é‡
 					vector2<double> d_n;
 					if( e1d_length > 0.001 )
 						d_n = e1d * (1.0/e1d_length);
 					
-					//¼ÆËãe1µ¼Êı
+					//è®¡ç®—e1å¯¼æ•°
 					vector2<double> e1_1( VelocityENU.x, VelocityENU.y );
 					double e1r_1 = line_track_desired_vel - (e1_1 * route_n);
 					double e1d_1 = -(e1_1 * d_n);
-					//e1¶ş½×µ¼
+					//e1äºŒé˜¶å¯¼
 					vector2<double> e1_2( TAcc.x, TAcc.y );
 					double e1r_2 = line_track_desired_acc - (e1_2 * route_n);
 					double e1d_2 = -(e1_2 * d_n);
 					
-					/*route·½Ïò*/
+					/*routeæ–¹å‘*/
 						smooth_kp_d2 d1r = smooth_kp_2( e1r_length, e1r_1, e1r_2 , Ps, AutoVelXY+100 );
 						vector2<double> T2r = route_n * d1r.d0;
 						vector2<double> T2r_1 = route_n * d1r.d1;
 						vector2<double> T2r_2 = route_n * d1r.d2;
-					/*route·½Ïò*/
+					/*routeæ–¹å‘*/
 					
-					/*d·½Ïò*/
+					/*dæ–¹å‘*/
 						smooth_kp_d2 d1d = smooth_kp_2( e1d_length, e1d_1, e1d_2 , Ps, AutoVelXY );
 						vector2<double> T2d = d_n * d1d.d0;
 						vector2<double> T2d_1 = d_n * d1d.d1;
 						vector2<double> T2d_2 = d_n * d1d.d2;
-					/*d·½Ïò*/
+					/*dæ–¹å‘*/
 						
 					TargetVelocity.x = T2r.x+T2d.x;	TargetVelocity.y = T2r.y+T2d.y;
 					TargetVelocity_1.x = T2r_1.x+T2d_1.x;	TargetVelocity_1.y = T2r_1.y+T2d_1.y;
 					TargetVelocity_2.x = T2r_2.x+T2d_2.x;	TargetVelocity_2.y = T2r_2.y+T2d_2.y;
 						
-					//ÅĞ¶Ïµ½µã
+					//åˆ¤æ–­åˆ°ç‚¹
 					if( e1r.get_square() + e1d.get_square() < cfg.WPRange[0]*cfg.WPRange[0] && 
 							A_B_length - line_track_desired < 1 ) 
 					{
@@ -1778,7 +1778,7 @@ void ctrl_Position()
 				}
 				else
 				{
-					//Ã»Æğ·ÉÊ±ÖØÖÃÆÚÍûËÙ¶È
+					//æ²¡èµ·é£æ—¶é‡ç½®æœŸæœ›é€Ÿåº¦
 					Attitude_Control_set_Target_RollPitch( 0, 0 );
 					goto PosCtrl_Finish;
 				}
@@ -1789,19 +1789,19 @@ void ctrl_Position()
 			{
 				if( inFlight )
 				{
-					//¼ÆËã´¹×ã
+					//è®¡ç®—å‚è¶³
 					vector3<double> A_C = Position - target_position;
 					double k = (A_C * route_line_A_B) * route_line_m;
 					vector3<double> foot_point = (route_line_A_B * k) + target_position;
 					
-					//¼ÆËã¸ú×ÙAµãÎ»ÖÃ
+					//è®¡ç®—è·Ÿè¸ªAç‚¹ä½ç½®
 					vector3<double> A_desired = target_position;
 					double A_B_length = safe_sqrt(route_line_A_B.get_square());	
 					double line_track_desired_acc = 0;					
 					if( A_B_length > 0.1 )
 					{
 						if( 0.5*line_track_desired_vel*line_track_desired_vel/line_track_desired_maxacc >= A_B_length - line_track_desired )
-						{	//ĞèÒª¼õËÙ
+						{	//éœ€è¦å‡é€Ÿ
 							line_track_desired_vel -= line_track_desired_maxacc*h;
 							if( line_track_desired_vel < 0 )
 								line_track_desired_vel = 0;
@@ -1809,7 +1809,7 @@ void ctrl_Position()
 								line_track_desired_acc = -line_track_desired_maxacc;
 						}
 						else
-						{	//Ç°À¡¼ÓËÙµ½×î¸ßËÙ¶È
+						{	//å‰é¦ˆåŠ é€Ÿåˆ°æœ€é«˜é€Ÿåº¦
 							if( line_track_desired_vel < line_track_desired_maxv )
 								line_track_desired_vel += line_track_desired_maxacc*h;
 							if( line_track_desired_vel > line_track_desired_maxv )
@@ -1825,37 +1825,37 @@ void ctrl_Position()
 						A_desired = B - route_line_A_B*(line_track_desired/A_B_length);
 					}
 					
-					//¼ÆËãÆ«²î
+					//è®¡ç®—åå·®
 					vector3<double> e1r = A_desired - foot_point;
 					vector3<double> e1d = foot_point - Position;
 					double e1r_length = safe_sqrt(e1r.get_square());
 					double e1d_length = safe_sqrt(e1d.get_square());
 					
-					//¼ÆËãroute·½Ïòµ¥Î»ÏòÁ¿
+					//è®¡ç®—routeæ–¹å‘å•ä½å‘é‡
 					vector3<double> route_n;
 					if( e1r_length > 0.001 )
 						route_n = e1r * (1.0/e1r_length);
 					
-					//¼ÆËãe1µ¼Êı
+					//è®¡ç®—e1å¯¼æ•°
 					double e1r_1_length = -(VelocityENU * route_n);	
 					vector3<double> e1r_1 = route_n * e1r_1_length;					
 					vector3<double> e1d_1 = -(VelocityENU + e1r_1);
 					e1r_1_length += line_track_desired_vel;
-					//e1¶ş½×µ¼
+					//e1äºŒé˜¶å¯¼
 					vector3<double> e1_2( TAcc.x, TAcc.y, AccelerationENU.z );
 					double e1r_2_length = -(e1_2 * route_n);
 					vector3<double> e1r_2 = route_n * e1r_2_length;					
 					vector3<double> e1d_2 = -(e1_2 + e1r_2);
 					e1r_2_length += line_track_desired_acc;
 					
-					/*route·½Ïò*/
+					/*routeæ–¹å‘*/
 						smooth_kp_d2 d1r = smooth_kp_2( e1r_length, e1r_1_length, e1r_2_length , Ps, AutoVelXYZ+100 );
 						vector3<double> T2r = route_n * d1r.d0;
 						vector3<double> T2r_1 = route_n * d1r.d1;
 						vector3<double> T2r_2 = route_n * d1r.d2;
-					/*route·½Ïò*/
+					/*routeæ–¹å‘*/
 					
-					/*d·½Ïò*/
+					/*dæ–¹å‘*/
 						e_1_n = e1d.x*e1d_1.x + e1d.y*e1d_1.y + e1d.z*e1d_1.z;
 						if( !is_zero(e1d_length) )
 							e_1 = e_1_n / e1d_length;
@@ -1879,13 +1879,13 @@ void ctrl_Position()
 							T2d_1 = n*d1d.d1 + n_1*d1d.d0;
 							T2d_2 = n*d1d.d2 + n_1*(2*d1d.d1) + n_2*d1d.d0;
 						}
-					/*d·½Ïò*/
+					/*dæ–¹å‘*/
 						
 					TargetVelocity = T2r + T2d;
 					TargetVelocity_1 = T2r_1 + T2d_1;
 					TargetVelocity_2 = T2r_2 + T2d_2;
 						
-					//ÅĞ¶Ïµ½µã
+					//åˆ¤æ–­åˆ°ç‚¹
 					if( e1r.get_square() + e1d.get_square() < cfg.WPRange[0]*cfg.WPRange[0] && 
 							A_B_length - line_track_desired < 1.0 ) 
 					{
@@ -1898,7 +1898,7 @@ void ctrl_Position()
 				}
 				else
 				{
-					//Ã»Æğ·ÉÊ±ÖØÖÃÆÚÍûËÙ¶È
+					//æ²¡èµ·é£æ—¶é‡ç½®æœŸæœ›é€Ÿåº¦
 					Attitude_Control_set_Target_RollPitch( 0, 0 );
 					goto PosCtrl_Finish;
 				}
@@ -1907,7 +1907,7 @@ void ctrl_Position()
 			
 			case Position_ControlMode_Locking:
 			default:
-			{	//É²³µËøÎ»ÖÃ
+			{	//åˆ¹è½¦é”ä½ç½®
 				static uint16_t lock_counter = 0;
 				if( inFlight )
 				{
@@ -1948,7 +1948,7 @@ void ctrl_Position()
 			}
 		}	
 		
-		//¼ÆËãÆÚÍû¼ÓËÙ¶È
+		//è®¡ç®—æœŸæœ›åŠ é€Ÿåº¦
 		vector2<double> e2;
 		e2.x = TargetVelocity.x - VelocityENU.x;
 		e2.y = TargetVelocity.y - VelocityENU.y;
@@ -2004,7 +2004,7 @@ void ctrl_Position()
 		TAcc.x += T4.x*h;
 		TAcc.y += T4.y*h;	
 		
-		//È¥³ı·çÁ¦ÈÅ¶¯
+		//å»é™¤é£åŠ›æ‰°åŠ¨
 		vector3<double> WindDisturbance;
 		get_WindDisturbance( &WindDisturbance );
 		vector2<double> target_acceleration;
@@ -2013,7 +2013,7 @@ void ctrl_Position()
 		target_acceleration.x = T3.x - WindDisturbance.x;
 		target_acceleration.y = T3.y - WindDisturbance.y;
 		
-		//Ğı×ªÖÁBodyheading
+		//æ—‹è½¬è‡³Bodyheading
 		Quaternion attitude;
 		get_Attitude_quat(&attitude);
 		double yaw = attitude.getYaw();		
@@ -2024,19 +2024,19 @@ void ctrl_Position()
 //		target_acceleration_x_bodyheading = ThrOut_Filters[0].run(target_acceleration_x_bodyheading);
 //		target_acceleration_y_bodyheading = ThrOut_Filters[1].run(target_acceleration_y_bodyheading);
 		
-		//¼ÆËã·çÁ¦²¹³¥½Ç¶È
+		//è®¡ç®—é£åŠ›è¡¥å¿è§’åº¦
 		double WindDisturbance_Bodyheading_x = ENU2BodyHeading_x( WindDisturbance.x , WindDisturbance.y , sin_Yaw , cos_Yaw );
 		double WindDisturbance_Bodyheading_y = ENU2BodyHeading_y( WindDisturbance.x , WindDisturbance.y , sin_Yaw , cos_Yaw );
-		//¼ÆËã½Ç¶È
+		//è®¡ç®—è§’åº¦
 		double AccUp = GravityAcc + AccelerationENU.z;
 		double AntiDisturbancePitch = atan2( -WindDisturbance_Bodyheading_x , AccUp );
 		double AntiDisturbanceRoll = atan2( WindDisturbance_Bodyheading_y , AccUp );
 		
-		//¼ÆËãÄ¿±ê½Ç¶È
+		//è®¡ç®—ç›®æ ‡è§’åº¦
 		double target_Roll = atan2( -target_acceleration_y_bodyheading , AccUp );
 		double target_Pitch = atan2( target_acceleration_x_bodyheading , AccUp );
 		if( HorizontalPosition_ControlMode==Position_ControlMode_Velocity )
-		{	//½Ç¶ÈÏŞ·ù
+		{	//è§’åº¦é™å¹…
 			if( VelCtrlMaxRoll>0 && VelCtrlMaxPitch>0 )
 			{
 				target_Roll = constrain( target_Roll , AntiDisturbanceRoll - VelCtrlMaxRoll, AntiDisturbanceRoll + VelCtrlMaxRoll );
@@ -2051,10 +2051,10 @@ void ctrl_Position()
 			}
 		}
 
-		//Éè¶¨Ä¿±ê½Ç¶È
+		//è®¾å®šç›®æ ‡è§’åº¦
 		Attitude_Control_set_Target_RollPitch( target_Roll, target_Pitch );
 		
-		//»ñÈ¡ÕæÊµÄ¿±ê½Ç¶ÈĞŞÕıTAcc
+		//è·å–çœŸå®ç›®æ ‡è§’åº¦ä¿®æ­£TAcc
 		Attitude_Control_get_Target_RollPitch( &target_Roll, &target_Pitch );
 		target_acceleration_x_bodyheading = tan(target_Pitch)*GravityAcc;
 		target_acceleration_y_bodyheading = -tan(target_Roll)*GravityAcc;
@@ -2062,7 +2062,7 @@ void ctrl_Position()
 		target_acceleration.y = BodyHeading2ENU_y( target_acceleration_x_bodyheading, target_acceleration_y_bodyheading , sin_Yaw, cos_Yaw );
 		TAcc.x = target_acceleration.x + WindDisturbance.x;
 		TAcc.y = target_acceleration.y + WindDisturbance.y;
-	}//Ë®Æ½Î»ÖÃ¿ØÖÆ
+	}//æ°´å¹³ä½ç½®æ§åˆ¶
 	else
 	{
 		ThrOut_Filters[0].reset(0);
@@ -2071,9 +2071,9 @@ void ctrl_Position()
 	
 PosCtrl_Finish:	
 	if( Altitude_Control_Enabled )
-	{//¸ß¶È¿ØÖÆ
+	{//é«˜åº¦æ§åˆ¶
 			
-		//ÉèÖÃ¿ØÖÆÁ¿ÏŞ·ù
+		//è®¾ç½®æ§åˆ¶é‡é™å¹…
 		Target_tracker[2].r2p = cfg.maxVelUp[0];
 		Target_tracker[2].r2n = cfg.maxVelDown[0];
 		Target_tracker[2].r3p = cfg.maxAccUp[0];
@@ -2086,7 +2086,7 @@ PosCtrl_Finish:
 			switch( Altitude_ControlMode )
 			{
 				case Position_ControlMode_Position:
-				{	//¿ØÖÆÎ»ÖÃ
+				{	//æ§åˆ¶ä½ç½®
 					if( inFlight )
 					{
 						Target_tracker[2].r2p = 0.3*cfg.maxVelUp[0];
@@ -2095,8 +2095,8 @@ PosCtrl_Finish:
 					}
 					else
 					{
-						//Ã»Æğ·ÉÇ°ÔÚÎ»ÖÃ¿ØÖÆÄ£Ê½
-						//²»ÒªÆğ·É
+						//æ²¡èµ·é£å‰åœ¨ä½ç½®æ§åˆ¶æ¨¡å¼
+						//ä¸è¦èµ·é£
 						Target_tracker[2].reset();
 						target_position.z = Target_tracker[2].x1 = Position.z;
 						Attitude_Control_set_Throttle( get_STThrottle() );
@@ -2105,7 +2105,7 @@ PosCtrl_Finish:
 					break;
 				}
 				case Position_ControlMode_Velocity:
-				{	//¿ØÖÆËÙ¶È
+				{	//æ§åˆ¶é€Ÿåº¦
 					if( inFlight )
 					{
 						double TVel;
@@ -2119,8 +2119,8 @@ PosCtrl_Finish:
 					}
 					else
 					{
-						//Ã»Æğ·ÉÇÒÆÚÍûËÙ¶ÈÎª¸º
-						//²»ÒªÆğ·É
+						//æ²¡èµ·é£ä¸”æœŸæœ›é€Ÿåº¦ä¸ºè´Ÿ
+						//ä¸è¦èµ·é£
 						Target_tracker[2].reset();
 						Target_tracker[2].x1 = Position.z;						
 						if( target_velocity.z <= 0 )
@@ -2133,9 +2133,9 @@ PosCtrl_Finish:
 				}
 				
 				case Position_ControlMode_Takeoff:
-				{	//Æğ·É
+				{	//èµ·é£
 					
-					//ÉèÖÃ¿ØÖÆÁ¿×î´óÖµ
+					//è®¾ç½®æ§åˆ¶é‡æœ€å¤§å€¼
 					Target_tracker[2].r3p = cfg.maxAutoAccUp[0];
 					Target_tracker[2].r3n = cfg.maxAutoAccDown[0];
 					Target_tracker[2].r4p = cfg.maxAutoJerkUp[0];
@@ -2143,8 +2143,8 @@ PosCtrl_Finish:
 					
 					if( inFlight )
 					{
-						//ÒÑÆğ·É
-						//¿ØÖÆ´ïµ½Ä¿±ê¸ß¶È
+						//å·²èµ·é£
+						//æ§åˆ¶è¾¾åˆ°ç›®æ ‡é«˜åº¦
 						double homeZ;
 						getHomeLocalZ(&homeZ);
 						if( Position.z - homeZ < 100 )
@@ -2160,8 +2160,8 @@ PosCtrl_Finish:
 					}
 					else
 					{
-						//Î´Æğ·É
-						//µÈ´ıÆğ·É
+						//æœªèµ·é£
+						//ç­‰å¾…èµ·é£
 						target_position.z =  Position.z + TakeoffHeight;
 						Target_tracker[2].reset();
 						Target_tracker[2].x1 = Position.z;
@@ -2169,9 +2169,9 @@ PosCtrl_Finish:
 					break;
 				}
 				case Position_ControlMode_RouteLine:
-				{	//·Éµ½Ö¸¶¨¸ß¶È
+				{	//é£åˆ°æŒ‡å®šé«˜åº¦
 					
-					//ÉèÖÃ¿ØÖÆÁ¿×î´óÖµ
+					//è®¾ç½®æ§åˆ¶é‡æœ€å¤§å€¼
 					Target_tracker[2].r3p = cfg.maxAutoAccUp[0];
 					Target_tracker[2].r3n = cfg.maxAutoAccDown[0];
 					Target_tracker[2].r4p = cfg.maxAutoJerkUp[0];
@@ -2179,8 +2179,8 @@ PosCtrl_Finish:
 					
 					if( inFlight )
 					{
-						//ÒÑÆğ·É
-						//¿ØÖÆ´ïµ½Ä¿±ê¸ß¶È
+						//å·²èµ·é£
+						//æ§åˆ¶è¾¾åˆ°ç›®æ ‡é«˜åº¦
 						Target_tracker[2].r2n = AutoVelZUp;
 						Target_tracker[2].r2p = AutoVelZDown;
 						Target_tracker[2].track4( target_position.z , 1.0f / CtrlRateHz );
@@ -2192,8 +2192,8 @@ PosCtrl_Finish:
 					}
 					else
 					{
-						//Î´Æğ·É
-						//²»ÒªÆğ·É
+						//æœªèµ·é£
+						//ä¸è¦èµ·é£
 						Target_tracker[2].reset();
 						Target_tracker[2].x1 = Position.z;
 						Attitude_Control_set_Throttle( 0 );
@@ -2204,7 +2204,7 @@ PosCtrl_Finish:
 				
 				case Position_ControlMode_Locking:
 				default:
-				{	//ËøÎ»ÖÃ£¨¼õËÙµ½0È»ºóËø×¡¸ß¶È£©
+				{	//é”ä½ç½®ï¼ˆå‡é€Ÿåˆ°0ç„¶åé”ä½é«˜åº¦ï¼‰
 					if( inFlight )
 					{
 						Target_tracker[2].track3( 0 , 1.0 / CtrlRateHz );
@@ -2230,9 +2230,9 @@ PosCtrl_Finish:
 		
 		if( inFlight )
 		{
-			//¼ÆËãÆÚÍûËÙ¶È
+			//è®¡ç®—æœŸæœ›é€Ÿåº¦
 			double target_velocity_z;
-			//ÆÚÍû´¹Ö±ËÙ¶ÈµÄµ¼Êı
+			//æœŸæœ›å‚ç›´é€Ÿåº¦çš„å¯¼æ•°
 			double Tvz_1, Tvz_2;
 			if( Is_3DAutoMode(Altitude_ControlMode) )
 			{
@@ -2264,7 +2264,7 @@ PosCtrl_Finish:
 				}
 			}
 			
-			//¼ÆËãÆÚÍû¼ÓËÙ¶È
+			//è®¡ç®—æœŸæœ›åŠ é€Ÿåº¦
 			double max_fb_acc = ( target_velocity_z - VelocityENU.z ) > 0 ? cfg.maxAutoAccUp[0] : cfg.maxAutoAccDown[0];
 			smooth_kp_d1 TaFb = smooth_kp_1(
 					target_velocity_z - VelocityENU.z,
@@ -2273,22 +2273,22 @@ PosCtrl_Finish:
 			double target_acceleration_z = TaFb.d0 + Tvz_1;
 			double target_acceleration_z_1 = TaFb.d1 + Tvz_2;
 			//target_acceleration_z = TargetVelocityFilter[2].run( target_acceleration_z );
-			//¼ÓËÙ¶ÈÎó²î
+			//åŠ é€Ÿåº¦è¯¯å·®
 			double acceleration_z_error = target_acceleration_z - AccelerationENU.z;
 			
-			//»ñÈ¡Çã½Çcosin
+			//è·å–å€¾è§’cosin
 			Quaternion quat;
 			get_Airframe_quat(&quat);
 			double lean_cosin = quat.get_lean_angle_cosin();
 			
-			//»ñÈ¡µç»úÆğ×ªÓÍÃÅ
+			//è·å–ç”µæœºèµ·è½¬æ²¹é—¨
 			double MotorStartThrottle = get_STThrottle();
-			//»ñÈ¡ĞüÍ£ÓÍÃÅ - µç»úÆğ×ªÓÍÃÅ
+			//è·å–æ‚¬åœæ²¹é—¨ - ç”µæœºèµ·è½¬æ²¹é—¨
 			double hover_throttle;
 			get_hover_throttle(&hover_throttle);
 			hover_throttle = hover_throttle - MotorStartThrottle;	
 			
-			//¼ÆËãÊä³öÓÍÃÅ
+			//è®¡ç®—è¾“å‡ºæ²¹é—¨
 			double force, T, b;
 			get_throttle_force(&force);			
 			get_ESO_height_T(&T);
@@ -2296,10 +2296,10 @@ PosCtrl_Finish:
 			if( force < 1 )
 				force = 1;
 			double throttle = ( force + T * ( acceleration_z_error * Pa + target_acceleration_z_1 ) )/b;
-			//Çã½Ç²¹³¥
+			//å€¾è§’è¡¥å¿
 			if( lean_cosin > 0.1 )				
 				throttle /= lean_cosin;
-			else	//Çã½ÇÌ«´ó
+			else	//å€¾è§’å¤ªå¤§
 				throttle = (100 - MotorStartThrottle) / 2;
 			
 			if( inFlight )
@@ -2313,7 +2313,7 @@ PosCtrl_Finish:
 				SDLog_Msg_DebugVect( "thr", logbuf, 5 );
 			}
 			
-			//ÓÍÃÅÏŞ·ù
+			//æ²¹é—¨é™å¹…
 			throttle += MotorStartThrottle;
 			if( throttle > 90 )
 				throttle = 90;
@@ -2324,248 +2324,248 @@ PosCtrl_Finish:
 			}
 			
 //			throttle = ThrOut_Filters[2].run(throttle);
-			//Êä³ö
+			//è¾“å‡º
 			Attitude_Control_set_Throttle( throttle );
 		}
 		else
 		{
-			//Ã»Æğ·É
-			//¾ùÔÈÔö¼ÓÓÍÃÅÆğ·É
+			//æ²¡èµ·é£
+			//å‡åŒ€å¢åŠ æ²¹é—¨èµ·é£
 			double throttle;
 			get_Target_Throttle(&throttle);
 			ThrOut_Filters[2].reset(throttle);
 			Attitude_Control_set_Throttle( throttle + h * 35 );
 		}
 		
-	}//¸ß¶È¿ØÖÆ
+	}//é«˜åº¦æ§åˆ¶
 AltCtrl_Finish:
 	return;
 }
 
 void init_Ctrl_Position()
 {
-	//³õÊ¼»¯ÆÚÍûTD4ÂË²¨Æ÷
+	//åˆå§‹åŒ–æœŸæœ›TD4æ»¤æ³¢å™¨
 	Target_tracker[0] = TD4_SL( 15 , 15 , 15 , 15 );
 	Target_tracker[1] = TD4_SL( 15 , 15 , 15 , 15 );
 	Target_tracker[2] = TD4_SL( 1 , 2 , 50 , 60 );	
 	Target_tracker[2].r3p = 900;
 	Target_tracker[2].r3n = 600;
 	
-	//³õÊ¼»¯ÆÚÍûËÙ¶ÈµÍÍ¨ÂË²¨Æ÷
+	//åˆå§‹åŒ–æœŸæœ›é€Ÿåº¦ä½é€šæ»¤æ³¢å™¨
 	TargetVelocityFilter[0].set_cutoff_frequency( CtrlRateHz , 10 );
 	TargetVelocityFilter[1].set_cutoff_frequency( CtrlRateHz , 10 );
 	TargetVelocityFilter[2].set_cutoff_frequency( CtrlRateHz , 10 );
 	
-	/*³õÊ¼»¯²ÎÊı*/
+	/*åˆå§‹åŒ–å‚æ•°*/
 		PosCtrlCfg initial_cfg;
-		//Ä¬ÈÏXYº½ÏßËÙ¶È
+		//é»˜è®¤XYèˆªçº¿é€Ÿåº¦
 		initial_cfg.AutoVXY[0] = 1000;
-		//Ä¬ÈÏZÏòÉÏº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸Šèˆªçº¿é€Ÿåº¦
 		initial_cfg.AutoVZUp[0] = 450;
-		//Ä¬ÈÏZÏòÏÂº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸‹èˆªçº¿é€Ÿåº¦
 		initial_cfg.AutoVZDown[0] = 350;
-		//Ä¬ÈÏXYZº½ÏßËÙ¶È
+		//é»˜è®¤XYZèˆªçº¿é€Ÿåº¦
 		initial_cfg.AutoVXYZ[0] = 1000;	
 		
-		//¸ß¶ÈÇ°À¡ÂË²¨Æ÷
+		//é«˜åº¦å‰é¦ˆæ»¤æ³¢å™¨
 		initial_cfg.Z_TD4P1[0] = 1;
 		initial_cfg.Z_TD4P2[0] = 5;
 		initial_cfg.Z_TD4P3[0] = 50;
 		initial_cfg.Z_TD4P4[0] = 60;
 		
-		//Î»ÖÃ·´À¡ÔöÒæ
+		//ä½ç½®åé¦ˆå¢ç›Š
 		initial_cfg.P1[0] = 1;
-		//ËÙ¶È·´À¡ÔöÒæ
+		//é€Ÿåº¦åé¦ˆå¢ç›Š
 		initial_cfg.P2[0] = 2;
-		//¼ÓËÙ¶È·´À¡ÔöÒæ
+		//åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		initial_cfg.P3[0] = 10;
-		//Ë®Æ½ËÙ¶È¿ØÖÆËÙ¶È·´À¡ÔöÒæ
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶é€Ÿåº¦åé¦ˆå¢ç›Š
 		initial_cfg.P2_VelXY[0] = 4;
-		//Ë®Æ½ËÙ¶È¿ØÖÆ¼ÓËÙ¶È·´À¡ÔöÒæ
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		initial_cfg.P3_VelXY[0] = 25;
 		
-		//×î´óË®Æ½ËÙ¶È
+		//æœ€å¤§æ°´å¹³é€Ÿåº¦
 		initial_cfg.maxVelXY[0] = 1500;
-		//×î´óË®Æ½¼ÓËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		initial_cfg.maxAccXY[0] = 600;
-		//×î´óË®Æ½¼Ó¼ÓËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
 		initial_cfg.maxJerkXY[0] = 3000;
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½ËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³é€Ÿåº¦
 		initial_cfg.maxAutoVelXY[0] = 1200;
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		initial_cfg.maxAutoAccXY[0] = 200;
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
 		initial_cfg.maxAutoJerkXY[0] = 600;
 		
-		//×î´óÏòÉÏËÙ¶È
+		//æœ€å¤§å‘ä¸Šé€Ÿåº¦
 		initial_cfg.maxVelUp[0] = 500;
-		//×î´óÏòÏÂËÙ¶È
+		//æœ€å¤§å‘ä¸‹é€Ÿåº¦
 		initial_cfg.maxVelDown[0] = 400;
-		//×î´óÏòÉÏ¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
 		initial_cfg.maxAccUp[0] = 800;
-		//×î´óÏòÏÂ¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
 		initial_cfg.maxAccDown[0] = 600;
-		//×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
 		initial_cfg.maxJerkUp[0] = 5000;
-		//×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		initial_cfg.maxJerkDown[0] = 3000;		
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸Šé€Ÿåº¦
 		initial_cfg.maxAutoVelUp[0] = 500;
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹é€Ÿåº¦
 		initial_cfg.maxAutoVelDown[0] = 350;
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
 		initial_cfg.maxAutoAccUp[0] = 250;
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
 		initial_cfg.maxAutoAccDown[0] = 200;
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
 		initial_cfg.maxAutoJerkUp[0] = 800;
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		initial_cfg.maxAutoJerkDown[0] = 800;
 		
-		//µ½´ïÄ¿±êµã·¶Î§
+		//åˆ°è¾¾ç›®æ ‡ç‚¹èŒƒå›´
 		initial_cfg.WPRange[0] = 80;
-		//½µÂäËÙ¶È
+		//é™è½é€Ÿåº¦
 		initial_cfg.LandVel[0] = 50;
-	/*³õÊ¼»¯²ÎÊı*/
+	/*åˆå§‹åŒ–å‚æ•°*/
 
 	SName param_names[] = {
-		//Ä¬ÈÏXYº½ÏßËÙ¶È
+		//é»˜è®¤XYèˆªçº¿é€Ÿåº¦
 		"PC_AutoVXY" ,	
-		//Ä¬ÈÏZÏòÉÏº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸Šèˆªçº¿é€Ÿåº¦
 		"PC_AutoVZUp" ,	
-		//Ä¬ÈÏZÏòÏÂº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸‹èˆªçº¿é€Ÿåº¦
 		"PC_AutoVZDn" ,	
-		//Ä¬ÈÏXYZº½ÏßËÙ¶È
+		//é»˜è®¤XYZèˆªçº¿é€Ÿåº¦
 		"PC_AutoVXYZ" ,	
 		
-		//¸ß¶ÈÇ°À¡ÂË²¨Æ÷
+		//é«˜åº¦å‰é¦ˆæ»¤æ³¢å™¨
 		"PC_Z_TD4P1" ,
 		"PC_Z_TD4P2" ,
 		"PC_Z_TD4P3" ,
 		"PC_Z_TD4P4" ,
 		
-		//Î»ÖÃ·´À¡ÔöÒæ
+		//ä½ç½®åé¦ˆå¢ç›Š
 		"PC_P1" ,
-		//ËÙ¶È·´À¡ÔöÒæ
+		//é€Ÿåº¦åé¦ˆå¢ç›Š
 		"PC_P2" ,
-		//¼ÓËÙ¶È·´À¡ÔöÒæ
+		//åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		"PC_P3" ,
-		//Ë®Æ½ËÙ¶È¿ØÖÆËÙ¶È·´À¡ÔöÒæ
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶é€Ÿåº¦åé¦ˆå¢ç›Š
 		"PC_P2VelXY" ,
-		//Ë®Æ½ËÙ¶È¿ØÖÆ¼ÓËÙ¶È·´À¡ÔöÒæ
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		"PC_P3VelXY" ,
 		
-		//×î´óË®Æ½ËÙ¶È
+		//æœ€å¤§æ°´å¹³é€Ÿåº¦
 		"PC_maxVelXY" ,
-		//×î´óË®Æ½¼ÓËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		"PC_maxAccXY" ,
-		//×î´óË®Æ½¼Ó¼ÓËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
 		"PC_maxJerkXY" ,
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½ËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³é€Ÿåº¦
 		"PC_maxAutoVelXY" ,
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		"PC_maxAutoAccXY" ,
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
 		"PC_maxAutoJerkXY" ,
 		
-		//×î´óÏòÉÏËÙ¶È
+		//æœ€å¤§å‘ä¸Šé€Ÿåº¦
 		"PC_maxVelUp" ,
-		//×î´óÏòÏÂËÙ¶È
+		//æœ€å¤§å‘ä¸‹é€Ÿåº¦
 		"PC_maxVelDn" ,
-		//×î´óÏòÉÏ¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
 		"PC_maxAccUp" ,
-		//×î´óÏòÏÂ¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
 		"PC_maxAccDn" ,
-		//×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
 		"PC_maxJerkUp" ,
-		//×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		"PC_maxJerkDn" ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸Šé€Ÿåº¦
 		"PC_maxAutoVelUp" ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹é€Ÿåº¦
 		"PC_maxAutoVelDn" ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
 		"PC_maxAutoAccUp" ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
 		"PC_maxAutoAccDn" ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
 		"PC_maxAutoJerkUp" ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		"PC_maxAutoJerkDn" ,
 		
-		//µ½´ïÄ¿±êµã·¶Î§
+		//åˆ°è¾¾ç›®æ ‡ç‚¹èŒƒå›´
 		"PC_WPRange" ,
-		//½µÂäËÙ¶È
+		//é™è½é€Ÿåº¦
 		"PC_LandVel" ,
 	};
 
 	MAV_PARAM_TYPE param_types[] = {
-		//Ä¬ÈÏXYº½ÏßËÙ¶È
+		//é»˜è®¤XYèˆªçº¿é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,	
-		//Ä¬ÈÏZÏòÉÏº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸Šèˆªçº¿é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,	
-		//Ä¬ÈÏZÏòÏÂº½ÏßËÙ¶È
+		//é»˜è®¤Zå‘ä¸‹èˆªçº¿é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,	
-		//Ä¬ÈÏXYZº½ÏßËÙ¶È
+		//é»˜è®¤XYZèˆªçº¿é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,	
-		//¸ß¶ÈÇ°À¡ÂË²¨Æ÷
+		//é«˜åº¦å‰é¦ˆæ»¤æ³¢å™¨
 		MAV_PARAM_TYPE_REAL32 ,
 		MAV_PARAM_TYPE_REAL32 ,
 		MAV_PARAM_TYPE_REAL32 ,
 		MAV_PARAM_TYPE_REAL32 ,
 		
-		//Î»ÖÃ·´À¡ÔöÒæ
+		//ä½ç½®åé¦ˆå¢ç›Š
 		MAV_PARAM_TYPE_REAL32 ,
-		//ËÙ¶È·´À¡ÔöÒæ
+		//é€Ÿåº¦åé¦ˆå¢ç›Š
 		MAV_PARAM_TYPE_REAL32 ,
-		//¼ÓËÙ¶È·´À¡ÔöÒæ
+		//åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		MAV_PARAM_TYPE_REAL32 ,
-		//Ë®Æ½ËÙ¶È¿ØÖÆËÙ¶È·´À¡ÔöÒæ
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶é€Ÿåº¦åé¦ˆå¢ç›Š
 		MAV_PARAM_TYPE_REAL32 ,
-		//Ë®Æ½ËÙ¶È¿ØÖÆ¼ÓËÙ¶È·´À¡ÔöÒæ
-		MAV_PARAM_TYPE_REAL32 ,
-		
-		//×î´óË®Æ½ËÙ¶È
-		MAV_PARAM_TYPE_REAL32 ,
-		//×î´óË®Æ½¼ÓËÙ¶È
-		MAV_PARAM_TYPE_REAL32 ,
-		//×î´óË®Æ½¼Ó¼ÓËÙ¶È
-		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½ËÙ¶È
-		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼ÓËÙ¶È
-		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óË®Æ½¼Ó¼ÓËÙ¶È
+		//æ°´å¹³é€Ÿåº¦æ§åˆ¶åŠ é€Ÿåº¦åé¦ˆå¢ç›Š
 		MAV_PARAM_TYPE_REAL32 ,
 		
-		//×î´óÏòÉÏËÙ¶È
+		//æœ€å¤§æ°´å¹³é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×î´óÏòÏÂËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×î´óÏòÉÏ¼ÓËÙ¶È
+		//æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×î´óÏòÏÂ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§æ°´å¹³åŠ åŠ é€Ÿåº¦
+		MAV_PARAM_TYPE_REAL32 ,
+		
+		//æœ€å¤§å‘ä¸Šé€Ÿåº¦
+		MAV_PARAM_TYPE_REAL32 ,
+		//æœ€å¤§å‘ä¸‹é€Ÿåº¦
+		MAV_PARAM_TYPE_REAL32 ,
+		//æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
+		MAV_PARAM_TYPE_REAL32 ,
+		//æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
+		MAV_PARAM_TYPE_REAL32 ,
+		//æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
+		MAV_PARAM_TYPE_REAL32 ,
+		//æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,	
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸Šé€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÉÏ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸ŠåŠ åŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
-		//×Ô¶¯Ä£Ê½×î´óÏòÏÂ¼Ó¼ÓËÙ¶È
+		//è‡ªåŠ¨æ¨¡å¼æœ€å¤§å‘ä¸‹åŠ åŠ é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
 		
-		//µ½´ïÄ¿±êµã·¶Î§
+		//åˆ°è¾¾ç›®æ ‡ç‚¹èŒƒå›´
 		MAV_PARAM_TYPE_REAL32 ,
-		//½µÂäËÙ¶È
+		//é™è½é€Ÿåº¦
 		MAV_PARAM_TYPE_REAL32 ,
 	};
 

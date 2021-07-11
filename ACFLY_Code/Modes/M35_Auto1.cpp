@@ -545,17 +545,21 @@ RTL:
 									* params[3]:0: absolute angle, 1: relative offset
 									* params[4]:Empty
 									* params[5]:Empty
-									* params[6]:Empty
+									* params[6]:Mission conversion
 									*/
 									//mavlink反馈
 									mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
 									
 									//A9不提供偏航角速度自动控制接口
 									//根据mavlink信息决定控制角度类型
+									/*
 									if (msg.params[3])
 										Attitude_Control_set_Target_YawRelative(msg.params[0]);
 									else
 										Attitude_Control_set_Target_Yaw(msg.params[0]);
+									*/
+
+									Attitude_Control_set_Target_YawRate(msg.params[1]);
 									
 									//记录数据，用于结束反馈
 									last_condition_yaw_msg = msg;
@@ -629,58 +633,58 @@ RTL:
 					{
 						if(msg_available)
 						{
-								if(msg.cmd == MAV_CMD_USER_1)
+							if(msg.cmd == MAV_CMD_USER_1)
+							{
+								/*
+								* MAV_CMD_USER_1:
+								* params[0]:X-axis linear velocity
+								* params[1]:Y-axis linear velocity
+								* params[2]:Z-axis linear velocity
+								* params[3]:Z-axis angular velocity
+								* params[4]:Maximum roll
+								* params[5]:Maximum pitch
+								* params[6]:Mission conversion
+								*/
+								
+								//任务转换
+								if (msg.params[6] != 0)
 								{
-									/*
-									* MAV_CMD_USER_1:
-									* params[0]:X-axis linear velocity
-									* params[1]:Y-axis linear velocity
-									* params[2]:Z-axis linear velocity
-									* params[3]:Z-axis angular velocity
-									* params[4]:Maximum roll
-									* params[5]:Maximum pitch
-									* params[6]:Mission conversion
-									*/
-									
-									//任务转换
-									if (msg.params[6] != 0)
-									{
-										//刹车
-										Position_Control_set_XYLock();
-										Attitude_Control_set_YawLock();
-										Position_Control_set_ZLock();
+									//刹车
+									Position_Control_set_XYLock();
+									Attitude_Control_set_YawLock();
+									Position_Control_set_ZLock();
 
-										//转到mavlink控制任务
-										mission_ind = mavlink_control;
-										
-										//mavlink反馈
-										mavlink_send_command_ack(msg, MAV_RESULT_ACCEPTED, 0, 0);
-									}
-									else
-									{
-										//更新数据
-										//设置XY轴线速度与roll、pitch角度限制
-										Position_Control_set_TargetVelocityBodyHeadingXY_AngleLimit(msg.params[0]*100,
-																																								msg.params[1]*100,
-																																								msg.params[4],
-																																								msg.params[5]);
-										
-										//设置Z轴角速度
-										Attitude_Control_set_Target_YawRate(msg.params[3]);
-										
-										//导航暂时为2D
-										//Position_Control_set_ZLock();
-										double z_speed = msg.params[2] * 100;
-										z_speed = z_speed > 10 ? 10 : z_speed;
-										Position_Control_set_TargetVelocityZ(z_speed);
-										
-										//记录数据，保证控制连续
-										last_user1_msg = msg;
-									}
+									//转到mavlink控制任务
+									mission_ind = mavlink_control;
 									
-									//清空计数
-									delay_counter = 0;
+									//mavlink反馈
+									mavlink_send_command_ack(msg, MAV_RESULT_ACCEPTED, 0, 0);
 								}
+								else
+								{
+									//更新数据
+									//设置XY轴线速度与roll、pitch角度限制
+									Position_Control_set_TargetVelocityBodyHeadingXY_AngleLimit(msg.params[0]*100,
+																																							msg.params[1]*100,
+																																							msg.params[4],
+																																							msg.params[5]);
+									
+									//设置Z轴角速度
+									Attitude_Control_set_Target_YawRate(msg.params[3]);
+									
+									//导航暂时为2D
+									//Position_Control_set_ZLock();
+									double z_speed = msg.params[2] * 100;
+									z_speed = z_speed > 10 ? 10 : z_speed;
+									Position_Control_set_TargetVelocityZ(z_speed);
+									
+									//记录数据，保证控制连续
+									last_user1_msg = msg;
+								}
+								
+								//清空计数
+								delay_counter = 0;
+							}
 						}
 						else if(delay_counter < max_delay_counter)
 						{
@@ -760,18 +764,96 @@ RTL:
 					
 					case yaw_adjust:
 					{
-						last_mode = 3;
 						//除控制方向其余锁定
+						/*
 						Position_Control_set_XYLock();
 						Position_Control_set_ZLock();
+						*/
 						
 						//访问控制方向控制器
+						/*
 						double yaw_err;
 						Attitude_Control_get_YawTrackErr(&yaw_err);
 						if( yaw_err <= 0.01 )
 						{
 							//回到mavlink控制模式
 							mission_ind = mavlink_control;
+							
+							//mavlink反馈
+							mavlink_send_command_ack(last_condition_yaw_msg, MAV_RESULT_ACCEPTED, 0, 0);
+						}
+						*/
+
+						if(msg_available)
+						{
+							if(msg.cmd == MAV_CMD_CONDITION_YAW)
+							{
+								/*
+								* MAV_CMD_CONDITION_YAW:
+								* params[0]:Target angle, 0 is east
+								* params[1]:Angular speed
+								* params[2]:Direction: -1: counter clockwise, 1: clockwise
+								* params[3]:0: absolute angle, 1: relative offset
+								* params[4]:Empty
+								* params[5]:Empty
+								* params[6]:Mission conversion
+								*/
+								
+								//任务转换
+								if (msg.params[6] != 0)
+								{
+									//刹车
+									Position_Control_set_XYLock();
+									Attitude_Control_set_YawLock();
+									Position_Control_set_ZLock();
+
+									//转到mavlink控制任务
+									mission_ind = mavlink_control;
+									
+									//mavlink反馈
+									mavlink_send_command_ack(msg, MAV_RESULT_ACCEPTED, 0, 0);
+								}
+								else
+								{
+									//除控制方向其余锁定
+									Position_Control_set_XYLock();
+									Position_Control_set_ZLock();
+									
+									//设置Z轴角速度
+									Attitude_Control_set_Target_YawRate(msg.params[1]);
+									
+									//记录数据，保证控制连续
+									last_condition_yaw_msg = msg;
+								}
+								
+								//清空计数
+								delay_counter = 0;
+							}
+						}
+						else if(delay_counter < max_delay_counter)
+						{
+							//除控制方向其余锁定
+							Position_Control_set_XYLock();
+							Position_Control_set_ZLock();
+							
+							//设置Z轴角速度
+							Attitude_Control_set_Target_YawRate(last_condition_yaw_msg.params[1]);
+							
+							//延时计数
+							delay_counter++;
+						}
+						else
+						{
+							//超时，任务转换，刹车
+							Position_Control_set_XYLock();
+							Attitude_Control_set_YawLock();
+							Position_Control_set_ZLock();
+
+							//转到mavlink控制任务
+							mission_ind = mavlink_control;
+
+							//清空计数
+							delay_counter = 0;
 							
 							//mavlink反馈
 							mavlink_send_command_ack(last_condition_yaw_msg, MAV_RESULT_ACCEPTED, 0, 0);

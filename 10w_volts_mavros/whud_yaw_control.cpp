@@ -33,9 +33,14 @@ namespace mavros{
                     // MAV_CMD_CONDITION_YAW
                     msg.command = 115;
                     // set target angle
-                    msg.param1 = yaw_msg->data[0];
+                    // msg.param1 = yaw_msg->data[0];
                     // 0: absolute angle, 1: relative offset
-                    msg.param4 = yaw_msg->data[1];
+                    // msg.param4 = yaw_msg->data[1];
+
+                    // set target speed
+                    msg.param2 = yaw_msg->data[0];
+                    // set conversion
+                    msg.param7 = yaw_msg->data[1];
 
                     UAS_FCU(m_uas)->send_message_ignore_drop(msg);
                 }

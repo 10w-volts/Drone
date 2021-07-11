@@ -13,37 +13,37 @@
 
 #include "StorageSystem.hpp"
 
-/*²ÎÊı*/
-	//¿ØÖÆ²ÎÊı
+/*å‚æ•°*/
+	//æ§åˆ¶å‚æ•°
 	struct AttCtrlCfg
 	{
-		uint64_t UAVType;	//»úĞÍÀàĞÍ
-		float STThrottle[2];	//Æğ×ªÓÍÃÅ
-		float NonlinearFactor[2];	//µç»ú·ÇÏßĞÔ²ÎÊı
-		float FullThrRatio[2];	//ÂúÓÍÃÅ±ÈÀı
-		float T[2];	//¹ßĞÔÊ±¼äT
-		float b[6];	//RPYÔöÒæb
-		float TD4_P1[6];	//RPYÇ°À¡TD4ÂË²¨Æ÷P1
-		float TD4_P2[6];	//RPYÇ°À¡TD4ÂË²¨Æ÷P2
-		float TD4_P3[6];	//RPYÇ°À¡TD4ÂË²¨Æ÷P3
-		float TD4_P4[6];	//RPYÇ°À¡TD4ÂË²¨Æ÷P4
-		float P1[6];	//·´À¡ÔöÒæP1
-		float P2[6];	//·´À¡ÔöÒæP2
-		float P3[6];	//·´À¡ÔöÒæP3
-		float P4[6];	//·´À¡ÔöÒæP4
+		uint64_t UAVType;	//æœºå‹ç±»å‹
+		float STThrottle[2];	//èµ·è½¬æ²¹é—¨
+		float NonlinearFactor[2];	//ç”µæœºéçº¿æ€§å‚æ•°
+		float FullThrRatio[2];	//æ»¡æ²¹é—¨æ¯”ä¾‹
+		float T[2];	//æƒ¯æ€§æ—¶é—´T
+		float b[6];	//RPYå¢ç›Šb
+		float TD4_P1[6];	//RPYå‰é¦ˆTD4æ»¤æ³¢å™¨P1
+		float TD4_P2[6];	//RPYå‰é¦ˆTD4æ»¤æ³¢å™¨P2
+		float TD4_P3[6];	//RPYå‰é¦ˆTD4æ»¤æ³¢å™¨P3
+		float TD4_P4[6];	//RPYå‰é¦ˆTD4æ»¤æ³¢å™¨P4
+		float P1[6];	//åé¦ˆå¢ç›ŠP1
+		float P2[6];	//åé¦ˆå¢ç›ŠP2
+		float P3[6];	//åé¦ˆå¢ç›ŠP3
+		float P4[6];	//åé¦ˆå¢ç›ŠP4
 		float beta[2];	//ESO beta
-		float maxLean[2];	//×î´óÇãĞ±½Ç
-		float maxRPSp[2];	//×î´óPitch RollËÙ¶È
-		float maxRPAcc[2]; //×î´óPitch Roll¼ÓËÙ¶È
-		float maxYSp[2];	//×î´óÆ«º½ËÙ¶È
-		float maxYAcc[2];	//×î´óÆ«º½¼ÓËÙ¶È
+		float maxLean[2];	//æœ€å¤§å€¾æ–œè§’
+		float maxRPSp[2];	//æœ€å¤§Pitch Rollé€Ÿåº¦
+		float maxRPAcc[2]; //æœ€å¤§Pitch RollåŠ é€Ÿåº¦
+		float maxYSp[2];	//æœ€å¤§åèˆªé€Ÿåº¦
+		float maxYAcc[2];	//æœ€å¤§åèˆªåŠ é€Ÿåº¦
 	}__PACKED;
 
-	//²ÎÊı
+	//å‚æ•°
 	static AttCtrlCfg cfg;
-/*²ÎÊı*/
+/*å‚æ•°*/
 	
-/*ÄÚ²¿½Ó¿Ú*/
+/*å†…éƒ¨æ¥å£*/
 	float get_STThrottle()
 	{
 		return cfg.STThrottle[0];
@@ -56,9 +56,9 @@
 	{
 		return cfg.maxYSp[0];
 	}
-/*ÄÚ²¿½Ó¿Ú*/
+/*å†…éƒ¨æ¥å£*/
 	
-/*Æğ·ÉµØµã*/
+/*èµ·é£åœ°ç‚¹*/
 	static bool HomeLatLonAvailable;
 	static bool HomeAvailable;
 	static vector2<double> HomeLatLon;
@@ -104,12 +104,12 @@
 		}
 		return false;
 	}
-/*Æğ·ÉµØµã*/
+/*èµ·é£åœ°ç‚¹*/
 	
-/*×´Ì¬¹Û²âÆ÷*/
-	//×ËÌ¬ESO
+/*çŠ¶æ€è§‚æµ‹å™¨*/
+	//å§¿æ€ESO
 	static ESO_AngularRate ESO[3];
-	//¸ß¶ÈESO
+	//é«˜åº¦ESO
 	static double throttle_u = 0;
 	static ESO_h ESO_height;
 	static double hover_throttle = 0;
@@ -118,7 +118,7 @@
 	static bool inFlight = false;
 	static Filter_Butter4_LP AccZ_filter;
 	static Filter_LP_IIR_1 WindDisturbance_filter[2];
-	//²à·­¼ì²â
+	//ä¾§ç¿»æ£€æµ‹
 	static uint32_t crash_counter = 0;
 	static double AC_angle_error = 0;
 	static bool crashed = false;
@@ -129,12 +129,12 @@
 		double output_minimum_throttle = cfg.STThrottle[0];
 		double lean_cosin = quat.get_lean_angle_cosin();
 		
-		//¼ÓËÙ¶ÈÂË²¨
+		//åŠ é€Ÿåº¦æ»¤æ³¢
 		vector3<double> AccENU;
 		get_AccelerationENU_Ctrl(&AccENU);
 		double AccZ = AccZ_filter.run(AccENU.z);
 		
-		//¹Û²âĞüÍ£ÓÍÃÅ
+		//è§‚æµ‹æ‚¬åœæ²¹é—¨
 		double r_throttle = throttle - output_minimum_throttle;
 		if( r_throttle < 0 )
 			r_throttle = 0;
@@ -144,7 +144,7 @@
 		throttle_u = r_throttle;
 		hover_throttle = ESO_height.get_hover_throttle() + output_minimum_throttle;
 		
-		//¸üĞÂ·ÉĞĞ×´Ì¬
+		//æ›´æ–°é£è¡ŒçŠ¶æ€
 		static uint16_t onGround_counter = 0;
 		if( inFlight == false )
 		{
@@ -163,7 +163,7 @@
 				onGround_counter = 0;
 		}
 		
-		//²à·­±£»¤
+		//ä¾§ç¿»ä¿æŠ¤
 		if( AC_angle_error>degree2rad(30.0) && fabs(AccZ)<25 && throttle>output_minimum_throttle-0.1 )
 		{
 			if( ++crash_counter >= CtrlRateHz*2 )
@@ -178,7 +178,7 @@
 			crash_counter = 0;
 		}
 		
-		//¹Û²âË®Æ½·ÖÁ¦
+		//è§‚æµ‹æ°´å¹³åˆ†åŠ›
 		if( inFlight )
 		{
 			Quaternion quat;
@@ -204,7 +204,7 @@
 			WindDisturbance_x = WindDisturbance_y = 0;
 		}
 		
-		//¸üĞÂHomeµãÎ»ÖÃ
+		//æ›´æ–°Homeç‚¹ä½ç½®
 		if( inFlight == false )
 		{
 			vector3<double> position;
@@ -239,7 +239,7 @@
 	static double Yaw_u = 0;
 	void update_ESO_1()
 	{
-		//¸üĞÂ½ÇËÙ¶È¹Û²âÆ÷
+		//æ›´æ–°è§’é€Ÿåº¦è§‚æµ‹å™¨
 		vector3<double> angular_rate;
 		get_AngularRate_Ctrl(&angular_rate);
 		ESO[0].run(angular_rate.x);
@@ -257,9 +257,9 @@
 		ESO[2].update_u(Yaw_u);
 		ESO_height.update_u(throttle_u);
 	}
-/*×´Ì¬¹Û²âÆ÷*/	
+/*çŠ¶æ€è§‚æµ‹å™¨*/	
 
-/*¹Û²âÆ÷½Ó¿Ú*/
+/*è§‚æµ‹å™¨æ¥å£*/
 	bool get_hover_throttle( double* result, double TIMEOUT )
 	{
 		if( LockCtrl(TIMEOUT) )
@@ -337,22 +337,22 @@
 		return false;		
 	}
 	bool get_CrashedState(){ return crashed; }
-/*¹Û²âÆ÷½Ó¿Ú*/
+/*è§‚æµ‹å™¨æ¥å£*/
 	
-/*¿ØÖÆ½Ó¿Ú*/
-	//±£»¤·½Ê½
+/*æ§åˆ¶æ¥å£*/
+	//ä¿æŠ¤æ–¹å¼
 	static uint8_t SafeBt = 0;
 	
-	//ÆÚÍûTD4ÂË²¨Æ÷
+	//æœŸæœ›TD4æ»¤æ³¢å™¨
 	static TD3_2DSL Target_tracker_RP;
 	static TD4_SL Target_trackerY;
 	
-	//×ËÌ¬¿ØÖÆÄ£Ê½
+	//å§¿æ€æ§åˆ¶æ¨¡å¼
 	static bool Attitude_Control_Enabled = false;
 	static Attitude_ControlMode RollPitch_ControlMode = Attitude_ControlMode_Angle;
 	static Attitude_ControlMode Yaw_ControlMode = Attitude_ControlMode_Angle;
 
-	//Êä³öÂË²¨Æ÷
+	//è¾“å‡ºæ»¤æ³¢å™¨
 	static double outRoll_filted = 0;
 	static double outPitch_filted = 0;
 	static double outYaw_filted = 0;
@@ -379,12 +379,12 @@
 		if( LockCtrl(TIMEOUT) )
 		{
 			if( Attitude_Control_Enabled == true )
-			{	//¿ØÖÆÆ÷ÒÑ´ò¿ª
+			{	//æ§åˆ¶å™¨å·²æ‰“å¼€
 				UnlockCtrl();
 				return false;
 			}
 			
-			//¶Á²ÎÊı
+			//è¯»å‚æ•°
 			if( ReadParamGroup( "AttCtrl", (uint64_t*)&cfg, 0, TIMEOUT ) != PR_OK )
 			{
 				UnlockCtrl();
@@ -396,26 +396,26 @@
 			else
 				SafeBt = safe_bt[0];
 			
-			/*³õÊ¼»¯*/				
-				//¶ÁÈ¡µç³ØµçÑ¹
+			/*åˆå§‹åŒ–*/				
+				//è¯»å–ç”µæ± ç”µå‹
 				float BatVoltage = get_MainBatteryVoltage_filted();
-				//¶ÁÈ¡»ù×¼µçÑ¹
+				//è¯»å–åŸºå‡†ç”µå‹
 				float STVoltage[2] = {0};
 				ReadParam("Bat_STVoltage", 0, 0, (uint64_t*)STVoltage, 0 );
-				//¼ÆËãÔöÒæĞŞÕıÏµÊı
+				//è®¡ç®—å¢ç›Šä¿®æ­£ç³»æ•°
 				double b_scale = 1.0;
 				if( STVoltage[0]>7 && BatVoltage>7 )
 						b_scale = BatVoltage / STVoltage[0];
 			
-				//³õÊ¼»¯×ËÌ¬ESO
+				//åˆå§‹åŒ–å§¿æ€ESO
 				ESO[0].init( cfg.T[0], cfg.b[0]*b_scale, cfg.beta[0], cfg.beta[0], CtrlRateHz*CtrlRateDiv );
 				ESO[1].init( cfg.T[0], cfg.b[2]*b_scale, cfg.beta[0], cfg.beta[0], CtrlRateHz*CtrlRateDiv );
 				ESO[2].init( 1.0/(CtrlRateHz*CtrlRateDiv), cfg.b[4]*b_scale, cfg.beta[0], cfg.beta[0], CtrlRateHz*CtrlRateDiv );
 				
-				//³õÊ¼»¯¸ß¶ÈESO
+				//åˆå§‹åŒ–é«˜åº¦ESO
 				ESO_height.init( cfg.T[0], 4.5, CtrlRateHz*CtrlRateDiv );
 			
-				//³õÊ¼»¯ÆÚÍûTD4ÂË²¨Æ÷
+				//åˆå§‹åŒ–æœŸæœ›TD4æ»¤æ³¢å™¨
 				Target_tracker_RP.P1=cfg.TD4_P1[0];
 				Target_tracker_RP.P2=cfg.TD4_P2[0];
 				Target_tracker_RP.P3=cfg.TD4_P3[0];
@@ -429,9 +429,9 @@
 				Target_trackerY.P4=cfg.TD4_P4[4];
 				Target_trackerY.r2n=Target_trackerY.r2p=degree2rad(cfg.maxYSp[0]);
 				Target_trackerY.r3n=Target_trackerY.r3p=degree2rad(cfg.maxYAcc[0]);
-			/*³õÊ¼»¯*/
+			/*åˆå§‹åŒ–*/
 			
-			//Ë³ĞòÆğ×ªµç»ú
+			//é¡ºåºèµ·è½¬ç”µæœº
 			double pwm_out[8] = {0};
 			uint8_t main_motors = UAV_MainMotorCount(cfg.UAVType);
 			if( main_motors == 0 )
@@ -453,7 +453,7 @@
 			RollPitch_ControlMode = Attitude_ControlMode_Angle;
 			Yaw_ControlMode = Attitude_ControlMode_Angle;
 			
-			//¸üĞÂ¿ØÖÆÊ±¼ä
+			//æ›´æ–°æ§åˆ¶æ—¶é—´
 			bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 			if(!isMSafe)
 				last_ZCtrlTime = last_XYCtrlTime = TIME::now();
@@ -507,7 +507,7 @@
 			is_Altitude_Control_Enabled(&alt_enabled);
 			bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 			if( !isMSafe && alt_enabled==false && ForceMSafeCtrl )
-			{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+			{	//å±è”½ç”¨æˆ·æ§åˆ¶
 				last_ZCtrlTime = TIME::now();
 				UnlockCtrl();
 				return false;
@@ -515,7 +515,7 @@
 			
 			throttle = thr;
 			
-			//¸üĞÂ¿ØÖÆÊ±¼ä			
+			//æ›´æ–°æ§åˆ¶æ—¶é—´			
 			if(!isMSafe && alt_enabled==false)
 				last_ZCtrlTime = TIME::now();
 			
@@ -557,7 +557,7 @@
 			is_Position_Control_Enabled(&pos_enabled);
 			bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 			if( !isMSafe && pos_enabled==false && ForceMSafeCtrl )
-			{	//ÆÁ±ÎÓÃ»§¿ØÖÆ
+			{	//å±è”½ç”¨æˆ·æ§åˆ¶
 				last_ZCtrlTime = TIME::now();
 				UnlockCtrl();
 				return false;
@@ -574,7 +574,7 @@
 			target_Pitch = Pitch;
 			RollPitch_ControlMode = Attitude_ControlMode_Angle;
 			
-			//¸üĞÂ¿ØÖÆÊ±¼ä
+			//æ›´æ–°æ§åˆ¶æ—¶é—´
 			if(!isMSafe && pos_enabled==false)
 				last_XYCtrlTime = TIME::now();
 			
@@ -637,7 +637,7 @@
 		if( isnan(Yaw) || isinf(Yaw) )
 			return false;
 		
-		//ÆÁ±ÎÓÃ»§¿ØÖÆ
+		//å±è”½ç”¨æˆ·æ§åˆ¶
 		bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 		if( !isMSafe && ForceMSafeCtrl )
 			return false;
@@ -674,7 +674,7 @@
 		if( isnan(Yaw) || isinf(Yaw) )
 			return false;
 		
-		//ÆÁ±ÎÓÃ»§¿ØÖÆ
+		//å±è”½ç”¨æˆ·æ§åˆ¶
 		bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 		if( !isMSafe && ForceMSafeCtrl )
 			return false;
@@ -706,7 +706,7 @@
 		if( isnan(YawRate) || isinf(YawRate) )
 			return false;
 		
-		//ÆÁ±ÎÓÃ»§¿ØÖÆ
+		//å±è”½ç”¨æˆ·æ§åˆ¶
 		bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 		if( !isMSafe && ForceMSafeCtrl )
 			return false;
@@ -728,7 +728,7 @@
 	}
 	bool Attitude_Control_set_YawLock( double TIMEOUT )
 	{
-		//ÆÁ±ÎÓÃ»§¿ØÖÆ
+		//å±è”½ç”¨æˆ·æ§åˆ¶
 		bool isMSafe = (xTaskGetCurrentTaskHandle()==MSafeTaskHandle);
 		if( !isMSafe && ForceMSafeCtrl )
 			return false;
@@ -747,7 +747,7 @@
 		}
 		return false;
 	}
-/*¿ØÖÆ½Ó¿Ú*/
+/*æ§åˆ¶æ¥å£*/
 
 static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double outPitch, double outYaw, double rp_out[], double yaw_out[] );
 	
@@ -768,7 +768,7 @@ void ctrl_Attitude()
 	
 	bool DbgSafe = false;
 	if( SafeBt )
-	{	//Debug±£»¤
+	{	//Debugä¿æŠ¤
 		if( SafeBt==10 )
 		{
 			if( (rc.available && rc.data[0] < cfg.STThrottle[0] - 0.1) && (rc.data[1] < 10) )
@@ -781,7 +781,7 @@ void ctrl_Attitude()
 		}
 	}
 	
-	//ÓÍÃÅµÍÓÚÆğ×ªÓÍÃÅÀ­µÍËùÓĞÊä³ö	
+	//æ²¹é—¨ä½äºèµ·è½¬æ²¹é—¨æ‹‰ä½æ‰€æœ‰è¾“å‡º	
 	if( throttle < cfg.STThrottle[0] - 0.1 || DbgSafe )
 	{
 		Roll_u = Pitch_u = Yaw_u = 0;
@@ -791,7 +791,7 @@ void ctrl_Attitude()
 	}
 	
 	
-//	//¸ù¾İµç³ØµçÑ¹µ÷Õû¿ØÖÆ¶ÔÏóÔöÒæ
+//	//æ ¹æ®ç”µæ± ç”µå‹è°ƒæ•´æ§åˆ¶å¯¹è±¡å¢ç›Š
 //	float BatV = getBatteryVoltage();
 //	float VST = Cfg_get_BatSTVoltage();
 //	if( BatV > 7 && VST > 7 )
@@ -808,17 +808,17 @@ void ctrl_Attitude()
 //		ESO[2].b = Cfg_get_RPYCtrl_b(2);
 //	}
 	
-	//¶ÁÈ¡µç³ØµçÑ¹
+	//è¯»å–ç”µæ± ç”µå‹
 	float BatVoltage = get_MainBatteryVoltage_filted();
-	//¼ÆËãÔöÒæĞŞÕıÏµÊı
+	//è®¡ç®—å¢ç›Šä¿®æ­£ç³»æ•°
 	float STVoltage[2] = {0};
 	ReadParam("Bat_STVoltage", 0, 0, (uint64_t*)STVoltage, 0 );
-	//¼ÆËãÔöÒæĞŞÕıÏµÊı
+	//è®¡ç®—å¢ç›Šä¿®æ­£ç³»æ•°
 	double b_scale = 1.0;
 	if( STVoltage[0]>7 && BatVoltage>7 )
 		b_scale = BatVoltage / STVoltage[0];
 	
-	//¸ù¾İµç³ØµçÑ¹µ÷Õû¿ØÖÆ¶ÔÏóÔöÒæ
+	//æ ¹æ®ç”µæ± ç”µå‹è°ƒæ•´æ§åˆ¶å¯¹è±¡å¢ç›Š
 	ESO[0].b = cfg.b[0] * b_scale;
 	ESO[1].b = cfg.b[2] * b_scale;
 	ESO[2].b = cfg.b[4] * b_scale;
@@ -826,18 +826,18 @@ void ctrl_Attitude()
 	Quaternion AirframeQuat;
 	get_Airframe_quat( &AirframeQuat, 0.1 );
 	
-	//»ñÈ¡¿ØÖÆ²ÎÊı
+	//è·å–æ§åˆ¶å‚æ•°
 	double Ps = cfg.P1[0];
 	double PsY = cfg.P1[4];
 	vector3<double> P2( cfg.P2[0], cfg.P2[2], cfg.P2[4] );
 	vector3<double> P3( cfg.P3[0], cfg.P3[2], cfg.P3[4] );
 	
-	//Ä¿±êRoll PitchËÄÔªÊı
+	//ç›®æ ‡Roll Pitchå››å…ƒæ•°
 	Quaternion target_quat_PR;			
-	//Ä¿±ê½ÇËÙ¶È
+	//ç›®æ ‡è§’é€Ÿåº¦
 	vector3<double> target_angular_velocity;
 
-	//»ñÈ¡µ±Ç°ËÄÔªÊıµÄPitch Roll·ÖÁ¿ËÄÔªÊı
+	//è·å–å½“å‰å››å…ƒæ•°çš„Pitch Rollåˆ†é‡å››å…ƒæ•°
 	double Yaw = AirframeQuat.getYaw();
 	double half_sinYaw, half_cosYaw;
 	fast_sin_cos( 0.5*Yaw, &half_sinYaw, &half_cosYaw );
@@ -850,21 +850,21 @@ void ctrl_Attitude()
 	YawQuat.conjugate();
 	Quaternion_Ef current_quat_PR = Quaternion_Ef( YawQuat*AirframeQuat );
 	
-	//¼ÆËãĞı×ª¾ØÕó
+	//è®¡ç®—æ—‹è½¬çŸ©é˜µ
 	current_quat_PR.conjugate();				
-	double Rotation_Matrix[3][3];	//·´ÏòĞı×ª
+	double Rotation_Matrix[3][3];	//åå‘æ—‹è½¬
 	current_quat_PR.get_rotation_matrix(Rotation_Matrix);
 	current_quat_PR.conjugate();	
-	double Rotation_Matrix_P[3][3]; //ÕıÏòĞı×ª
+	double Rotation_Matrix_P[3][3]; //æ­£å‘æ—‹è½¬
 	current_quat_PR.get_rotation_matrix(Rotation_Matrix_P);
 	
-	//ÔËĞĞÀ©ÕÅ×´Ì¬¹Û²âÆ÷µÃµ½¹À¼Æ½ÇËÙ¶È¡¢½Ç¼ÓËÙ¶È
+	//è¿è¡Œæ‰©å¼ çŠ¶æ€è§‚æµ‹å™¨å¾—åˆ°ä¼°è®¡è§’é€Ÿåº¦ã€è§’åŠ é€Ÿåº¦
 	
 	vector3<double> AngularRateCtrl;
 	get_AngularRate_Ctrl( &AngularRateCtrl, 0.1 );
 	vector3<double> angular_rate_ESO;
 	vector3<double> angular_acceleration_ESO;
-	//Ê¹ÓÃESO¹À¼Æ½ÇËÙ¶È¡¢½Ç¼ÓËÙ¶È
+	//ä½¿ç”¨ESOä¼°è®¡è§’é€Ÿåº¦ã€è§’åŠ é€Ÿåº¦
 	angular_rate_ESO.set_vector(
 		ESO[0].get_EsAngularRate() ,
 		ESO[1].get_EsAngularRate() ,
@@ -876,7 +876,7 @@ void ctrl_Attitude()
 		ESO[2].get_EsAngularAcceleration()
 	);
 	
-	//¼ÆËãENU×ø±êÏµÏÂµÄ½ÇËÙ¶È¡¢½Ç¼ÓËÙ¶È
+	//è®¡ç®—ENUåæ ‡ç³»ä¸‹çš„è§’é€Ÿåº¦ã€è§’åŠ é€Ÿåº¦
 	vector3<double> angular_rate_ENU;
 	angular_rate_ENU.x = Rotation_Matrix_P[0][0]*angular_rate_ESO.x + Rotation_Matrix_P[0][1]*angular_rate_ESO.y + Rotation_Matrix_P[0][2]*angular_rate_ESO.z;
 	angular_rate_ENU.y = Rotation_Matrix_P[1][0]*angular_rate_ESO.x + Rotation_Matrix_P[1][1]*angular_rate_ESO.y + Rotation_Matrix_P[1][2]*angular_rate_ESO.z;
@@ -886,18 +886,18 @@ void ctrl_Attitude()
 	angular_acceleration_ENU.y = Rotation_Matrix_P[1][0]*angular_acceleration_ESO.x + Rotation_Matrix_P[1][1]*angular_acceleration_ESO.y + Rotation_Matrix_P[1][2]*angular_acceleration_ESO.z;
 	angular_acceleration_ENU.z = Rotation_Matrix_P[2][0]*angular_acceleration_ESO.x + Rotation_Matrix_P[2][1]*angular_acceleration_ESO.y + Rotation_Matrix_P[2][2]*angular_acceleration_ESO.z;
 	
-	//ÓÉRoll Pitch¿ØÖÆÄ£Ê½
-	//¼ÆËãRoll PitchÄ¿±ê½ÇËÙ¶È£¨ENUÏµ£©
+	//ç”±Roll Pitchæ§åˆ¶æ¨¡å¼
+	//è®¡ç®—Roll Pitchç›®æ ‡è§’é€Ÿåº¦ï¼ˆENUç³»ï¼‰
 	vector3<double> target_angular_rate_RP;
 	switch( RollPitch_ControlMode )
 	{
 		default:
 		case Attitude_ControlMode_Angle:
 		{
-			//TD4ÂËÄ¿±ê½Ç¶È
+			//TD4æ»¤ç›®æ ‡è§’åº¦
 			Target_tracker_RP.track3( vector2<double>(target_Roll,target_Pitch), 1.0 / CtrlRateHz );
 			
-			//Ê¹ÓÃÄ¿±ê½Ç¶È¹¹ÔìÄ¿±êËÄÔªÊı
+			//ä½¿ç”¨ç›®æ ‡è§’åº¦æ„é€ ç›®æ ‡å››å…ƒæ•°
 			//calculate target quat Q1
 			//      front
 			//       x
@@ -915,8 +915,8 @@ void ctrl_Attitude()
 				-half_sinR*half_sinP
 			);
 			
-			//¼ÆËãÎó²îËÄÔªÊıQ
-			//Q*Q1=Qt  Q1Îªµ±Ç°»úÌåËÄÔªÊı£¬QtÎªÄ¿±êËÄÔªÊı
+			//è®¡ç®—è¯¯å·®å››å…ƒæ•°Q
+			//Q*Q1=Qt  Q1ä¸ºå½“å‰æœºä½“å››å…ƒæ•°ï¼ŒQtä¸ºç›®æ ‡å››å…ƒæ•°
 			//Q=Qt*inv(Q1)
 			Quaternion current_quat_conj = current_quat_PR;	current_quat_conj.conjugate();
 			vector3<double> PR_rotation = ( target_quat_PR * current_quat_conj ).get_Rotation_vec();
@@ -935,18 +935,18 @@ void ctrl_Attitude()
 		{
 			if(inFlight)
 			{
-				//TD4ÂËÄ¿±ê½Ç¶È
+				//TD4æ»¤ç›®æ ‡è§’åº¦
 				Target_trackerY.r2n = Target_trackerY.r2p = degree2rad(cfg.maxYSp[0]);
 				Target_trackerY.track4( target_Yaw , 1.0f / CtrlRateHz );
 				
-				//½Ç¶ÈÎó²î»¯Îª-180 - +180
+				//è§’åº¦è¯¯å·®åŒ–ä¸º-180 - +180
 				double angle_error = Target_trackerY.x1 - Yaw;
 				while( angle_error < -Pi )
 					angle_error+=2*Pi;
 				while( angle_error > Pi )
 					angle_error-=2*Pi;
 
-				//ÇóÄ¿±ê½ÇËÙ¶È
+				//æ±‚ç›®æ ‡è§’é€Ÿåº¦
 				target_angular_rate_Y = angle_error * Ps + Target_trackerY.x2;
 				target_angular_rate_Y = constrain( target_angular_rate_Y , 2.5 );
 			}
@@ -996,7 +996,7 @@ void ctrl_Attitude()
 		}
 	}
 	
-	//¼ÆËãÇ°À¡Á¿
+	//è®¡ç®—å‰é¦ˆé‡
 		double YawAngleP =  ( Target_trackerY.get_tracking_mode() == 4 ) ? ( Ps ) : 0;
 		vector3<double> Tv1_ENU = { Ps*( Target_tracker_RP.x2.x - angular_rate_ENU.x ) + Target_tracker_RP.x3.x ,
 															Ps*( Target_tracker_RP.x2.y - angular_rate_ENU.y ) + Target_tracker_RP.x3.y ,
@@ -1016,9 +1016,9 @@ void ctrl_Attitude()
 		vector3<double> Ta1 = { P2.x*( Tv1.x - angular_acceleration_ESO.x ) + Tv2.x ,
 														P2.y*( Tv1.y - angular_acceleration_ESO.y ) + Tv2.y ,
 														P2.z*( Tv1.z - angular_acceleration_ESO.z ) + Tv2.z };
-	//¼ÆËãÇ°À¡Á¿
+	//è®¡ç®—å‰é¦ˆé‡
 													
-	//°ÑÄ¿±êËÙ¶È´ÓBodyheadingĞı×ªµ½»úÌå
+	//æŠŠç›®æ ‡é€Ÿåº¦ä»Bodyheadingæ—‹è½¬åˆ°æœºä½“
 		vector3<double> target_angular_rate_ENU;
 		target_angular_rate_ENU.x = target_angular_rate_RP.x;
 		target_angular_rate_ENU.y = target_angular_rate_RP.y;
@@ -1028,17 +1028,17 @@ void ctrl_Attitude()
 		target_angular_rate_body.x = Rotation_Matrix[0][0]*target_angular_rate_ENU.x + Rotation_Matrix[0][1]*target_angular_rate_ENU.y + Rotation_Matrix[0][2]*target_angular_rate_ENU.z;
 		target_angular_rate_body.y = Rotation_Matrix[1][0]*target_angular_rate_ENU.x + Rotation_Matrix[1][1]*target_angular_rate_ENU.y + Rotation_Matrix[1][2]*target_angular_rate_ENU.z;
 		target_angular_rate_body.z = Rotation_Matrix[2][0]*target_angular_rate_ENU.x + Rotation_Matrix[2][1]*target_angular_rate_ENU.y + Rotation_Matrix[2][2]*target_angular_rate_ENU.z;
-	//°ÑÄ¿±êËÙ¶È´ÓBodyheadingĞı×ªµ½»úÌå
+	//æŠŠç›®æ ‡é€Ÿåº¦ä»Bodyheadingæ—‹è½¬åˆ°æœºä½“
 													
-	//¼ÆËãÄ¿±ê½Ç¼ÓËÙ¶È
+	//è®¡ç®—ç›®æ ‡è§’åŠ é€Ÿåº¦
 		vector3<double> target_angular_acceleration = target_angular_rate_body - angular_rate_ESO;
 		target_angular_acceleration.x *= P2.x;
 		target_angular_acceleration.y *= P2.y;
 		target_angular_acceleration.z *= P2.z;
 		target_angular_acceleration = target_angular_acceleration + Tv1;
-	//¼ÆËãÄ¿±ê½Ç¼ÓËÙ¶È
+	//è®¡ç®—ç›®æ ‡è§’åŠ é€Ÿåº¦
 													
-	//¼ÆËã½Ç¼ÓËÙ¶ÈÎó²î
+	//è®¡ç®—è§’åŠ é€Ÿåº¦è¯¯å·®
 	vector3<double> angular_acceleration_error = target_angular_acceleration - angular_acceleration_ESO;
 	
 	vector3<double> disturbance(
@@ -1207,25 +1207,25 @@ void ctrl_Attitude()
 	}
 }
 	
-//µç»ú·ÇÏßĞÔÊä³ö ÏßĞÔĞŞÕı
+//ç”µæœºéçº¿æ€§è¾“å‡º çº¿æ€§ä¿®æ­£
 static inline void throttle_nonlinear_compensation( double out[8] )
 {
 	double output_minimum_throttle = cfg.STThrottle[0];
 	double output_range = 100.0f - output_minimum_throttle;
 	double inv_output_range = 1.0 / output_range;
 	
-	//a£º·ÇÏßĞÔÒò×Ó(0-1)
-	//m£º×î´óÓÍÃÅ±ÈÀı(0.6-1)
+	//aï¼šéçº¿æ€§å› å­(0-1)
+	//mï¼šæœ€å¤§æ²¹é—¨æ¯”ä¾‹(0.6-1)
 	
-	//ÉèÓÍÃÅ-Á¦ÇúÏß·½³ÌÎª£º
-	//F = kx^2 + (1-a)x ( 0<=x<=m F×î´óÖµÎª1 )
-	//x = mÊ±£ºkm^2 + (1-a)m = 1
-	//µÃk = ( 1 - (1-a)m ) / m^2
+	//è®¾æ²¹é—¨-åŠ›æ›²çº¿æ–¹ç¨‹ä¸ºï¼š
+	//F = kx^2 + (1-a)x ( 0<=x<=m Fæœ€å¤§å€¼ä¸º1 )
+	//x = mæ—¶ï¼škm^2 + (1-a)m = 1
+	//å¾—k = ( 1 - (1-a)m ) / m^2
 	//a_1 = a - 1
 	//Hk  = 1 / 2k
 	//K4  = 4* k
-	//½â·½³Ì×é£ºkx^2 + (1-a)x = out
-	//µÃµ½µÄx¼´ÎªÏßĞÔ»¯ºóµÄÊä³ö
+	//è§£æ–¹ç¨‹ç»„ï¼škx^2 + (1-a)x = out
+	//å¾—åˆ°çš„xå³ä¸ºçº¿æ€§åŒ–åçš„è¾“å‡º
 	double _lift_max = cfg.FullThrRatio[0];
 	double a_1 = cfg.NonlinearFactor[0] - 1;
 	double k = ( 1 + a_1*_lift_max ) / (_lift_max*_lift_max);
@@ -1264,9 +1264,9 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 	double output_throttle = throttle;
 	double output_midpoint = ( 100.0f - output_minimum_throttle ) / 2;
 	
-	/*pitch roll Êä³öÏŞ·ù*/
-		//Èç¹ûĞèÒªµÄpitch rollÊä³ö³¬³öµ±Ç°ÓÍÃÅÄÜÌá¹©µÄÊä³ö·¶Î§
-		//µ÷ÕûÓÍÃÅ»ñµÃ¾¡Á¿Âú×ãpitch rollÊä³ö
+	/*pitch roll è¾“å‡ºé™å¹…*/
+		//å¦‚æœéœ€è¦çš„pitch rollè¾“å‡ºè¶…å‡ºå½“å‰æ²¹é—¨èƒ½æä¾›çš„è¾“å‡ºèŒƒå›´
+		//è°ƒæ•´æ²¹é—¨è·å¾—å°½é‡æ»¡è¶³pitch rollè¾“å‡º
 		double output_max = fabs(rp_out[0]);
 		for( uint8_t i = 1 ; i < mt_count ; ++i )
 		{
@@ -1279,30 +1279,30 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 		double min_allow_output = output_minimum_throttle - output_throttle;			
 		double allow_ouput_range;
 		if( max_allow_output < -min_allow_output )
-		{	//½µµÍÓÍÃÅÈ·±£×ËÌ¬Êä³ö
+		{	//é™ä½æ²¹é—¨ç¡®ä¿å§¿æ€è¾“å‡º
 			allow_ouput_range = max_allow_output;
 			if( output_max > allow_ouput_range )
-			{	//ĞèÒª½µµÍÓÍÃÅ
+			{	//éœ€è¦é™ä½æ²¹é—¨
 				if( output_max > output_midpoint )
-				{	//Êä³ö³¬¹ı×î´óÊä³ö·¶Î§
-					//½«ÓÍÃÅµ÷ÕûÎª50%È·±£¿ÉÒÔ½øĞĞ×î´óÊä³ö
+				{	//è¾“å‡ºè¶…è¿‡æœ€å¤§è¾“å‡ºèŒƒå›´
+					//å°†æ²¹é—¨è°ƒæ•´ä¸º50%ç¡®ä¿å¯ä»¥è¿›è¡Œæœ€å¤§è¾“å‡º
 					output_throttle = output_midpoint + output_minimum_throttle;
 					allow_ouput_range = output_midpoint;
 				}
 				else
-				{	//½µµÍÓÍÃÅµ½ËùĞèÖµ
+				{	//é™ä½æ²¹é—¨åˆ°æ‰€éœ€å€¼
 					output_throttle = 100.0f - output_max;
 					allow_ouput_range = output_max;
 				}
 			}
 		}
 		else
-		{	//Ì§¸ßÓÍÃÅ±£Ö¤×ËÌ¬Êä³ö
+		{	//æŠ¬é«˜æ²¹é—¨ä¿è¯å§¿æ€è¾“å‡º
 			allow_ouput_range = -min_allow_output;
 			if( output_max > allow_ouput_range )
-			{	//ĞèÒªÌ§¸ßÓÍÃÅ
+			{	//éœ€è¦æŠ¬é«˜æ²¹é—¨
 				
-				//Çó×î¸ßÔÊĞíµÄÓÍÃÅÖµ£¨²»ÄÜ´óÓÚĞüÍ£ÓÍÃÅ£©
+				//æ±‚æœ€é«˜å…è®¸çš„æ²¹é—¨å€¼ï¼ˆä¸èƒ½å¤§äºæ‚¬åœæ²¹é—¨ï¼‰
 				double hover_throttle_force = hover_throttle - output_minimum_throttle;
 				double max_allowed_output_range = hover_throttle_force*0.85;
 				if( output_midpoint < max_allowed_output_range )
@@ -1312,22 +1312,22 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 				double max_allowed_throttle = max_allowed_output_range + output_minimum_throttle;
 				
 				if( output_max > max_allowed_output_range )
-				{	//Êä³ö·¶Î§´óÓÚ×î´óÔÊĞí·¶Î§
-					//Ì§¸ßÓÍÃÅÖÁ×î´óÔÊĞí·¶Î§
+				{	//è¾“å‡ºèŒƒå›´å¤§äºæœ€å¤§å…è®¸èŒƒå›´
+					//æŠ¬é«˜æ²¹é—¨è‡³æœ€å¤§å…è®¸èŒƒå›´
 					output_throttle = max_allowed_throttle;
 					allow_ouput_range = max_allowed_output_range;
 				}
 				else
-				{	//Ì§¸ßÓÍÃÅµ½ËùĞèÖµ
+				{	//æŠ¬é«˜æ²¹é—¨åˆ°æ‰€éœ€å€¼
 					output_throttle = output_minimum_throttle + output_max;
 					allow_ouput_range = output_max;
 				}
 			}
 		}
 		
-		//Êä³öÏŞ·ùĞŞÕı
+		//è¾“å‡ºé™å¹…ä¿®æ­£
 		if( output_max > allow_ouput_range )
-		{	//ĞèÒªĞŞÕıÊä³ö
+		{	//éœ€è¦ä¿®æ­£è¾“å‡º
 			double scale  = allow_ouput_range / output_max;
 			for( uint8_t i = 0 ; i < mt_count ; ++i )
 				rotor_output[i] = rp_out[i] * scale;
@@ -1341,12 +1341,12 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 			Roll_u = outRoll;
 			Pitch_u = outPitch;
 		}			
-	/*pitch roll Êä³öÏŞ·ù*/
+	/*pitch roll è¾“å‡ºé™å¹…*/
 	
-	/*yaw output Êä³öÏŞ·ù*/
-		//Ì§ÉıÓÍÃÅ±£×¡Æ«º½Êä³ö
+	/*yaw output è¾“å‡ºé™å¹…*/
+		//æŠ¬å‡æ²¹é—¨ä¿ä½åèˆªè¾“å‡º
 		
-		//¼ÆËãÆ«º½Êä³öµ½ÉÏÏÂ½ç¾àÀë
+		//è®¡ç®—åèˆªè¾“å‡ºåˆ°ä¸Šä¸‹ç•Œè·ç¦»
 		double yaw_out_up=100, yaw_out_dn=100;
 		for( uint8_t i = 0 ; i < mt_count ; ++i )
 		{
@@ -1355,13 +1355,13 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 			min_allow_output = current_rotor_output - output_minimum_throttle;
 						
 			if( yaw_out[i] > 0 )
-			{	//¸üĞÂ¾àÀëÉÏ½ç¾àÀë
+			{	//æ›´æ–°è·ç¦»ä¸Šç•Œè·ç¦»
 				double out_up = max_allow_output - yaw_out[i];
 				if( out_up < yaw_out_up )
 					yaw_out_up = out_up;
 			}
 			else
-			{	//¸üĞÂ¾àÀëÏÂ½ç¾àÀë
+			{	//æ›´æ–°è·ç¦»ä¸‹ç•Œè·ç¦»
 				double out_dn = min_allow_output - -yaw_out[i];
 				if( out_dn < yaw_out_dn )
 					yaw_out_dn = out_dn;
@@ -1369,10 +1369,10 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 		}
 		
 		if( yaw_out_dn < 0 )
-		{	//Æ«º½Êä³ö³¬³öÏÂ½ç
-			//Ì§ÉıÓÍÃÅ±£×¡Æ«º½Êä³ö
+		{	//åèˆªè¾“å‡ºè¶…å‡ºä¸‹ç•Œ
+			//æŠ¬å‡æ²¹é—¨ä¿ä½åèˆªè¾“å‡º
 			
-			//Çó×î¸ßÔÊĞíµÄÓÍÃÅÖµ£¨²»ÄÜ´óÓÚĞüÍ£ÓÍÃÅ£©
+			//æ±‚æœ€é«˜å…è®¸çš„æ²¹é—¨å€¼ï¼ˆä¸èƒ½å¤§äºæ‚¬åœæ²¹é—¨ï¼‰
 			double hover_throttle_force = hover_throttle - output_minimum_throttle;
 			double max_allowed_output_range = hover_throttle_force*0.95;
 			if( output_midpoint < max_allowed_output_range )
@@ -1381,21 +1381,21 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 				max_allowed_output_range = output_throttle - output_minimum_throttle;
 			double max_allowed_throttle = max_allowed_output_range + output_minimum_throttle;
 			
-			//ÆÚÍûÌ§ÉıµÄÓÍÃÅÁ¿
+			//æœŸæœ›æŠ¬å‡çš„æ²¹é—¨é‡
 			double req_up = -yaw_out_dn;
-			//Ì§ÉıÓÍÃÅÁ¿²»ÄÜÊ¹Êä³ö³¬³öÉÏ½ç
+			//æŠ¬å‡æ²¹é—¨é‡ä¸èƒ½ä½¿è¾“å‡ºè¶…å‡ºä¸Šç•Œ
 			if( req_up > yaw_out_up )
 				req_up = yaw_out_up;
 			if( req_up < 0 )
 				req_up = 0;
 			
-			//Ì§ÉıÓÍÃÅ
+			//æŠ¬å‡æ²¹é—¨
 			output_throttle += req_up;
 			if( output_throttle > max_allowed_throttle )
 				output_throttle = max_allowed_throttle;
 		}
 
-		/*yawÊä³öÏŞ·ù¼ÆËã*/
+		/*yawè¾“å‡ºé™å¹…è®¡ç®—*/
 			double yaw_scale = 1.0;		
 			for( uint8_t i = 0 ; i < mt_count ; ++i )
 			{
@@ -1413,18 +1413,18 @@ static void ctrl_Attitude_MultiRotor( uint8_t mt_count, double outRoll, double o
 					if( new_yaw_scale < yaw_scale ) yaw_scale = new_yaw_scale;
 				}
 			}						
-		/*yawÊä³öÏŞ·ù¼ÆËã*/
+		/*yawè¾“å‡ºé™å¹…è®¡ç®—*/
 		
 		//lower yaw output to ensure attitude control and alt control
 		if( yaw_scale < 0 )
 			yaw_scale = 0;
 		outYaw *= yaw_scale;
 		Yaw_u = outYaw;
-	/*yaw output Êä³öÏŞ·ù*/
+	/*yaw output è¾“å‡ºé™å¹…*/
 		
-	//¸üĞÂÓÍÃÅÓÍÃÅ¹Û²â
+	//æ›´æ–°æ²¹é—¨æ²¹é—¨è§‚æµ‹
 	update_output_throttle( output_throttle , 1.0/CtrlRateHz );
-	//²¹³¥·ÇÏßĞÔÊä³ö
+	//è¡¥å¿éçº¿æ€§è¾“å‡º
 	for( uint8_t i = 0 ; i < mt_count ; ++i )
 		rotor_output[i] += output_throttle + yaw_scale*yaw_out[i];
 	throttle_nonlinear_compensation( rotor_output );
@@ -1437,7 +1437,7 @@ void init_Ctrl_Attitude()
 	WindDisturbance_filter[0].set_cutoff_frequency( CtrlRateHz , 0.1 );
 	WindDisturbance_filter[1].set_cutoff_frequency( CtrlRateHz , 0.1 );
 	
-	//×¢²á²ÎÊı
+	//æ³¨å†Œå‚æ•°
 	cfg.UAVType = UAVType_Rotor4_X;
 	cfg.STThrottle[0] = 10;
 	cfg.NonlinearFactor[0] = 0.45;
@@ -1460,9 +1460,9 @@ void init_Ctrl_Attitude()
 	cfg.maxYAcc[0] = 1000;
 	MAV_PARAM_TYPE param_types[] = {
 		MAV_PARAM_TYPE_UINT8 ,	//UAV Type
-		MAV_PARAM_TYPE_REAL32 ,	//Æğ×ªÓÍÃÅ
-		MAV_PARAM_TYPE_REAL32 ,	//·ÇÏßĞÔ²ÎÊı
-		MAV_PARAM_TYPE_REAL32 ,	//ÂúÓÍÃÅ±ÈÀı
+		MAV_PARAM_TYPE_REAL32 ,	//èµ·è½¬æ²¹é—¨
+		MAV_PARAM_TYPE_REAL32 ,	//éçº¿æ€§å‚æ•°
+		MAV_PARAM_TYPE_REAL32 ,	//æ»¡æ²¹é—¨æ¯”ä¾‹
 		MAV_PARAM_TYPE_REAL32 ,	//T
 		MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,	//b[3]
 		MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,	//TD4_P1[3]
@@ -1474,7 +1474,7 @@ void init_Ctrl_Attitude()
 		MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,	//P3[3]
 		MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,MAV_PARAM_TYPE_REAL32 ,	//P4[3]
 		MAV_PARAM_TYPE_REAL32 ,	//beta
-		MAV_PARAM_TYPE_REAL32 ,	//×î´óÇãĞ±½Ç
+		MAV_PARAM_TYPE_REAL32 ,	//æœ€å¤§å€¾æ–œè§’
 		MAV_PARAM_TYPE_REAL32 ,	//maxRPSp
 		MAV_PARAM_TYPE_REAL32 ,	//maxRPAcc
 		MAV_PARAM_TYPE_REAL32 ,	//maxYSp
@@ -1482,9 +1482,9 @@ void init_Ctrl_Attitude()
 	};
 	SName param_names[] = {
 		"AC_UAVType" ,	//UAV Type
-		"AC_STThr" ,	//Æğ×ªÓÍÃÅ
-		"AC_NonlinF" ,	//·ÇÏßĞÔ²ÎÊı
-		"AC_FullThrR" ,	//ÂúÓÍÃÅ±ÈÀı
+		"AC_STThr" ,	//èµ·è½¬æ²¹é—¨
+		"AC_NonlinF" ,	//éçº¿æ€§å‚æ•°
+		"AC_FullThrR" ,	//æ»¡æ²¹é—¨æ¯”ä¾‹
 		"AC_T" ,	//T
 		"AC_Roll_b" ,"AC_Pitch_b" ,"AC_Yaw_b" ,	//b[3]
 		"AC_Roll_TD4P1" ,"AC_Pitch_TD4P1" ,"AC_Yaw_TD4P1" ,	//TD4_P1[3]
@@ -1496,11 +1496,11 @@ void init_Ctrl_Attitude()
 		"AC_Roll_P3" ,"AC_Pitch_P3" ,"AC_Yaw_P3" ,	//P3[3]
 		"AC_Roll_P4" ,"AC_Pitch_P4" ,"AC_Yaw_P4" ,	//P4[3]
 		"AC_Beta" ,	//beta
-		"AC_maxLean" ,	//×î´óÇãĞ±½Ç
-		"AC_maxRPSp" ,	//×î´óPitch RollËÙ¶È
-		"AC_maxRPAcc" ,	//×î´óPitch Roll¼ÓËÙ¶È
-		"AC_maxYSp" ,	//×î´óÆ«º½ËÙ¶È
-		"AC_maxYAcc" ,	//×î´óÆ«º½¼ÓËÙ¶È
+		"AC_maxLean" ,	//æœ€å¤§å€¾æ–œè§’
+		"AC_maxRPSp" ,	//æœ€å¤§Pitch Rollé€Ÿåº¦
+		"AC_maxRPAcc" ,	//æœ€å¤§Pitch RollåŠ é€Ÿåº¦
+		"AC_maxYSp" ,	//æœ€å¤§åèˆªé€Ÿåº¦
+		"AC_maxYAcc" ,	//æœ€å¤§åèˆªåŠ é€Ÿåº¦
 	};
 	ParamGroupRegister( "AttCtrl", 3, 38, param_types, param_names, (uint64_t*)&cfg );
 }
