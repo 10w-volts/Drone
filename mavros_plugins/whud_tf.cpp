@@ -12,6 +12,8 @@ namespace mavros{
                     PluginBase::initialize(uas_);
 
                     lidar_timer = mav_control_nh.createTimer(ros::Duration(0.1), &WhudTfPlugin::lidar_cb, this);
+                    visual_pos_timer = mav_control_nh.createTimer(ros::Duration(0.1), &WhudTfPlugin::visual_pos_cb, this);
+                    visual_vel_timer = mav_control_nh.createTimer(ros::Duration(0.1), &WhudTfPlugin::visual_vel_cb, this);
 
                     // tf_sub = mav_control_nh.subscribe("/tf", 1, &WhudTfPlugin::tf_cb, this);
                 }
@@ -20,13 +22,15 @@ namespace mavros{
                     return{};
                 }
             private:
-                ros::Timer lidar_timer;
+                ros::Timer lidar_timer, visual_pos_timer, visual_vel_timer;
                 ros::NodeHandle mav_control_nh;
                 // ros::Subscriber tf_sub;
 
                 tf::TransformListener tf_listener_;
 
                 bool lidar_transform_exist = false;
+                bool visual_pose_transform_exist = false;
+                bool visual_vel_transform_exist = false;
 
                 void lidar_cb(const ros::TimerEvent &event)
                 {
@@ -54,10 +58,20 @@ namespace mavros{
                         msg.x = tf_transform.getOrigin().getX();
                         msg.y = tf_transform.getOrigin().getY();
                         msg.z = tf_transform.getOrigin().getZ();
+                        msg.q[0] = tf_transform.getRotation().getW();
+                        msg.q[1] = tf_transform.getRotation().getAxis().getX();
+                        msg.q[2] = tf_transform.getRotation().getAxis().getY();
+                        msg.q[3] = tf_transform.getRotation().getAxis().getZ();
 
                         UAS_FCU(m_uas)->send_message_ignore_drop(msg);
                     }
                 }
+
+                void visual_pos_cb(const ros::TimerEvent &event)
+                {}
+
+                void visual_vel_cb(const ros::TimerEvent &event)
+                {}
 
                 /*
                 void tf_cb(const tf::tfMessage::ConstPtr &tf)
