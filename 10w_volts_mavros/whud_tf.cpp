@@ -11,18 +11,55 @@ namespace mavros{
                 void initialize(UAS &uas_) override {
                     PluginBase::initialize(uas_);
 
-                    tf_sub = mav_control_nh.subscribe("/tf", 1, &WhudTfPlugin::tf_cb, this);
+                    lidar_timer = mav_control_nh.createTimer(ros::Duration(0.1), &WhudTfPlugin::lidar_cb, this);
+
+                    // tf_sub = mav_control_nh.subscribe("/tf", 1, &WhudTfPlugin::tf_cb, this);
                 }
                 Subscriptions get_subscriptions() override
                 {
                     return{};
                 }
             private:
+                ros::Timer lidar_timer;
                 ros::NodeHandle mav_control_nh;
-                ros::Subscriber tf_sub;
+                // ros::Subscriber tf_sub;
 
                 tf::TransformListener tf_listener_;
 
+                bool lidar_transform_exist = false;
+
+                void lidar_cb(const ros::TimerEvent &event)
+                {
+                    if(!lidar_transform_exist)
+                    {
+                        if(tf_listener_.canTransform("/map", "/track_link", ros::Time(0)))
+                            lidar_transform_exist = true;
+                        else
+                            lidar_transform_exist = false;
+                    }
+                    else
+                    {
+                        tf::StampedTransform tf_transform;
+                        try
+                        {
+                            tf_listener_.lookupTransform("/map", "/track_link", ros::Time(0), tf_transform);
+                        }
+                        catch(tf::TransformException &ex)
+                        {
+                            lidar_transform_exist = false;
+                            ROS_WARN("%s", ex.what());
+                            return;
+                        }
+                        mavlink::common::msg::ATT_POS_MOCAP msg;
+                        msg.x = tf_transform.getOrigin().getX();
+                        msg.y = tf_transform.getOrigin().getY();
+                        msg.z = tf_transform.getOrigin().getZ();
+
+                        UAS_FCU(m_uas)->send_message_ignore_drop(msg);
+                    }
+                }
+
+                /*
                 void tf_cb(const tf::tfMessage::ConstPtr &tf)
                 {
                     mavlink::common::msg::ATT_POS_MOCAP msg;
@@ -47,6 +84,7 @@ namespace mavros{
 
                     UAS_FCU(m_uas)->send_message_ignore_drop(msg);
                 }
+                */
         };
     }
 }
