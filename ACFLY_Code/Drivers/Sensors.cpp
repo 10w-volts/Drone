@@ -23,7 +23,7 @@
 	
 	
 	
-	/*IMU´«¸ĞÆ÷×¢²áº¯Êı*/
+	/*IMUä¼ æ„Ÿå™¨æ³¨å†Œå‡½æ•°*/
 		bool IMUAccelerometerRegister( uint8_t index, SName name, double sensitivity, double TIMEOUT )
 		{
 			if( index >= IMU_Sensors_Count )
@@ -49,7 +49,7 @@
 				sensor->data.zero();
 				sensor->data_raw.zero();
 				
-				//×¢²á²ÎÊı
+				//æ³¨å†Œå‚æ•°
 				MAV_PARAM_TYPE types[] = { MAV_PARAM_TYPE_UINT64, MAV_PARAM_TYPE_UINT64, MAV_PARAM_TYPE_UINT64 };
 				IMUConfig initial_cfg;
 				initial_cfg.offset[0] = initial_cfg.offset[1] = initial_cfg.offset[2] = 0;
@@ -114,7 +114,7 @@
 				sensor->data.zero();
 				sensor->data_raw.zero();
 				
-				//×¢²á²ÎÊı
+				//æ³¨å†Œå‚æ•°
 				MAV_PARAM_TYPE types[] = { MAV_PARAM_TYPE_UINT64, MAV_PARAM_TYPE_UINT64, MAV_PARAM_TYPE_UINT64 };
 				IMUConfig initial_cfg;
 				initial_cfg.offset[0] = initial_cfg.offset[1] = initial_cfg.offset[2] = 0;
@@ -179,7 +179,7 @@
 				sensor->data.zero();
 				sensor->data_raw.zero();
 				
-				//×¢²á²ÎÊı
+				//æ³¨å†Œå‚æ•°
 				MAV_PARAM_TYPE types[] = { MAV_PARAM_TYPE_UINT64, MAV_PARAM_TYPE_UINT64, MAV_PARAM_TYPE_UINT64 };
 				IMUConfig initial_cfg;
 				initial_cfg.offset[0] = initial_cfg.offset[1] = initial_cfg.offset[2] = 0;
@@ -218,9 +218,9 @@
 			}
 			return false;
 		}
-	/*IMU´«¸ĞÆ÷×¢²áº¯Êı*/
+	/*IMUä¼ æ„Ÿå™¨æ³¨å†Œå‡½æ•°*/
 		
-	/*IMU´«¸ĞÆ÷¸üĞÂº¯Êı*/
+	/*IMUä¼ æ„Ÿå™¨æ›´æ–°å‡½æ•°*/
 		bool IMUAccelerometerUpdate( uint8_t index, vector3<int32_t> data, bool data_error, double TIMEOUT )
 		{
 			if( index >= IMU_Sensors_Count )
@@ -243,7 +243,7 @@
 				}
 				
 				IMU_Sensor* sensor = Accelerometers[index];
-				//¶ÁÈ¡²ÎÊı				
+				//è¯»å–å‚æ•°				
 				IMUConfig cfg;	bool is_new;
 				if( ReadParamGroup( sensor->name + "_Acc", (uint64_t*)&cfg, &is_new ) == PR_OK )
 				{
@@ -257,9 +257,9 @@
 						sensor->calibrated = false;
 				}
 				
-				//Ğ´Èë¸üĞÂÊ±¼ä
+				//å†™å…¥æ›´æ–°æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();
-				//Ğ´Èë´«¸ĞÆ÷Êı¾İ
+				//å†™å…¥ä¼ æ„Ÿå™¨æ•°æ®
 				sensor->have_temperature = false;
 				sensor->data_error = data_error;
 				sensor->data_raw = data;
@@ -295,7 +295,7 @@
 				}
 				
 				IMU_Sensor* sensor = Accelerometers[index];
-				//¶ÁÈ¡²ÎÊı				
+				//è¯»å–å‚æ•°				
 				IMUConfig cfg;	bool is_new;
 				if( ReadParamGroup( sensor->name + "_Acc", (uint64_t*)&cfg, &is_new ) == PR_OK )
 				{
@@ -309,9 +309,9 @@
 						sensor->calibrated = false;
 				}
 				
-				//Ğ´Èë¸üĞÂÊ±¼ä
+				//å†™å…¥æ›´æ–°æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();
-				//Ğ´Èë´«¸ĞÆ÷Êı¾İ
+				//å†™å…¥ä¼ æ„Ÿå™¨æ•°æ®
 				sensor->have_temperature = true;
 				sensor->data_error = data_error;
 			 	sensor->temperature = temperature;
@@ -353,7 +353,7 @@
 				}
 				
 				IMU_Sensor* sensor = Gyroscopes[index];
-				//¶ÁÈ¡²ÎÊı
+				//è¯»å–å‚æ•°
 				IMUConfig cfg;	bool is_new;
 				if( ReadParamGroup( sensor->name + "_Gyro", (uint64_t*)&cfg, &is_new ) == PR_OK )
 				{
@@ -367,9 +367,9 @@
 						sensor->calibrated = false;
 				}
 				
-				//Ğ´Èë¸üĞÂÊ±¼ä
+				//å†™å…¥æ›´æ–°æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();
-				//Ğ´Èë´«¸ĞÆ÷Êı¾İ
+				//å†™å…¥ä¼ æ„Ÿå™¨æ•°æ®
 				sensor->have_temperature = false;
 				sensor->data_error = data_error;
 				sensor->data_raw = data;
@@ -405,7 +405,7 @@
 				}
 				
 				IMU_Sensor* sensor = Gyroscopes[index];
-				//¶ÁÈ¡²ÎÊı
+				//è¯»å–å‚æ•°
 				IMUConfig cfg;	bool is_new;
 				if( ReadParamGroup( sensor->name + "_Gyro", (uint64_t*)&cfg, &is_new ) == PR_OK )
 				{
@@ -419,9 +419,9 @@
 						sensor->calibrated = false;
 				}
 				
-				//Ğ´Èë¸üĞÂÊ±¼ä
+				//å†™å…¥æ›´æ–°æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();
-				//Ğ´Èë´«¸ĞÆ÷Êı¾İ
+				//å†™å…¥ä¼ æ„Ÿå™¨æ•°æ®
 				sensor->have_temperature = true;
 				sensor->temperature = temperature;
 				sensor->data_error = data_error;
@@ -463,7 +463,7 @@
 				}
 				
 				IMU_Sensor* sensor = Magnetometers[index];
-				//¶ÁÈ¡²ÎÊı
+				//è¯»å–å‚æ•°
 				IMUConfig cfg;	bool is_new;
 				if( ReadParamGroup( sensor->name + "_Mag", (uint64_t*)&cfg, &is_new ) == PR_OK )
 				{
@@ -477,9 +477,9 @@
 						sensor->calibrated = false;
 				}
 				
-				//Ğ´Èë¸üĞÂÊ±¼ä
+				//å†™å…¥æ›´æ–°æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();
-				//Ğ´Èë´«¸ĞÆ÷Êı¾İ
+				//å†™å…¥ä¼ æ„Ÿå™¨æ•°æ®
 				sensor->have_temperature = false;
 				sensor->data_error = data_error;
 				sensor->data_raw = data;
@@ -515,7 +515,7 @@
 				}
 				
 				IMU_Sensor* sensor = Magnetometers[index];
-				//¶ÁÈ¡²ÎÊı
+				//è¯»å–å‚æ•°
 				IMUConfig cfg;	bool is_new;
 				if( ReadParamGroup( sensor->name + "_Mag", (uint64_t*)&cfg, &is_new ) == PR_OK )
 				{
@@ -529,9 +529,9 @@
 						sensor->calibrated = false;
 				}
 				
-				//Ğ´Èë¸üĞÂÊ±¼ä
+				//å†™å…¥æ›´æ–°æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();
-				//Ğ´Èë´«¸ĞÆ÷Êı¾İ
+				//å†™å…¥ä¼ æ„Ÿå™¨æ•°æ®
 				sensor->have_temperature = true;
 				sensor->temperature = temperature;
 				sensor->data_error = data_error;
@@ -550,9 +550,9 @@
 			}
 			return false;
 		}
-	/*IMU´«¸ĞÆ÷¸üĞÂº¯Êı*/
+	/*IMUä¼ æ„Ÿå™¨æ›´æ–°å‡½æ•°*/
 		
-	/*IMU´«¸ĞÆ÷¶ÁÈ¡º¯Êı*/
+	/*IMUä¼ æ„Ÿå™¨è¯»å–å‡½æ•°*/
 		bool GetAccelerometer( uint8_t index, IMU_Sensor* sensor, double TIMEOUT )
 		{
 			if( index >= IMU_Sensors_Count )
@@ -625,11 +625,11 @@
 			}
 			return false;
 		}
-	/*IMU´«¸ĞÆ÷¶ÁÈ¡º¯Êı*/
+	/*IMUä¼ æ„Ÿå™¨è¯»å–å‡½æ•°*/
 		
 /*IMU*/
 		
-/*Î»ÖÃ´«¸ĞÆ÷*/
+/*ä½ç½®ä¼ æ„Ÿå™¨*/
 		
 	const uint8_t default_ultrasonic_sensor_index = 1;
 	const uint8_t default_optical_flow_index = 8;
@@ -641,7 +641,7 @@
 	static SemaphoreHandle_t Position_Sensors_Mutex[Position_Sensors_Count] = {0};
 	static Position_Sensor* Position_Sensors[Position_Sensors_Count];
 		
-	/*Î»ÖÃ´«¸ĞÆ÷×¢²áº¯Êı*/
+	/*ä½ç½®ä¼ æ„Ÿå™¨æ³¨å†Œå‡½æ•°*/
 		bool PositionSensorRegister( 
 			uint8_t index ,\
 			Position_Sensor_Type sensor_type ,\
@@ -694,7 +694,7 @@
 				sensor->mp.initialized = false;				
 				sensor->data_quat = quat;
 				
-				//¼ÇÂ¼¸½¼ÓĞÅÏ¢
+				//è®°å½•é™„åŠ ä¿¡æ¯
 				if(addition_inf)
 					memcpy( sensor->addition_inf, addition_inf, 8*sizeof(double) );
 				else
@@ -702,7 +702,7 @@
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
 		bool PositionSensorUnRegister( uint8_t index, double TIMEOUT )
@@ -716,7 +716,7 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -729,12 +729,12 @@
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
-	/*Î»ÖÃ´«¸ĞÆ÷×¢²áº¯Êı*/
+	/*ä½ç½®ä¼ æ„Ÿå™¨æ³¨å†Œå‡½æ•°*/
 	
-	//¸ü¸ÄÎ»ÖÃ´«¸ĞÆ÷DataType
+	//æ›´æ”¹ä½ç½®ä¼ æ„Ÿå™¨DataType
 	bool PositionSensorChangeDataType( uint8_t index, Position_Sensor_DataType datatype, double TIMEOUT )
 	{
 		if( index >= Position_Sensors_Count )
@@ -746,7 +746,7 @@
 		else
 			TIMEOUT_Ticks = portMAX_DELAY;
 		if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-		{	//Ëø¶¨´«¸ĞÆ÷
+		{	//é”å®šä¼ æ„Ÿå™¨
 			if( Position_Sensors[index] == 0 )
 			{
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -758,13 +758,13 @@
 			
 			xSemaphoreGive(Position_Sensors_Mutex[index]);
 			return true;
-		}	//½âËø´«¸ĞÆ÷
+		}	//è§£é”ä¼ æ„Ÿå™¨
 		return false;
 	}
 		
-	/*Î»ÖÃ´«¸ĞÆ÷¸üĞÂº¯Êı*/
+	/*ä½ç½®ä¼ æ„Ÿå™¨æ›´æ–°å‡½æ•°*/
 		
-		//Ê§ÄÜÎ»ÖÃ´«¸ĞÆ÷
+		//å¤±èƒ½ä½ç½®ä¼ æ„Ÿå™¨
 		bool PositionSensorSetInavailable( uint8_t index, const double* addition_inf, double TIMEOUT )
 		{
 			if( index >= Position_Sensors_Count )
@@ -784,7 +784,7 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -792,26 +792,26 @@
 				}
 				
 				Position_Sensor* sensor = Position_Sensors[index];
-				//¸üĞÂ¿ÉÓÃ×´Ì¬
+				//æ›´æ–°å¯ç”¨çŠ¶æ€
 				if( sensor->available != false )
 					sensor->available_status_update_time = TIME::now();
 				sensor->available = false;
-				//¸üĞÂ²ÉÑùÊ±¼ä
+				//æ›´æ–°é‡‡æ ·æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();
-				//¸´Î»×ËÌ¬
+				//å¤ä½å§¿æ€
 				sensor->data_quat = quat;
 				
-				//¼ÇÂ¼¸½¼ÓĞÅÏ¢
+				//è®°å½•é™„åŠ ä¿¡æ¯
 				if(addition_inf)
 					memcpy( sensor->addition_inf, addition_inf, 8*sizeof(double) );
 				
-				//¼ÇÂ¼Î»ÖÃÊı¾İ
+				//è®°å½•ä½ç½®æ•°æ®
 				if(inFlight && log)
 					SDLog_Msg_PosSensor( index, *sensor );
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);				
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
 	
@@ -825,7 +825,7 @@
 			uint64_t log = 0;
 			ReadParam( "SDLog_PosSensor", 0, 0, (uint64_t*)&log, 0 );
 			
-			//¶ÁÈ¡Æ«ÒÆĞ£×¼
+			//è¯»å–åç§»æ ¡å‡†
 			char ofs_ind[2] = {0};
 			ofs_ind[0] = index + '0';
 			SName ofs_name = SName("POfs_S")+SName(ofs_ind);
@@ -842,11 +842,11 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			
-			//»ñÈ¡ÀúÊ·×ËÌ¬
+			//è·å–å†å²å§¿æ€
 			if( delay >= 0 )
 			{
 				if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-				{	//Ëø¶¨´«¸ĞÆ÷»ñÈ¡ÑÓÊ±Ê±¼ä
+				{	//é”å®šä¼ æ„Ÿå™¨è·å–å»¶æ—¶æ—¶é—´
 					Position_Sensor* sensor = Position_Sensors[index];
 					delay = sensor->delay;
 					
@@ -855,12 +855,12 @@
 				else
 					return false;
 			}
-			//»ñÈ¡ÑÓÊ±²¹³¥×ËÌ¬
+			//è·å–å»¶æ—¶è¡¥å¿å§¿æ€
 			Quaternion quat;
 			get_history_AirframeQuatY( &quat, delay );		
 			
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -869,7 +869,7 @@
 				
 				Position_Sensor* sensor = Position_Sensors[index];
 				
-				//ÅĞ¶Ï´«¸ĞÆ÷ÀàĞÍ¡¢Êı¾İÊÇ·ñÕıÈ·
+				//åˆ¤æ–­ä¼ æ„Ÿå™¨ç±»å‹ã€æ•°æ®æ˜¯å¦æ­£ç¡®
 				bool data_effective;
 				switch( sensor->sensor_DataType )
 				{
@@ -901,31 +901,31 @@
 						break;
 				}
 				if( !data_effective )
-				{	//Êı¾İ³ö´íÍË³ö
+				{	//æ•°æ®å‡ºé”™é€€å‡º
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
 					return false;
 				}								
 				
-				//¸üĞÂ¿ÉÓÃ×´Ì¬
+				//æ›´æ–°å¯ç”¨çŠ¶æ€
 				if( sensor->available != available )
 					sensor->available_status_update_time = TIME::now();
 				sensor->available = available;
 				
-				//¸üĞÂ²ÉÑùÊ±¼ä
+				//æ›´æ–°é‡‡æ ·æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();				
-				//¸üĞÂÑÓÊ±Ê±¼ä
+				//æ›´æ–°å»¶æ—¶æ—¶é—´
 				if( delay >= 0 )
 					sensor->delay = delay;
-				//¸üĞÂĞÅÈÎ¶È
+				//æ›´æ–°ä¿¡ä»»åº¦
 				if( xy_trustD >= 0 )
 					sensor->xy_trustD = xy_trustD;
 				if( z_trustD >= 0 )
 					sensor->z_trustD = z_trustD;
 				
-				//¸üĞÂÊı¾İ
+				//æ›´æ–°æ•°æ®
 				sensor->position_Global = position_Global;				
 				
-				//¾­Î³×ø±êÆ½ÃæÍ¶Ó°
+				//ç»çº¬åæ ‡å¹³é¢æŠ•å½±
 				if( available )
 				{					
 					if( sensor->mp.initialized == false )
@@ -941,20 +941,20 @@
 					sensor->position.z = position_Global.z - offset_comp.z;
 				}
 					
-				//¼ÇÂ¼×ËÌ¬
+				//è®°å½•å§¿æ€
 				sensor->data_quat = quat;
 				
-				//¼ÇÂ¼¸½¼ÓĞÅÏ¢
+				//è®°å½•é™„åŠ ä¿¡æ¯
 				if(addition_inf)
 					memcpy( sensor->addition_inf, addition_inf, 8*sizeof(double) );
 				
-				//¼ÇÂ¼Î»ÖÃÊı¾İ
+				//è®°å½•ä½ç½®æ•°æ®
 				if(inFlight && log)
 					SDLog_Msg_PosSensor( index, *sensor );
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
 		bool PositionSensorUpdatePosition( uint8_t index, vector3<double> position, bool available, double delay, double xy_trustD, double z_trustD, const double* addition_inf, double TIMEOUT )
@@ -967,7 +967,7 @@
 			uint64_t log = 0;
 			ReadParam( "SDLog_PosSensor", 0, 0, (uint64_t*)&log, 0 );
 			
-			//¶ÁÈ¡Æ«ÒÆĞ£×¼
+			//è¯»å–åç§»æ ¡å‡†
 			char ofs_ind[2] = {0};
 			ofs_ind[0] = index + '0';
 			SName ofs_name = SName("POfs_S")+SName(ofs_ind);
@@ -984,11 +984,11 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			
-			//»ñÈ¡ÀúÊ·×ËÌ¬
+			//è·å–å†å²å§¿æ€
 			if( delay >= 0 )
 			{
 				if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-				{	//Ëø¶¨´«¸ĞÆ÷»ñÈ¡ÑÓÊ±Ê±¼ä
+				{	//é”å®šä¼ æ„Ÿå™¨è·å–å»¶æ—¶æ—¶é—´
 					Position_Sensor* sensor = Position_Sensors[index];
 					delay = sensor->delay;
 					
@@ -997,12 +997,12 @@
 				else
 					return false;
 			}
-			//»ñÈ¡ÑÓÊ±²¹³¥×ËÌ¬
+			//è·å–å»¶æ—¶è¡¥å¿å§¿æ€
 			Quaternion quat;
 			get_history_AirframeQuatY( &quat, delay );
 			
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -1010,7 +1010,7 @@
 				}
 				
 				Position_Sensor* sensor = Position_Sensors[index];
-				//ÅĞ¶Ï´«¸ĞÆ÷ÀàĞÍ¡¢Êı¾İÊÇ·ñÕıÈ·
+				//åˆ¤æ–­ä¼ æ„Ÿå™¨ç±»å‹ã€æ•°æ®æ˜¯å¦æ­£ç¡®
 				bool data_effective;
 				switch( sensor->sensor_DataType )
 				{
@@ -1042,45 +1042,45 @@
 						break;
 				}
 				if( !data_effective )
-				{	//Êı¾İ³ö´íÍË³ö
+				{	//æ•°æ®å‡ºé”™é€€å‡º
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
 					return false;
 				}
 				
-				//¸üĞÂ¿ÉÓÃ×´Ì¬
+				//æ›´æ–°å¯ç”¨çŠ¶æ€
 				if( sensor->available != available )
 					sensor->available_status_update_time = TIME::now();
 				sensor->available = available;
 				
-				//¸üĞÂ²ÉÑùÊ±¼ä
+				//æ›´æ–°é‡‡æ ·æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();	
-				//ÑÓÊ±´óÓÚ0¸üĞÂÑÓÊ±
+				//å»¶æ—¶å¤§äº0æ›´æ–°å»¶æ—¶
 				if( delay > 0 )
 					sensor->delay = delay;
-				//¸üĞÂĞÅÈÎ¶È
+				//æ›´æ–°ä¿¡ä»»åº¦
 				if( xy_trustD >= 0 )
 					sensor->xy_trustD = xy_trustD;
 				if( z_trustD >= 0 )
 					sensor->z_trustD = z_trustD;				
 				
-				//¸üĞÂÊı¾İ
+				//æ›´æ–°æ•°æ®
 				vector3<double> offset_comp = quat.rotate( vector3<double>(ofs_value_x[0],ofs_value_y[0],ofs_value_z[0]) );
 				sensor->position = position - offset_comp;					
 				
-				//¼ÇÂ¼×ËÌ¬
+				//è®°å½•å§¿æ€
 				sensor->data_quat = quat;
 				
-				//¼ÇÂ¼¸½¼ÓĞÅÏ¢
+				//è®°å½•é™„åŠ ä¿¡æ¯
 				if(addition_inf)
 					memcpy( sensor->addition_inf, addition_inf, 8*sizeof(double) );
 				
-				//¼ÇÂ¼Î»ÖÃÊı¾İ
+				//è®°å½•ä½ç½®æ•°æ®
 				if(inFlight && log)
 					SDLog_Msg_PosSensor( index, *sensor );
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
 		bool PositionSensorUpdatePositionGlobalVel( uint8_t index, vector3<double> position_Global, vector3<double> vel, bool available, double delay, double xy_trustD, double z_trustD, const double* addition_inf, double TIMEOUT )
@@ -1093,7 +1093,7 @@
 			uint64_t log = 0;
 			ReadParam( "SDLog_PosSensor", 0, 0, (uint64_t*)&log, 0 );
 			
-			//¶ÁÈ¡Æ«ÒÆĞ£×¼
+			//è¯»å–åç§»æ ¡å‡†
 			char ofs_ind[2] = {0};
 			ofs_ind[0] = index + '0';
 			SName ofs_name = SName("POfs_S")+SName(ofs_ind);
@@ -1110,11 +1110,11 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			
-			//»ñÈ¡ÀúÊ·×ËÌ¬
+			//è·å–å†å²å§¿æ€
 			if( delay >= 0 )
 			{
 				if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-				{	//Ëø¶¨´«¸ĞÆ÷»ñÈ¡ÑÓÊ±Ê±¼ä
+				{	//é”å®šä¼ æ„Ÿå™¨è·å–å»¶æ—¶æ—¶é—´
 					Position_Sensor* sensor = Position_Sensors[index];
 					delay = sensor->delay;
 					
@@ -1123,12 +1123,12 @@
 				else
 					return false;
 			}
-			//»ñÈ¡ÑÓÊ±²¹³¥×ËÌ¬
+			//è·å–å»¶æ—¶è¡¥å¿å§¿æ€
 			Quaternion quat;
 			get_history_AirframeQuatY( &quat, delay );
 			
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -1136,7 +1136,7 @@
 				}
 				
 				Position_Sensor* sensor = Position_Sensors[index];
-				//ÅĞ¶Ï´«¸ĞÆ÷ÀàĞÍ¡¢Êı¾İÊÇ·ñÕıÈ·
+				//åˆ¤æ–­ä¼ æ„Ÿå™¨ç±»å‹ã€æ•°æ®æ˜¯å¦æ­£ç¡®
 				bool data_effective;
 				switch( sensor->sensor_DataType )
 				{
@@ -1173,28 +1173,28 @@
 						break;
 				}
 				if( !data_effective )
-				{	//Êı¾İ³ö´íÍË³ö
+				{	//æ•°æ®å‡ºé”™é€€å‡º
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
 					return false;
 				}
 				
-				//¸üĞÂ¿ÉÓÃ×´Ì¬
+				//æ›´æ–°å¯ç”¨çŠ¶æ€
 				if( sensor->available != available )
 					sensor->available_status_update_time = TIME::now();
 				sensor->available = available;
 				
-				//¸üĞÂ²ÉÑùÊ±¼ä
+				//æ›´æ–°é‡‡æ ·æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();				
-				//¸üĞÂÑÓÊ±Ê±¼ä
+				//æ›´æ–°å»¶æ—¶æ—¶é—´
 				if( delay > 0 )
 					sensor->delay = delay;
-				//¸üĞÂĞÅÈÎ¶È
+				//æ›´æ–°ä¿¡ä»»åº¦
 				if( xy_trustD >= 0 )
 					sensor->xy_trustD = xy_trustD;
 				if( z_trustD >= 0 )
 					sensor->z_trustD = z_trustD;
 				
-				//¸üĞÂÊı¾İ
+				//æ›´æ–°æ•°æ®
 				sensor->position_Global = position_Global;
 				vector3<double> offset_comp = quat.rotate( vector3<double>(ofs_value_x[0],ofs_value_y[0],ofs_value_z[0]) );
 				vector3<double> d_offset;
@@ -1210,7 +1210,7 @@
 				if( sensor->sample_time > 0.0001 )
 					sample_freq = 1.0 / sensor->sample_time;
 				sensor->velocity = vel - d_offset*sample_freq;
-				//¾­Î³×ø±êÆ½ÃæÍ¶Ó°				
+				//ç»çº¬åæ ‡å¹³é¢æŠ•å½±				
 				if( available )
 				{
 					if( sensor->mp.initialized == false )
@@ -1225,20 +1225,20 @@
 					sensor->position.z = position_Global.z - offset_comp.z;
 				}
 					
-				//¼ÇÂ¼×ËÌ¬
+				//è®°å½•å§¿æ€
 				sensor->data_quat = quat;
 				
-				//¼ÇÂ¼¸½¼ÓĞÅÏ¢
+				//è®°å½•é™„åŠ ä¿¡æ¯
 				if(addition_inf)
 					memcpy( sensor->addition_inf, addition_inf, 8*sizeof(double) );
 				
-				//¼ÇÂ¼Î»ÖÃÊı¾İ
+				//è®°å½•ä½ç½®æ•°æ®
 				if(inFlight && log)
 					SDLog_Msg_PosSensor( index, *sensor );
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
 		bool PositionSensorUpdatePositionVel( uint8_t index, vector3<double> position, vector3<double> vel, bool available, double delay, double xy_trustD, double z_trustD, const double* addition_inf, double TIMEOUT )
@@ -1251,7 +1251,7 @@
 			uint64_t log = 0;
 			ReadParam( "SDLog_PosSensor", 0, 0, (uint64_t*)&log, 0 );
 			
-			//¶ÁÈ¡Æ«ÒÆĞ£×¼
+			//è¯»å–åç§»æ ¡å‡†
 			char ofs_ind[2] = {0};
 			ofs_ind[0] = index + '0';
 			SName ofs_name = SName("POfs_S")+SName(ofs_ind);
@@ -1268,11 +1268,11 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			
-			//»ñÈ¡ÀúÊ·×ËÌ¬
+			//è·å–å†å²å§¿æ€
 			if( delay >= 0 )
 			{
 				if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-				{	//Ëø¶¨´«¸ĞÆ÷»ñÈ¡ÑÓÊ±Ê±¼ä
+				{	//é”å®šä¼ æ„Ÿå™¨è·å–å»¶æ—¶æ—¶é—´
 					Position_Sensor* sensor = Position_Sensors[index];
 					delay = sensor->delay;
 					
@@ -1281,12 +1281,12 @@
 				else
 					return false;
 			}
-			//»ñÈ¡ÑÓÊ±²¹³¥×ËÌ¬
+			//è·å–å»¶æ—¶è¡¥å¿å§¿æ€
 			Quaternion quat;
 			get_history_AirframeQuatY( &quat, delay );
 			
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -1330,28 +1330,28 @@
 						break;
 				}
 				if( !data_effective )
-				{	//Êı¾İ³ö´íÍË³ö
+				{	//æ•°æ®å‡ºé”™é€€å‡º
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
 					return false;
 				}
 				
-				//¸üĞÂ¿ÉÓÃ×´Ì¬
+				//æ›´æ–°å¯ç”¨çŠ¶æ€
 				if( sensor->available != available )
 					sensor->available_status_update_time = TIME::now();
 				sensor->available = available;
 				
-				//¸üĞÂ²ÉÑùÊ±¼ä
+				//æ›´æ–°é‡‡æ ·æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();							
-				//ÑÓÊ±´óÓÚ0¸üĞÂÑÓÊ±
+				//å»¶æ—¶å¤§äº0æ›´æ–°å»¶æ—¶
 				if( delay > 0 )
 					sensor->delay = delay;
-				//¸üĞÂĞÅÈÎ¶È
+				//æ›´æ–°ä¿¡ä»»åº¦
 				if( xy_trustD >= 0 )
 					sensor->xy_trustD = xy_trustD;
 				if( z_trustD >= 0 )
 					sensor->z_trustD = z_trustD;
 				
-				//¸üĞÂÊı¾İ
+				//æ›´æ–°æ•°æ®
 				vector3<double> offset_comp = quat.rotate( vector3<double>(ofs_value_x[0],ofs_value_y[0],ofs_value_z[0]) );
 				vector3<double> d_offset;
 				if( sensor->velocity_data_frame == Position_Sensor_frame_ENU )
@@ -1367,20 +1367,20 @@
 				sensor->position = position - offset_comp;				
 				sensor->velocity = vel - d_offset*sample_freq;
 				
-				//¼ÇÂ¼×ËÌ¬
+				//è®°å½•å§¿æ€
 				sensor->data_quat = quat;
 				
-				//¼ÇÂ¼¸½¼ÓĞÅÏ¢
+				//è®°å½•é™„åŠ ä¿¡æ¯
 				if(addition_inf)
 					memcpy( sensor->addition_inf, addition_inf, 8*sizeof(double) );
 				
-				//¼ÇÂ¼Î»ÖÃÊı¾İ
+				//è®°å½•ä½ç½®æ•°æ®
 				if(inFlight && log)
 					SDLog_Msg_PosSensor( index, *sensor );
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
 		bool PositionSensorUpdateVel( uint8_t index, vector3<double> vel, bool available, double delay, double xy_trustD, double z_trustD, const double* addition_inf, double TIMEOUT )
@@ -1393,7 +1393,7 @@
 			uint64_t log = 0;
 			ReadParam( "SDLog_PosSensor", 0, 0, (uint64_t*)&log, 0 );
 			
-			//¶ÁÈ¡Æ«ÒÆĞ£×¼
+			//è¯»å–åç§»æ ¡å‡†
 			char ofs_ind[2] = {0};
 			ofs_ind[0] = index + '0';
 			SName ofs_name = SName("POfs_S")+SName(ofs_ind);
@@ -1410,11 +1410,11 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			
-			//»ñÈ¡ÀúÊ·×ËÌ¬
+			//è·å–å†å²å§¿æ€
 			if( delay >= 0 )
 			{
 				if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-				{	//Ëø¶¨´«¸ĞÆ÷»ñÈ¡ÑÓÊ±Ê±¼ä
+				{	//é”å®šä¼ æ„Ÿå™¨è·å–å»¶æ—¶æ—¶é—´
 					Position_Sensor* sensor = Position_Sensors[index];
 					delay = sensor->delay;
 					
@@ -1423,12 +1423,12 @@
 				else
 					return false;
 			}
-			//»ñÈ¡ÑÓÊ±²¹³¥×ËÌ¬
+			//è·å–å»¶æ—¶è¡¥å¿å§¿æ€
 			Quaternion quat;
 			get_history_AirframeQuatY( &quat, delay );
 			
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -1437,7 +1437,7 @@
 				
 				Position_Sensor* sensor = Position_Sensors[index];
 				
-				//ÅĞ¶Ï´«¸ĞÆ÷ÀàĞÍ¡¢Êı¾İÊÇ·ñÕıÈ·
+				//åˆ¤æ–­ä¼ æ„Ÿå™¨ç±»å‹ã€æ•°æ®æ˜¯å¦æ­£ç¡®
 				bool data_effective;
 				switch( sensor->sensor_DataType )
 				{
@@ -1469,28 +1469,28 @@
 						break;
 				}
 				if( !data_effective )
-				{	//Êı¾İ³ö´íÍË³ö
+				{	//æ•°æ®å‡ºé”™é€€å‡º
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
 					return false;
 				}
 				
-				//¸üĞÂ¿ÉÓÃ×´Ì¬
+				//æ›´æ–°å¯ç”¨çŠ¶æ€
 				if( sensor->available != available )
 					sensor->available_status_update_time = TIME::now();
 				sensor->available = available;
 				
-				//¸üĞÂ²ÉÑùÊ±¼ä
+				//æ›´æ–°é‡‡æ ·æ—¶é—´
 				sensor->sample_time = sensor->last_update_time.get_pass_time_st();							
-				//ÑÓÊ±´óÓÚ0¸üĞÂÑÓÊ±
+				//å»¶æ—¶å¤§äº0æ›´æ–°å»¶æ—¶
 				if( delay > 0 )
 					sensor->delay = delay;
-				//¸üĞÂĞÅÈÎ¶È
+				//æ›´æ–°ä¿¡ä»»åº¦
 				if( xy_trustD >= 0 )
 					sensor->xy_trustD = xy_trustD;
 				if( z_trustD >= 0 )
 					sensor->z_trustD = z_trustD;
 				
-				//¸üĞÂÊı¾İ
+				//æ›´æ–°æ•°æ®
 				vector3<double> offset_comp = quat.rotate( vector3<double>(ofs_value_x[0],ofs_value_y[0],ofs_value_z[0]) );
 				vector3<double> d_offset;
 				if( sensor->velocity_data_frame == Position_Sensor_frame_ENU )
@@ -1505,25 +1505,25 @@
 					sample_freq = 1.0 / sensor->sample_time;		
 				sensor->velocity = vel - d_offset*sample_freq;
 				
-				//¼ÇÂ¼×ËÌ¬
+				//è®°å½•å§¿æ€
 				sensor->data_quat = quat;
 				
-				//¼ÇÂ¼¸½¼ÓĞÅÏ¢
+				//è®°å½•é™„åŠ ä¿¡æ¯
 				if(addition_inf)
 					memcpy( sensor->addition_inf, addition_inf, 8*sizeof(double) );
 				
-				//¼ÇÂ¼Î»ÖÃÊı¾İ
+				//è®°å½•ä½ç½®æ•°æ®
 				if(inFlight && log)
 					SDLog_Msg_PosSensor( index, *sensor );
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
-	/*Î»ÖÃ´«¸ĞÆ÷¸üĞÂº¯Êı*/
+	/*ä½ç½®ä¼ æ„Ÿå™¨æ›´æ–°å‡½æ•°*/
 		
-	/*Î»ÖÃ´«¸ĞÆ÷¶ÁÈ¡º¯Êı*/
+	/*ä½ç½®ä¼ æ„Ÿå™¨è¯»å–å‡½æ•°*/
 		bool GetPositionSensor( uint8_t index, Position_Sensor* result_sensor, double TIMEOUT )
 		{
 			if( index >= Position_Sensors_Count )
@@ -1535,7 +1535,7 @@
 			else
 				TIMEOUT_Ticks = portMAX_DELAY;
 			if( xSemaphoreTake(Position_Sensors_Mutex[index],TIMEOUT_Ticks) )
-			{	//Ëø¶¨´«¸ĞÆ÷
+			{	//é”å®šä¼ æ„Ÿå™¨
 				if( Position_Sensors[index] == 0 )
 				{
 					xSemaphoreGive(Position_Sensors_Mutex[index]);
@@ -1547,228 +1547,228 @@
 				
 				xSemaphoreGive(Position_Sensors_Mutex[index]);
 				return true;
-			}	//½âËø´«¸ĞÆ÷
+			}	//è§£é”ä¼ æ„Ÿå™¨
 			return false;
 		}
-	/*Î»ÖÃ´«¸ĞÆ÷¶ÁÈ¡º¯Êı*/
+	/*ä½ç½®ä¼ æ„Ÿå™¨è¯»å–å‡½æ•°*/
 	
-/*Î»ÖÃ´«¸ĞÆ÷*/
+/*ä½ç½®ä¼ æ„Ÿå™¨*/
 		
 void init_Sensors()
 {
-	//³õÊ¼»¯´«¸ĞÆ÷»¥³âËø
+	//åˆå§‹åŒ–ä¼ æ„Ÿå™¨äº’æ–¥é”
 	for( int i = 0; i < Position_Sensors_Count; ++i )
 		Position_Sensors_Mutex[i] = xSemaphoreCreateMutex();
 	
-	/*×¢²á´«¸ĞÆ÷Î»ÖÃÆ«ÒÆ²ÎÊı*/
+	/*æ³¨å†Œä¼ æ„Ÿå™¨ä½ç½®åç§»å‚æ•°*/
 		SensorPosOffset initial_posoffset;
-		//·É¿ØÆ«ÒÆ
+		//é£æ§åç§»
 		initial_posoffset.Fc_x[0] = 0;
 		initial_posoffset.Fc_y[0] = 0;
 		initial_posoffset.Fc_z[0] = 0;
-		//´«¸ĞÆ÷0Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨0åç§»
 		initial_posoffset.S0_x[0] = 0;
 		initial_posoffset.S0_y[0] = 0;
 		initial_posoffset.S0_z[0] = 0;
-		//´«¸ĞÆ÷1Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨1åç§»
 		initial_posoffset.S1_x[0] = 0;
 		initial_posoffset.S1_y[0] = 0;
 		initial_posoffset.S1_z[0] = 0;
-		//´«¸ĞÆ÷2Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨2åç§»
 		initial_posoffset.S2_x[0] = 0;
 		initial_posoffset.S2_y[0] = 0;
 		initial_posoffset.S2_z[0] = 0;
-		//´«¸ĞÆ÷3Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨3åç§»
 		initial_posoffset.S3_x[0] = 0;
 		initial_posoffset.S3_y[0] = 0;
 		initial_posoffset.S3_z[0] = 0;
-		//´«¸ĞÆ÷4Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨4åç§»
 		initial_posoffset.S4_x[0] = 0;
 		initial_posoffset.S4_y[0] = 0;
 		initial_posoffset.S4_z[0] = 0;
-		//´«¸ĞÆ÷5Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨5åç§»
 		initial_posoffset.S5_x[0] = 0;
 		initial_posoffset.S5_y[0] = 0;
 		initial_posoffset.S5_z[0] = 0;
-		//´«¸ĞÆ÷6Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨6åç§»
 		initial_posoffset.S6_x[0] = 0;
 		initial_posoffset.S6_y[0] = 0;
 		initial_posoffset.S6_z[0] = 0;
-		//´«¸ĞÆ÷7Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨7åç§»
 		initial_posoffset.S7_x[0] = 0;
 		initial_posoffset.S7_y[0] = 0;
 		initial_posoffset.S7_z[0] = 0;
-		//´«¸ĞÆ÷8Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨8åç§»
 		initial_posoffset.S8_x[0] = 0;
 		initial_posoffset.S8_y[0] = 0;
 		initial_posoffset.S8_z[0] = 0;
-		//´«¸ĞÆ÷9Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨9åç§»
 		initial_posoffset.S9_x[0] = 0;
 		initial_posoffset.S9_y[0] = 0;
 		initial_posoffset.S9_z[0] = 0;
-		//´«¸ĞÆ÷10Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨10åç§»
 		initial_posoffset.S10_x[0] = 0;
 		initial_posoffset.S10_y[0] = 0;
 		initial_posoffset.S10_z[0] = 0;
-		//´«¸ĞÆ÷11Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨11åç§»
 		initial_posoffset.S11_x[0] = 0;
 		initial_posoffset.S11_y[0] = 0;
 		initial_posoffset.S11_z[0] = 0;
-		//´«¸ĞÆ÷12Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨12åç§»
 		initial_posoffset.S12_x[0] = 0;
 		initial_posoffset.S12_y[0] = 0;
 		initial_posoffset.S12_z[0] = 0;
-		//´«¸ĞÆ÷13Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨13åç§»
 		initial_posoffset.S13_x[0] = 0;
 		initial_posoffset.S13_y[0] = 0;
 		initial_posoffset.S13_z[0] = 0;
-		//´«¸ĞÆ÷14Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨14åç§»
 		initial_posoffset.S14_x[0] = 0;
 		initial_posoffset.S14_y[0] = 0;
 		initial_posoffset.S14_z[0] = 0;
-		//´«¸ĞÆ÷15Æ«ÒÆ
+		//ä¼ æ„Ÿå™¨15åç§»
 		initial_posoffset.S15_x[0] = 0;
 		initial_posoffset.S15_y[0] = 0;
 		initial_posoffset.S15_z[0] = 0;
 	
 		MAV_PARAM_TYPE param_types[] = {
-			//·É¿ØÆ«ÒÆ
+			//é£æ§åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷0Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨0åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷1Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨1åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷2Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨2åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷3Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨3åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷4Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨4åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷5Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨5åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷6Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨6åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷7Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨7åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷8Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨8åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷9Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨9åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷10Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨10åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷11Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨11åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷12Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨12åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷13Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨13åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷14Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨14åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
-			//´«¸ĞÆ÷15Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨15åç§»
 			MAV_PARAM_TYPE_REAL32 ,	//x
 			MAV_PARAM_TYPE_REAL32 ,	//y
 			MAV_PARAM_TYPE_REAL32 ,	//z
 		};
 		
-		//·É¿ØÆ«ÒÆ		
+		//é£æ§åç§»		
 		SName param_names[] = {
-			//·É¿ØÆ«ÒÆ
+			//é£æ§åç§»
 			"POfs_Fc_x" ,	//x
 			"POfs_Fc_y" ,	//y
 			"POfs_Fc_z" ,	//z
-			//´«¸ĞÆ÷0Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨0åç§»
 			"POfs_S0_x" ,	//x
 			"POfs_S0_y" ,	//y
 			"POfs_S0_z" ,	//z
-			//´«¸ĞÆ÷1Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨1åç§»
 			"POfs_S1_x" ,	//x
 			"POfs_S1_y" ,	//y
 			"POfs_S1_z" ,	//z
-			//´«¸ĞÆ÷2Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨2åç§»
 			"POfs_S2_x" ,	//x
 			"POfs_S2_y" ,	//y
 			"POfs_S2_z" ,	//z
-			//´«¸ĞÆ÷3Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨3åç§»
 			"POfs_S3_x" ,	//x
 			"POfs_S3_y" ,	//y
 			"POfs_S3_z" ,	//z
-			//´«¸ĞÆ÷4Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨4åç§»
 			"POfs_S4_x" ,	//x
 			"POfs_S4_y" ,	//y
 			"POfs_S4_z" ,	//z
-			//´«¸ĞÆ÷5Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨5åç§»
 			"POfs_S5_x" ,	//x
 			"POfs_S5_y" ,	//y
 			"POfs_S5_z" ,	//z
-			//´«¸ĞÆ÷6Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨6åç§»
 			"POfs_S6_x" ,	//x
 			"POfs_S6_y" ,	//y
 			"POfs_S6_z" ,	//z
-			//´«¸ĞÆ÷7Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨7åç§»
 			"POfs_S7_x" ,	//x
 			"POfs_S7_y" ,	//y
 			"POfs_S7_z" ,	//z
-			//´«¸ĞÆ÷8Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨8åç§»
 			"POfs_S8_x" ,	//x
 			"POfs_S8_y" ,	//y
 			"POfs_S8_z" ,	//z
-			//´«¸ĞÆ÷9Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨9åç§»
 			"POfs_S9_x" ,	//x
 			"POfs_S9_y" ,	//y
 			"POfs_S9_z" ,	//z
-			//´«¸ĞÆ÷10Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨10åç§»
 			"POfs_S10_x" ,	//x
 			"POfs_S10_y" ,	//y
 			"POfs_S10_z" ,	//z
-			//´«¸ĞÆ÷11Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨11åç§»
 			"POfs_S11_x" ,	//x
 			"POfs_S11_y" ,	//y
 			"POfs_S11_z" ,	//z
-			//´«¸ĞÆ÷12Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨12åç§»
 			"POfs_S12_x" ,	//x
 			"POfs_S12_y" ,	//y
 			"POfs_S12_z" ,	//z
-			//´«¸ĞÆ÷13Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨13åç§»
 			"POfs_S13_x" ,	//x
 			"POfs_S13_y" ,	//y
 			"POfs_S13_z" ,	//z
-			//´«¸ĞÆ÷14Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨14åç§»
 			"POfs_S14_x" ,	//x
 			"POfs_S14_y" ,	//y
 			"POfs_S14_z" ,	//z
-			//´«¸ĞÆ÷15Æ«ÒÆ
+			//ä¼ æ„Ÿå™¨15åç§»
 			"POfs_S15_x" ,	//x
 			"POfs_S15_y" ,	//y
 			"POfs_S15_z" ,	//z

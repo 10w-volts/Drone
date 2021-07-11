@@ -9,8 +9,8 @@
 
 /*NavCmd16_WAYPOINT
 	MAV_CMD_NAV_WAYPOINT
-	»ñÈ¡º½µã·ÉĞĞÖ¸ÁîµÄ·ÉĞĞ¾àÀë
-	²ÎÊı:
+	è·å–èˆªç‚¹é£è¡ŒæŒ‡ä»¤çš„é£è¡Œè·ç¦»
+	å‚æ•°:
 		<description>Navigate to waypoint.</description>
 		<param index="0" label="Hold" units="s" minValue="0">Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing)</param>
 		<param index="1" label="Accept Radius" units="m" minValue="0">Acceptance radius (if the sphere with this radius is hit, the waypoint counts as reached)</param>
@@ -23,7 +23,7 @@
 bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* AB )
 {	
 	if( get_Position_MSStatus() != MS_Ready )
-	{	//ÎŞ¶¨Î»³ö´í
+	{	//æ— å®šä½å‡ºé”™
 		return false;
 	}
 
@@ -38,20 +38,20 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 		{
 			if( params[4]<-90 ||  params[4]> 90 
 				|| params[5]<-180 || params[5]>180 )
-			{	//¾­Î³¶È²»ÕıÈ·Ö»½øĞĞ¸ß¶Èµ÷Õû
+			{	//ç»çº¬åº¦ä¸æ­£ç¡®åªè¿›è¡Œé«˜åº¦è°ƒæ•´
 				
 				double posz = params[6]*100;
 				if( isnan(posz) || isinf(posz) )
 					return false;
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf1 global_inf;
 				if( get_OptimalGlobal_Z( &global_inf ) == false )
 					return false;
 				posz -= global_inf.HOffset;
 				ABvec.z = pos.z - posz;
 			}
-			else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+			else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 			{		
 				double Lat = params[4];
 				double Lon = params[5];
@@ -62,11 +62,11 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 						isnan(posz) || isinf(posz) )
 					return false;
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf3 global_inf;
 				if( get_OptimalGlobal_XYZ( &global_inf ) == false )
 					return false;
-				//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+				//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 				double x, y;
 				map_projection_project( &global_inf.mp, Lat, Lon, &x, &y );
 				x -= global_inf.HOffset.x;
@@ -84,7 +84,7 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 		{
 			if( params[4]<-90 ||  params[4]> 90 
 				|| params[5]<-180 || params[5]>180 )
-			{	//¾­Î³¶È²»ÕıÈ·Ö»½øĞĞ¸ß¶Èµ÷Õû
+			{	//ç»çº¬åº¦ä¸æ­£ç¡®åªè¿›è¡Œé«˜åº¦è°ƒæ•´
 				if( isnan(params[6]) || isinf(params[6]) )
 					return false;							
 				double homeZ;
@@ -92,7 +92,7 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 				double target_pos_z = homeZ + params[6]*100;
 				ABvec.z = pos.z - target_pos_z;
 			}
-			else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+			else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 			{
 				double Lat = params[4];
 				double Lon = params[5];
@@ -102,16 +102,16 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 						isnan(posz) || isinf(posz) )
 					return false;
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf2 global_inf;
 				if( get_OptimalGlobal_XY( &global_inf ) == false )
 					return false;
-				//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+				//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 				double x, y;
 				map_projection_project( &global_inf.mp, Lat, Lon, &x, &y );
 				x -= global_inf.HOffset.x;
 				y -= global_inf.HOffset.y;
-				//»ñÈ¡Æğ·ÉÎ»ÖÃZ×ø±ê
+				//è·å–èµ·é£ä½ç½®Zåæ ‡
 				double homeZ;
 				getHomeLocalZ(&homeZ);
 				vector3<double> target_pos( x, y, homeZ + posz );
@@ -156,7 +156,7 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 			double yaw = att.getYaw();
 			double sin_Yaw, cos_Yaw;
 			fast_sin_cos( yaw, &sin_Yaw, &cos_Yaw );
-			//bodyÏµĞŞÕıº½ÏòºóÖ»ÏòÇ°×ß
+			//bodyç³»ä¿®æ­£èˆªå‘ååªå‘å‰èµ°
 			if( isvalid(params[3]) == false )
 			{
 				ABvec.x = BodyHeading2ENU_x( safe_sqrt(params[5]*params[5] + params[4]*params[4])*100, 0, sin_Yaw, cos_Yaw );
@@ -179,7 +179,7 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 			double yaw = att.getYaw();
 			double sin_Yaw, cos_Yaw;
 			fast_sin_cos( yaw, &sin_Yaw, &cos_Yaw );
-			//bodyÏµĞŞÕıº½ÏòºóÖ»ÏòÇ°×ß
+			//bodyç³»ä¿®æ­£èˆªå‘ååªå‘å‰èµ°
 			if( isvalid(params[3]) == false )
 			{
 				ABvec.x = BodyHeading2ENU_x( safe_sqrt(params[4]*params[4] + params[5]*params[5])*100, 0, sin_Yaw, cos_Yaw );
@@ -211,26 +211,26 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 
 
 /*
-	Nav·ÉĞĞ¿ØÖÆÖ¸Áî´¦Àí
-	ËùÓĞÖ¸Áî±ØĞëÔÚË®Æ½Î»ÖÃ¿ØÖÆÆ÷´ò¿ªµÄÇ°ÌáÏÂÖ´ĞĞ
-	ËùÓĞ²ÎÊıµ¥Î»½Ç¶ÈÎª¶È£¬¾àÀëËÙ¶ÈÎªÃ×
-	²ÎÊı£º
-		freq£ºÔËĞĞÆµÂÊ
-		params£º7¸ö²ÎÊıÊı×é
-		inf£ºÖĞ¼äĞÅÏ¢£¨Ö´ĞĞÇ°ºóĞèµ÷ÓÃinit_NavCmdInfÇå¿Õ£©
-	·µ»Ø£º
-		<-3£º´íÎó
-		-3£ºÎ´Íê³É£¨¿ÉÖ´ĞĞInFlightCmd£©
-		-2£ºÎ´Íê³É£¨²»¿ÉÖ´ĞĞInFlightCmd£©
-		-1£ºÍê³É
-		>=0£ºÍê³ÉÇÒÒªÇóÇĞ»»µ½Ö¸¶¨Mission
+	Navé£è¡Œæ§åˆ¶æŒ‡ä»¤å¤„ç†
+	æ‰€æœ‰æŒ‡ä»¤å¿…é¡»åœ¨æ°´å¹³ä½ç½®æ§åˆ¶å™¨æ‰“å¼€çš„å‰æä¸‹æ‰§è¡Œ
+	æ‰€æœ‰å‚æ•°å•ä½è§’åº¦ä¸ºåº¦ï¼Œè·ç¦»é€Ÿåº¦ä¸ºç±³
+	å‚æ•°ï¼š
+		freqï¼šè¿è¡Œé¢‘ç‡
+		paramsï¼š7ä¸ªå‚æ•°æ•°ç»„
+		infï¼šä¸­é—´ä¿¡æ¯ï¼ˆæ‰§è¡Œå‰åéœ€è°ƒç”¨init_NavCmdInfæ¸…ç©ºï¼‰
+	è¿”å›ï¼š
+		<-3ï¼šé”™è¯¯
+		-3ï¼šæœªå®Œæˆï¼ˆå¯æ‰§è¡ŒInFlightCmdï¼‰
+		-2ï¼šæœªå®Œæˆï¼ˆä¸å¯æ‰§è¡ŒInFlightCmdï¼‰
+		-1ï¼šå®Œæˆ
+		>=0ï¼šå®Œæˆä¸”è¦æ±‚åˆ‡æ¢åˆ°æŒ‡å®šMission
 */
 
 
 /*NavCmd16_WAYPOINT
 	MAV_CMD_NAV_WAYPOINT
-	º½µã·ÉĞĞ£¨µ÷×ª»úÍ·²¢·ÉĞĞµ½Ö¸¶¨µã£©
-	²ÎÊı:
+	èˆªç‚¹é£è¡Œï¼ˆè°ƒè½¬æœºå¤´å¹¶é£è¡Œåˆ°æŒ‡å®šç‚¹ï¼‰
+	å‚æ•°:
 		<description>Navigate to waypoint.</description>
 		<param index="0" label="Hold" units="s" minValue="0">Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing)</param>
 		<param index="1" label="Accept Radius" units="m" minValue="0">Acceptance radius (if the sphere with this radius is hit, the waypoint counts as reached)</param>
@@ -243,14 +243,14 @@ bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* A
 static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], NavCmdInf* inf )
 {	
 	if( get_Position_MSStatus() != MS_Ready )
-	{	//ÎŞ¶¨Î»³ö´í
+	{	//æ— å®šä½å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
 	bool inFlight;
 	get_is_inFlight(&inFlight);
 	if( inFlight == false )
-	{	//Î´Æğ·É³ö´í
+	{	//æœªèµ·é£å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
@@ -258,9 +258,9 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 	switch( inf->counter1 )
 	{
 		case 0:
-		{	//ÅĞ¶ÏÖ´ĞĞĞı×ªÆ«º½
+		{	//åˆ¤æ–­æ‰§è¡Œæ—‹è½¬åèˆª
 			if( isnormal(params[3]) == false )
-			{	//»úÍ·Ö¸Ïòº½µã·½Ïò
+			{	//æœºå¤´æŒ‡å‘èˆªç‚¹æ–¹å‘
 				Position_Control_set_XYLock();
 				Position_Control_set_ZLock();
 				
@@ -273,23 +273,23 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 					case MAV_FRAME_GLOBAL_RELATIVE_ALT_INT:
 					case MAV_FRAME_GLOBAL_TERRAIN_ALT:
 					case MAV_FRAME_GLOBAL_TERRAIN_ALT_INT:
-					{	//È«Çò¶¨Î»
+					{	//å…¨çƒå®šä½
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶ÈÎª²»ÕıÈ·²»×ªÆ«º½
+						{	//ç»çº¬åº¦ä¸ºä¸æ­£ç¡®ä¸è½¬åèˆª
 							inf->counter1 = 1;
 							inf->counter2 = freq*3;
 							return -2;
 						}
 						
-						//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+						//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 						PosSensorHealthInf2 global_inf;
 						if( get_OptimalGlobal_XY( &global_inf ) == false )
 						{
 							inf->counter1 = inf->counter2 = 0;
 							return -100;
 						}
-						//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+						//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 						double x, y;
 						map_projection_project( &global_inf.mp, params[4], params[5], &x, &y );
 						x -= global_inf.HOffset.x;
@@ -364,13 +364,13 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 				inf->counter2 = 0;
 			}
 			else if( params[3]>-360 && params[3]<360 )
-			{	//Ö¸¶¨Æ«º½³¯Ïò
+			{	//æŒ‡å®šåèˆªæœå‘
 				Attitude_Control_set_Target_Yaw( degree2rad(params[3]) );
 				inf->counter1 = 1;
 				inf->counter2 = 0;
 			}
 			else
-			{	//²»Ğı×ªÆ«º½
+			{	//ä¸æ—‹è½¬åèˆª
 				inf->counter1 = 1;
 				inf->counter2 = freq*3;
 			}
@@ -378,7 +378,7 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 		}
 		
 		case 1:
-		{	//µÈ´ıÆ«º½Ğı×ª¿ªÊ¼º½µã·ÉĞĞ
+		{	//ç­‰å¾…åèˆªæ—‹è½¬å¼€å§‹èˆªç‚¹é£è¡Œ
 			Position_Control_set_XYLock();
 			Position_Control_set_ZLock();
 			double yawTrackErr;
@@ -393,11 +393,11 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 					{
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶È²»ÕıÈ·Ö»½øĞĞ¸ß¶Èµ÷Õû
+						{	//ç»çº¬åº¦ä¸æ­£ç¡®åªè¿›è¡Œé«˜åº¦è°ƒæ•´
 							Position_Control_set_XYLock();
 							res = Position_Control_set_TargetPositionZGlobal( params[6]*100, 0 );
 						}
-						else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+						else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 							res = Position_Control_set_TargetPositionXYZ_LatLon( params[4], params[5], params[6]*100, 0 );
 						break;
 					}
@@ -406,11 +406,11 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 					{
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶È²»ÕıÈ·Ö»½øĞĞ¸ß¶Èµ÷Õû
+						{	//ç»çº¬åº¦ä¸æ­£ç¡®åªè¿›è¡Œé«˜åº¦è°ƒæ•´
 							Position_Control_set_XYLock();
 							res = Position_Control_set_TargetPositionZRA( params[6]*100, 0 );
 						}
-						else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+						else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 							res = Position_Control_set_TargetPositionXYZRA_LatLon( params[4], params[5], params[6]*100, 0 );
 						break;
 					}
@@ -419,11 +419,11 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 					{
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶È²»ÕıÈ·Ö»½øĞĞ¸ß¶Èµ÷Õû
+						{	//ç»çº¬åº¦ä¸æ­£ç¡®åªè¿›è¡Œé«˜åº¦è°ƒæ•´
 							Position_Control_set_XYLock();
 							res = Position_Control_set_TargetPositionZRA( params[6]*100, 0 );
 						}
-						else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+						else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 							res = Position_Control_set_TargetPositionXYZRA_LatLon( params[4], params[5], params[6]*100, 0 );
 						break;
 					}
@@ -444,7 +444,7 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 					case MAV_FRAME_BODY_FRD:
 					case MAV_FRAME_BODY_OFFSET_NED:
 					{
-						//bodyÏµĞŞÕıº½ÏòºóÖ»ÏòÇ°×ß
+						//bodyç³»ä¿®æ­£èˆªå‘ååªå‘å‰èµ°
 						if( isvalid(params[3]) == false )
 							res = Position_Control_set_TargetPositionXYZRelativeBodyheading( safe_sqrt(params[5]*params[5] + params[4]*params[4])*100, 0, -params[6]*100, 0 );
 						else
@@ -454,7 +454,7 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 					
 					case MAV_FRAME_BODY_FLU:
 					{
-						//bodyÏµĞŞÕıº½ÏòºóÖ»ÏòÇ°×ß
+						//bodyç³»ä¿®æ­£èˆªå‘ååªå‘å‰èµ°
 						if( isvalid(params[3]) == false )
 							res = Position_Control_set_TargetPositionXYZRelativeBodyheading( safe_sqrt(params[4]*params[4] + params[5]*params[5])*100, 0, params[6]*100, 0 );
 						else
@@ -468,12 +468,12 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 				}
 				
 				if(res)
-				{	//³É¹¦
+				{	//æˆåŠŸ
 					inf->counter1 = 2;
 					inf->counter2 = 0;
 				}
 				else
-				{	//Ê§°Ü
+				{	//å¤±è´¥
 					inf->counter1 = 0;
 					inf->counter2 = 0;
 					return -100;
@@ -483,7 +483,7 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 		}
 		
 		case 2:
-		{	//µÈ´ıº½µã·ÉĞĞÍê³É
+		{	//ç­‰å¾…èˆªç‚¹é£è¡Œå®Œæˆ
 			Position_ControlMode alt_mode, pos_mode;
 			get_Altitude_ControlMode(&alt_mode);
 			get_Position_ControlMode(&pos_mode);
@@ -492,7 +492,7 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 			if( pos_mode == Position_ControlMode_Position )
 				Position_Control_set_XYLock();
 			if( alt_mode==Position_ControlMode_Position && pos_mode==Position_ControlMode_Position )
-			{	//·ÉĞĞÍê³É½øÈëholdµÈ´ı
+			{	//é£è¡Œå®Œæˆè¿›å…¥holdç­‰å¾…
 				inf->counter1 = 3;
 				inf->counter2 = 0;
 			}
@@ -519,8 +519,8 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 
 /*NavCmd20_RETURN_TO_LAUNCH
 	MAV_CMD_NAV_RETURN_TO_LAUNCH
-	»Øµ½Æğ·Éµã
-	²ÎÊı:
+	å›åˆ°èµ·é£ç‚¹
+	å‚æ•°:
 		<description>Return to launch location</description>
 		<param index="1">Empty</param>
 		<param index="2">Empty</param>
@@ -533,14 +533,14 @@ static int16_t NavCmd16_WAYPOINT( double freq, uint8_t frame, double params[], N
 static int16_t NavCmd20_RETURN_TO_LAUNCH( double freq, uint8_t frame, double params[], NavCmdInf* inf )
 {	
 	if( get_Position_MSStatus() != MS_Ready )
-	{	//ÎŞ¶¨Î»³ö´í
+	{	//æ— å®šä½å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
 	bool inFlight;
 	get_is_inFlight(&inFlight);
 	if( inFlight == false )
-	{	//Î´Æğ·É³ö´í
+	{	//æœªèµ·é£å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
@@ -548,7 +548,7 @@ static int16_t NavCmd20_RETURN_TO_LAUNCH( double freq, uint8_t frame, double par
 	switch( inf->counter1 )
 	{
 		case 0:
-		{	//Ğı×ªÆ«º½
+		{	//æ—‹è½¬åèˆª
 			Position_Control_set_XYLock();
 			Position_Control_set_ZLock();
 			
@@ -556,21 +556,21 @@ static int16_t NavCmd20_RETURN_TO_LAUNCH( double freq, uint8_t frame, double par
 			
 			vector2<double> homeP;
 			if( getHomeLatLon(&homeP) )
-			{	//·µº½ÖÁ¾­Î³¶È
+			{	//è¿”èˆªè‡³ç»çº¬åº¦
 				
-				//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+				//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 				PosSensorHealthInf2 global_inf;
 				if( get_OptimalGlobal_XY( &global_inf ) == false )
 				{
 					if( getHomePoint(&homeP) )
 						goto TurnYawLocalP;
 					else
-					{	//ÎŞ·µº½µã
+					{	//æ— è¿”èˆªç‚¹
 						inf->counter1 = inf->counter2 = 0;
 						return -100;
 					}
 				}
-				//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+				//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 				double x, y;
 				map_projection_project( &global_inf.mp, homeP.x, homeP.y, &x, &y );
 				x -= global_inf.HOffset.x;
@@ -579,7 +579,7 @@ static int16_t NavCmd20_RETURN_TO_LAUNCH( double freq, uint8_t frame, double par
 				LB = x - global_inf.PositionENU.x;
 			}
 			else if( getHomePoint(&homeP) )
-			{	//·µº½ÖÁLocal×ø±ê
+			{	//è¿”èˆªè‡³Localåæ ‡
 TurnYawLocalP:
 				vector3<double> position;
 				get_Position_Ctrl(&position);
@@ -587,7 +587,7 @@ TurnYawLocalP:
 				LB = params[4] - position.x;
 			}
 			else
-			{	//ÎŞ·µº½µã
+			{	//æ— è¿”èˆªç‚¹
 				inf->counter1 = inf->counter2 = 0;
 				return -100;
 			}
@@ -600,7 +600,7 @@ TurnYawLocalP:
 		}
 		
 		case 1:
-		{	//µÈ´ıÆ«º½Ğı×ª¿ªÊ¼º½µã·ÉĞĞ
+		{	//ç­‰å¾…åèˆªæ—‹è½¬å¼€å§‹èˆªç‚¹é£è¡Œ
 			Position_Control_set_XYLock();
 			Position_Control_set_ZLock();
 			double yawTrackErr;
@@ -609,44 +609,44 @@ TurnYawLocalP:
 			{	
 				bool res;
 				
-				//»ñÈ¡·µº½ËÙ¶È
+				//è·å–è¿”èˆªé€Ÿåº¦
 				float RTL_speed[2];
 				RTL_speed[0] = -1;
 				ReadParam("Sf_RtSpeed", 0, 0, (uint64_t*)RTL_speed, 0 );
 				
 				vector2<double> homeP;
 				if( getHomeLatLon(&homeP) )
-				{	//·µº½ÖÁ¾­Î³¶È
+				{	//è¿”èˆªè‡³ç»çº¬åº¦
 					res = Position_Control_set_TargetPositionXY_LatLon( homeP.x, homeP.y, RTL_speed[0] );
 					if( res == false )
 					{
 						if( getHomePoint(&homeP) )
 							goto FlyLocalP;
 						else
-						{	//ÎŞ·µº½µã
+						{	//æ— è¿”èˆªç‚¹
 							inf->counter1 = inf->counter2 = 0;
 							return -100;
 						}
 					}
 				}
 				else if( getHomePoint(&homeP) )
-				{	//·µº½ÖÁlocal×ø±ê
+				{	//è¿”èˆªè‡³localåæ ‡
 FlyLocalP:
 					res = Position_Control_set_TargetPositionXY( homeP.x, homeP.y, RTL_speed[0] );
 				}
 				else
-				{	//ÎŞ·µº½µã
+				{	//æ— è¿”èˆªç‚¹
 					inf->counter1 = inf->counter2 = 0;
 					return -100;
 				}
 				
 				if(res)
-				{	//³É¹¦
+				{	//æˆåŠŸ
 					inf->counter1 = 2;
 					inf->counter2 = 0;
 				}
 				else
-				{	//Ê§°Ü
+				{	//å¤±è´¥
 					inf->counter1 = 0;
 					inf->counter2 = 0;
 					return -100;
@@ -656,12 +656,12 @@ FlyLocalP:
 		}
 		
 		case 2:
-		{	//µÈ´ıº½µã·ÉĞĞÍê³É
+		{	//ç­‰å¾…èˆªç‚¹é£è¡Œå®Œæˆ
 			Position_Control_set_ZLock();
 			Position_ControlMode pos_mode;
 			get_Position_ControlMode(&pos_mode);
 			if( pos_mode==Position_ControlMode_Position )
-			{	//·ÉĞĞÍê³É
+			{	//é£è¡Œå®Œæˆ
 				inf->counter1 = 3;
 				inf->counter2 = 0;
 			}
@@ -670,18 +670,18 @@ FlyLocalP:
 		}
 		
 		case 3:
-		{	//½µÂä
+		{	//é™è½
 			
 			Position_Control_set_XYLock();
 			
-			//»ñÈ¡¶ÔµØ¸ß¶È
+			//è·å–å¯¹åœ°é«˜åº¦
 			double homeZ;
 			getHomeLocalZ(&homeZ);
 			vector3<double> pos;
 			get_Position_Ctrl(&pos);
 			double height = pos.z - homeZ;
 			
-			//»ñÈ¡½µÂäËÙ¶È
+			//è·å–é™è½é€Ÿåº¦
 			float sp[2];
 			sp[0] = 200;
 			ReadParam("PC_maxAutoVelDn", 0, 0, (uint64_t*)sp, 0 );
@@ -700,7 +700,7 @@ FlyLocalP:
 			bool inFlight;
 			get_is_inFlight(&inFlight);
 			if( inFlight==false )
-			{	//½µÂäÍê³É
+			{	//é™è½å®Œæˆ
 				inf->counter1 = 0;
 				inf->counter2 = 0;
 				return -1;
@@ -715,8 +715,8 @@ FlyLocalP:
 
 /*NavCmd21_LAND
 	MAV_CMD_NAV_LAND
-	Ô­µØ½µÂä
-	²ÎÊı:
+	åŸåœ°é™è½
+	å‚æ•°:
 		<description>Land at location.</description>
 		<param index="1" label="Abort Alt" units="m">Minimum target altitude if landing is aborted (0 = undefined/use system default).</param>
 		<param index="2" label="Land Mode" enum="PRECISION_LAND_MODE">Precision land mode.</param>
@@ -729,14 +729,14 @@ FlyLocalP:
 static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCmdInf* inf )
 {	
 	if( get_Position_MSStatus() != MS_Ready )
-	{	//ÎŞ¶¨Î»³ö´í
+	{	//æ— å®šä½å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
 	bool inFlight;
 	get_is_inFlight(&inFlight);
 	if( inFlight == false )
-	{	//Î´Æğ·É³ö´í
+	{	//æœªèµ·é£å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
@@ -744,9 +744,9 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 	switch( inf->counter1 )
 	{
 		case 0:
-		{	//ÅĞ¶ÏÖ´ĞĞĞı×ªÆ«º½
+		{	//åˆ¤æ–­æ‰§è¡Œæ—‹è½¬åèˆª
 			if( isnormal(params[3]) == false )
-			{	//»úÍ·Ö¸Ïòº½µã·½Ïò
+			{	//æœºå¤´æŒ‡å‘èˆªç‚¹æ–¹å‘
 				Position_Control_set_XYLock();
 				Position_Control_set_ZLock();
 				
@@ -759,23 +759,23 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 					case MAV_FRAME_GLOBAL_RELATIVE_ALT_INT:
 					case MAV_FRAME_GLOBAL_TERRAIN_ALT:
 					case MAV_FRAME_GLOBAL_TERRAIN_ALT_INT:
-					{	//È«Çò¶¨Î»
+					{	//å…¨çƒå®šä½
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶ÈÎª²»ÕıÈ·²»×ªÆ«º½
+						{	//ç»çº¬åº¦ä¸ºä¸æ­£ç¡®ä¸è½¬åèˆª
 							inf->counter1 = 1;
 							inf->counter2 = freq*3;
 							return -2;
 						}
 						
-						//»ñÈ¡×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷ĞÅÏ¢
+						//è·å–æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨ä¿¡æ¯
 						PosSensorHealthInf2 global_inf;
 						if( get_OptimalGlobal_XY( &global_inf ) == false )
 						{
 							inf->counter1 = inf->counter2 = 0;
 							return -100;
 						}
-						//»ñÈ¡Ö¸¶¨¾­Î³¶ÈÆ½Ãæ×ø±ê
+						//è·å–æŒ‡å®šç»çº¬åº¦å¹³é¢åæ ‡
 						double x, y;
 						map_projection_project( &global_inf.mp, params[4], params[5], &x, &y );
 						x -= global_inf.HOffset.x;
@@ -850,13 +850,13 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 				inf->counter2 = 0;
 			}
 			else if( params[3]>-360 && params[3]<360 )
-			{	//Ö¸¶¨Æ«º½³¯Ïò
+			{	//æŒ‡å®šåèˆªæœå‘
 				Attitude_Control_set_Target_Yaw( degree2rad(params[3]) );
 				inf->counter1 = 1;
 				inf->counter2 = 0;
 			}
 			else
-			{	//²»Ğı×ªÆ«º½
+			{	//ä¸æ—‹è½¬åèˆª
 				inf->counter1 = 1;
 				inf->counter2 = freq*3;
 			}
@@ -864,7 +864,7 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 		}
 		
 		case 1:
-		{	//µÈ´ıÆ«º½Ğı×ª¿ªÊ¼º½µã·ÉĞĞ
+		{	//ç­‰å¾…åèˆªæ—‹è½¬å¼€å§‹èˆªç‚¹é£è¡Œ
 			Position_Control_set_XYLock();
 			Position_Control_set_ZLock();
 			double yawTrackErr;
@@ -879,11 +879,11 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 					{
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶È²»ÕıÈ·Ö±½Ó½µÂä
+						{	//ç»çº¬åº¦ä¸æ­£ç¡®ç›´æ¥é™è½
 							Position_Control_set_XYLock();
 							res = true;
 						}
-						else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+						else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 							res = Position_Control_set_TargetPositionXY_LatLon( params[4], params[5], 0 );
 						break;
 					}
@@ -892,11 +892,11 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 					{
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶È²»ÕıÈ·Ö±½Ó½µÂä
+						{	//ç»çº¬åº¦ä¸æ­£ç¡®ç›´æ¥é™è½
 							Position_Control_set_XYLock();
 							res = true;
 						}
-						else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+						else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 							res = Position_Control_set_TargetPositionXY_LatLon( params[4], params[5], 0 );
 						break;
 					}
@@ -905,11 +905,11 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 					{
 						if( params[4]<-90 ||  params[4]> 90 
 							|| params[5]<-180 || params[5]>180 )
-						{	//¾­Î³¶È²»ÕıÈ·Ö±½Ó½µÂä
+						{	//ç»çº¬åº¦ä¸æ­£ç¡®ç›´æ¥é™è½
 							Position_Control_set_XYLock();
 							res = true;
 						}
-						else	//¾­Î³¶ÈÕıÈ·½øĞĞÈıÎ¬·ÉĞĞ
+						else	//ç»çº¬åº¦æ­£ç¡®è¿›è¡Œä¸‰ç»´é£è¡Œ
 							res = Position_Control_set_TargetPositionXY_LatLon( params[4], params[5], 0 );
 						break;
 					}
@@ -930,7 +930,7 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 					case MAV_FRAME_BODY_FRD:
 					case MAV_FRAME_BODY_OFFSET_NED:
 					{
-						//bodyÏµĞŞÕıº½ÏòºóÖ»ÏòÇ°×ß
+						//bodyç³»ä¿®æ­£èˆªå‘ååªå‘å‰èµ°
 						if( isnormal(params[3]) == false )
 							res = Position_Control_set_TargetPositionXYRelativeBodyheading( safe_sqrt(params[5]*params[5] + params[4]*params[4])*100, 0, 0 );
 						else
@@ -940,7 +940,7 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 					
 					case MAV_FRAME_BODY_FLU:
 					{
-						//bodyÏµĞŞÕıº½ÏòºóÖ»ÏòÇ°×ß
+						//bodyç³»ä¿®æ­£èˆªå‘ååªå‘å‰èµ°
 						if( isnormal(params[3]) == false )
 							res = Position_Control_set_TargetPositionXYRelativeBodyheading( safe_sqrt(params[4]*params[4] + params[5]*params[5])*100, 0, 0 );
 						else
@@ -954,12 +954,12 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 				}
 				
 				if(res)
-				{	//³É¹¦
+				{	//æˆåŠŸ
 					inf->counter1 = 2;
 					inf->counter2 = 0;
 				}
 				else
-				{	//Ê§°Ü
+				{	//å¤±è´¥
 					inf->counter1 = 0;
 					inf->counter2 = 0;
 					return -100;
@@ -969,7 +969,7 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 		}
 		
 		case 2:
-		{	//µÈ´ıº½µã·ÉĞĞÍê³É
+		{	//ç­‰å¾…èˆªç‚¹é£è¡Œå®Œæˆ
 			Position_ControlMode alt_mode, pos_mode;
 			get_Altitude_ControlMode(&alt_mode);
 			get_Position_ControlMode(&pos_mode);
@@ -978,7 +978,7 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 			if( pos_mode == Position_ControlMode_Position )
 				Position_Control_set_XYLock();
 			if( alt_mode==Position_ControlMode_Position && pos_mode==Position_ControlMode_Position )
-			{	//·ÉĞĞÍê³É½øÈëholdµÈ´ı
+			{	//é£è¡Œå®Œæˆè¿›å…¥holdç­‰å¾…
 				inf->counter1 = 3;
 				inf->counter2 = 0;
 			}
@@ -987,16 +987,16 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 		}
 		
 		case 3:
-		{	//½µÂä
+		{	//é™è½
 			
-			//»ñÈ¡¶ÔµØ¸ß¶È
+			//è·å–å¯¹åœ°é«˜åº¦
 			double homeZ;
 			getHomeLocalZ(&homeZ);
 			vector3<double> pos;
 			get_Position_Ctrl(&pos);
 			double height = pos.z - homeZ;
 			
-			//»ñÈ¡½µÂäËÙ¶È
+			//è·å–é™è½é€Ÿåº¦
 			float sp[2];
 			sp[0] = 200;
 			ReadParam("PC_maxAutoVelDn", 0, 0, (uint64_t*)sp, 0 );
@@ -1017,7 +1017,7 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 			bool inFlight;
 			get_is_inFlight(&inFlight);
 			if( inFlight==false )
-			{	//½µÂäÍê³É
+			{	//é™è½å®Œæˆ
 				inf->counter1 = 0;
 				inf->counter2 = 0;
 				return -1;
@@ -1032,8 +1032,8 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 
 /*NavCmd22_TAKEOFF
 	MAV_CMD_NAV_TAKEOFF
-	Æğ·É²¢·ÉÍùÖ¸¶¨µØµã
-	²ÎÊı:
+	èµ·é£å¹¶é£å¾€æŒ‡å®šåœ°ç‚¹
+	å‚æ•°:
 		<description>Takeoff from ground / hand</description>
 		<param index="0" label="Pitch">Minimum pitch (if airspeed sensor present), desired pitch without sensor</param>
 		<param index="1">Empty</param>
@@ -1046,7 +1046,7 @@ static int16_t NavCmd21_LAND( double freq, uint8_t frame, double params[], NavCm
 static int16_t NavCmd22_TAKEOFF( double freq, uint8_t frame, double params[], NavCmdInf* inf )
 {
 	if( get_Position_MSStatus() != MS_Ready )
-	{	//ÎŞ¶¨Î»³ö´í
+	{	//æ— å®šä½å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
@@ -1054,7 +1054,7 @@ static int16_t NavCmd22_TAKEOFF( double freq, uint8_t frame, double params[], Na
 	switch( inf->counter1 )
 	{
 		case 0:
-		{	//Æğ·Éµ½Ö¸¶¨¸ß¶È
+		{	//èµ·é£åˆ°æŒ‡å®šé«˜åº¦
 			bool res;
 			switch(frame)
 			{
@@ -1086,12 +1086,12 @@ static int16_t NavCmd22_TAKEOFF( double freq, uint8_t frame, double params[], Na
 			}
 
 			if(res)
-			{	//³É¹¦
+			{	//æˆåŠŸ
 				inf->counter1 = 1;
 				inf->counter2 = 0;
 			}
 			else
-			{	//Ê§°Ü
+			{	//å¤±è´¥
 				inf->counter1 = 0;
 				inf->counter2 = 0;
 				return -100;
@@ -1100,12 +1100,12 @@ static int16_t NavCmd22_TAKEOFF( double freq, uint8_t frame, double params[], Na
 		}
 		
 		case 1:
-		{	//µÈ´ıÆğ·ÉÍê³ÉĞı×ªÆ«º½
+		{	//ç­‰å¾…èµ·é£å®Œæˆæ—‹è½¬åèˆª
 			Position_ControlMode mode;
 			Position_Control_set_XYLock();
 			get_Altitude_ControlMode(&mode);
 			if( mode == Position_ControlMode_Position )
-			{	//ÅĞ¶ÏÖ´ĞĞĞı×ªÆ«º½			
+			{	//åˆ¤æ–­æ‰§è¡Œæ—‹è½¬åèˆª			
 				inf->counter1 = 0;
 				inf->counter2 = 0;
 				return -1;
@@ -1119,8 +1119,8 @@ static int16_t NavCmd22_TAKEOFF( double freq, uint8_t frame, double params[], Na
 
 /*NavCmd93_DELAY
 	MAV_CMD_NAV_DELAY
-	ÑÓÊ±
-	²ÎÊı:
+	å»¶æ—¶
+	å‚æ•°:
 		<description>Delay the next navigation command a number of seconds or until a specified time</description>
 		<param index="1" label="Delay" units="s" minValue="-1" increment="1">Delay (-1 to enable time-of-day fields)</param>
 		<param index="2" label="Hour" minValue="-1" maxValue="23" increment="1">hour (24h format, UTC, -1 to ignore)</param>
@@ -1133,7 +1133,7 @@ static int16_t NavCmd22_TAKEOFF( double freq, uint8_t frame, double params[], Na
 static int16_t NavCmd93_DELAY( double freq, uint8_t frame, double params[], NavCmdInf* inf )
 {
 	if( get_Position_MSStatus() != MS_Ready )
-	{	//ÎŞ¶¨Î»³ö´í
+	{	//æ— å®šä½å‡ºé”™
 		inf->counter1 = inf->counter2 = 0;
 		return -100;
 	}
@@ -1141,7 +1141,7 @@ static int16_t NavCmd93_DELAY( double freq, uint8_t frame, double params[], NavC
 	Position_Control_set_XYLock();
 	Position_Control_set_ZLock();
 	if( params[0] >= 0 )
-	{	//ÑÓÊ±Ö¸¶¨Ê±¼ä
+	{	//å»¶æ—¶æŒ‡å®šæ—¶é—´
 		if( ++(inf->counter2) >= freq*params[0] )
 		{
 			inf->counter1 = 0;
@@ -1150,10 +1150,10 @@ static int16_t NavCmd93_DELAY( double freq, uint8_t frame, double params[], NavC
 		}
 	}
 	else
-	{	//ÑÓÊ±ÖÁÖ¸¶¨Ê±ÖÓÊ±¼ä
+	{	//å»¶æ—¶è‡³æŒ‡å®šæ—¶é’Ÿæ—¶é—´
 				
 		if( params[1]>23 || params[2]>59 || params[3]>59 || params[3]<0 )
-		{	//Ê±¼äĞÅÏ¢´íÎó
+		{	//æ—¶é—´ä¿¡æ¯é”™è¯¯
 			inf->counter1 = 0;
 			inf->counter2 = 0;
 			return -100;
@@ -1163,7 +1163,7 @@ static int16_t NavCmd93_DELAY( double freq, uint8_t frame, double params[], NavC
 		if( params[1] >= 0 )
 		{
 			if( params[2] >= 0 )
-			{	//¶Ô±ÈÊ±·ÖÃë
+			{	//å¯¹æ¯”æ—¶åˆ†ç§’
 				uint32_t current_seconds = current_time.Hours*3600 + current_time.Minutes*60 + current_time.Seconds;
 				uint32_t target_secongds = params[1]*3600 + params[2]*60 + params[3];
 				if( current_seconds >=  target_secongds )
@@ -1174,7 +1174,7 @@ static int16_t NavCmd93_DELAY( double freq, uint8_t frame, double params[], NavC
 				}
 			}
 			else
-			{	//´íÎó
+			{	//é”™è¯¯
 				inf->counter1 = 0;
 				inf->counter2 = 0;
 				return -100;
@@ -1183,7 +1183,7 @@ static int16_t NavCmd93_DELAY( double freq, uint8_t frame, double params[], NavC
 		else
 		{
 			if( params[2] >= 0 )
-			{	//¶Ô±È·ÖÃë
+			{	//å¯¹æ¯”åˆ†ç§’
 				uint32_t current_seconds = current_time.Minutes*60 + current_time.Seconds;
 				uint32_t target_secongds = params[2]*60 + params[3];
 				if( current_seconds >=  target_secongds )
@@ -1194,7 +1194,7 @@ static int16_t NavCmd93_DELAY( double freq, uint8_t frame, double params[], NavC
 				}
 			}
 			else
-			{	//¶Ô±ÈÃë
+			{	//å¯¹æ¯”ç§’
 				uint32_t current_seconds = current_time.Seconds;
 				uint32_t target_secongds = params[3];
 				if( current_seconds >=  target_secongds )
@@ -1517,14 +1517,14 @@ const uint16_t NavCmdProcess_Count = sizeof( NavCmdProcess ) / sizeof( void* );
 
 bool check_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[] )
 {
-	//ÎŞ´ËÖ¸Áî·µ»Ø´íÎó
+	//æ— æ­¤æŒ‡ä»¤è¿”å›é”™è¯¯
 	if( cmd>=NavCmdProcess_Count || NavCmdProcess[cmd]==0 )
 		return false;
 	return true;
 }
 int16_t Process_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[], NavCmdInf* inf )
 {
-	//ÎŞ´ËÖ¸Áî·µ»Ø´íÎó
+	//æ— æ­¤æŒ‡ä»¤è¿”å›é”™è¯¯
 	if( cmd>=NavCmdProcess_Count || NavCmdProcess[cmd]==0 )
 		return -100;
 	

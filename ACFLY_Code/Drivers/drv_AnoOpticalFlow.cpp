@@ -39,7 +39,7 @@ static void AnoOpticalFlow_Server(void* pvParameters)
 							sum = 0;
 						if( rc_counter < 2 )
 						{
-								//½ÓÊÕ°üÍ·
+								//æ¥æ”¶åŒ…å¤´
 								if( rdata != packet_ID[ rc_counter ] )
 									rc_counter = 0;
 								else
@@ -50,7 +50,7 @@ static void AnoOpticalFlow_Server(void* pvParameters)
 						}
 						else if( rc_counter < 5 )
 						{	
-								//½ÓÊÕÖ¡
+								//æ¥æ”¶å¸§
 								( (unsigned char*)&Frame )[ rc_counter - 2 ] = rdata;
 								sum += (unsigned char)rdata;
 								++rc_counter;
@@ -64,13 +64,13 @@ static void AnoOpticalFlow_Server(void* pvParameters)
 						}
 						else
 						{
-								//Ğ£Ñé
+								//æ ¡éªŒ
 								if( sum == rdata )
 								{
-										//Ğ£Ñé³É¹¦
+										//æ ¡éªŒæˆåŠŸ
 										if( Frame.FUNC == FlowFrame )
 										{
-												//½âÎö´«¸ĞÆ÷Êı¾İ
+												//è§£æä¼ æ„Ÿå™¨æ•°æ®
 												Flow.MODE = datatemp[0];
 												Flow.STATE = datatemp[1];
 												Flow.DX = (datatemp[2] << 8) + datatemp[3];
@@ -81,35 +81,35 @@ static void AnoOpticalFlow_Server(void* pvParameters)
 												Flow.DIS_Y = (datatemp[12] << 8) + datatemp[13];
 												Flow.QUALITY = datatemp[14];
 											
-												//·¢²¼´«¸ĞÆ÷Êı¾İ
-												//¹âÁ÷ÖÊÁ¿´óÓÚ50
+												//å‘å¸ƒä¼ æ„Ÿå™¨æ•°æ®
+												//å…‰æµè´¨é‡å¤§äº50
 												if (Flow.QUALITY > 50)
 												{
 													vector3<double> vel;
 													vel.x = (double)Flow.DX;
 													vel.y = (double)Flow.DY;
-													PositionSensorUpdateVel(default_ano_optical_flow_index, vel, true);
+													// PositionSensorUpdateVel(default_ano_optical_flow_index, vel, true);
 												}
 												else
 													PositionSensorSetInavailable(default_ano_optical_flow_index);
 										}
 										else if( Frame.FUNC == HeightFrame )
 										{
-												//½âÎö´«¸ĞÆ÷Êı¾İ
+												//è§£æä¼ æ„Ÿå™¨æ•°æ®
 												Height.MODE = datatemp[0];
 												Height.ALT = (datatemp[1] << 8) + datatemp[2];
 												
-												//·¢²¼´«¸ĞÆ÷Êı¾İ
-												//¶ÔµØ¸ß¶ÈÔÚ8~1200cmÖ®¼ä
+												//å‘å¸ƒä¼ æ„Ÿå™¨æ•°æ®
+												//å¯¹åœ°é«˜åº¦åœ¨8~1200cmä¹‹é—´
 												if(Height.ALT > 8 && Height.ALT < 1200)
 												{
 														vector3<double> position;
 														position.z = Height.ALT;
-														//»ñÈ¡Çã½Ç
+														//è·å–å€¾è§’
 														Quaternion quat;
 														get_Airframe_quat( &quat );
 														double lean_cosin = quat.get_lean_angle_cosin();
-														//¸üĞÂ
+														//æ›´æ–°
 														position.z *= lean_cosin;
 														PositionSensorUpdatePosition( default_ano_laser_index, position, true );
 												}
@@ -118,7 +118,7 @@ static void AnoOpticalFlow_Server(void* pvParameters)
 										}
 										else if( Frame.FUNC == InertiaFrame )
 										{
-												//½âÎö´«¸ĞÆ÷Êı¾İ
+												//è§£æä¼ æ„Ÿå™¨æ•°æ®
 												Inertia.MODE = datatemp[0];
 												Inertia.GYR_X = (datatemp[1] << 8) + datatemp[2];
 												Inertia.GYR_Y = (datatemp[3] << 8) + datatemp[4];
@@ -129,7 +129,7 @@ static void AnoOpticalFlow_Server(void* pvParameters)
 										}
 										else if( Frame.FUNC == QuatFrame )
 										{
-												//½âÎö´«¸ĞÆ÷Êı¾İ
+												//è§£æä¼ æ„Ÿå™¨æ•°æ®
 												Quat.MODE = datatemp[0];
 												Quat.S1 = (datatemp[1] << 8) + datatemp[2];
 												Quat.S2 = (datatemp[3] << 8) + datatemp[4];
@@ -145,17 +145,17 @@ static void AnoOpticalFlow_Server(void* pvParameters)
 
 static bool AnoOpticalFlow_DriverInit( Port port, uint32_t param )
 {
-		//²¨ÌØÂÊ500000
+		//æ³¢ç‰¹ç‡500000
 		port.SetBaudRate( 500000, 2, 2 );
 		
-		//×¢²á´«¸ĞÆ÷
+		//æ³¨å†Œä¼ æ„Ÿå™¨
 		bool res1 = PositionSensorRegister( default_ano_optical_flow_index , \
 																				Position_Sensor_Type_RelativePositioning , \
 																				Position_Sensor_DataType_v_xy , \
 																				Position_Sensor_frame_BodyHeading , \
 																				0.1 , \
 																				100);
-		//×¢²á´«¸ĞÆ÷
+		//æ³¨å†Œä¼ æ„Ÿå™¨
 		bool res2 = PositionSensorRegister( default_ano_laser_index , \
 																				Position_Sensor_Type_RangePositioning , \
 																				Position_Sensor_DataType_s_z , \

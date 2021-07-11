@@ -481,19 +481,25 @@ RTL:
 										mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
 										
 										//设置XY轴线速度与roll、pitch角度限制
+										/*
 										Position_Control_set_TargetVelocityBodyHeadingXY_AngleLimit(msg.params[0]*100,
 																																								msg.params[1]*100,
 																																								msg.params[4],
 																																								msg.params[5]);
-										
+										*/
+
 										//设置Z轴角速度
+										/*
 										Attitude_Control_set_Target_YawRate(msg.params[3]);
+										*/
 										
 										//导航暂时为2D
 										//Position_Control_set_ZLock();
+										/*
 										double z_speed = msg.params[2] * 100;
 										z_speed = z_speed > 10 ? 10 : z_speed;
 										Position_Control_set_TargetVelocityZ(z_speed);
+										*/
 										
 										//记录数据，保证控制连续，并用于结束反馈
 										last_user1_msg = msg;
@@ -559,7 +565,7 @@ RTL:
 										Attitude_Control_set_Target_Yaw(msg.params[0]);
 									*/
 
-									Attitude_Control_set_Target_YawRate(msg.params[1]);
+									// Attitude_Control_set_Target_YawRate(msg.params[1]);
 									
 									//记录数据，用于结束反馈
 									last_condition_yaw_msg = msg;
@@ -614,7 +620,13 @@ RTL:
 								break;
 							}
 							default:
+							{
+								//无指令控制则刹车
+								Position_Control_set_XYLock();
+								Attitude_Control_set_YawLock();
+								Position_Control_set_ZLock();
 								break;
+							}								
 						}
 						/*
 						else
@@ -880,7 +892,7 @@ RTL:
 						if( inFlight==false )
 						{
 							//关闭角度控制器
-							Attitude_Control_Disable();
+							// Attitude_Control_Disable();
 							
 							//回到mavlink控制模式
 							mission_ind = mavlink_control;

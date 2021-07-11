@@ -4,33 +4,33 @@
 #include "mavlink.h"
 #include "vector3.hpp"
 
-//NavÃüÁîĞÅÏ¢
+//Navå‘½ä»¤ä¿¡æ¯
 struct NavCmdInf
 {
-	//¼ÆÊıÆ÷
+	//è®¡æ•°å™¨
 	uint32_t counter1;
 	uint32_t counter2;
 	
-	//ÁÙÊ±±äÁ¿
+	//ä¸´æ—¶å˜é‡
 	double temp[8];
 	
-	//ÓÃ»§ÁÙÊ±±äÁ¿£¨NavCmd²»»áĞŞ¸Ä£©
+	//ç”¨æˆ·ä¸´æ—¶å˜é‡ï¼ˆNavCmdä¸ä¼šä¿®æ”¹ï¼‰
 	double usr_temp[8];
 };
-//Ê×´ÎÖ´ĞĞNavCmdÃüÁîÇ°ĞèÒª³õÊ¼»¯NavCmdInf
+//é¦–æ¬¡æ‰§è¡ŒNavCmdå‘½ä»¤å‰éœ€è¦åˆå§‹åŒ–NavCmdInf
 inline void init_NavCmdInf( NavCmdInf* inf )
 {
 	memset( inf, 0, sizeof(NavCmdInf) );
 }
 
-//Ä¬ÈÏframe
+//é»˜è®¤frame
 #define default_NavCmd_frame MAV_FRAME_GLOBAL_RELATIVE_ALT
 
 
 /*NavCmd16_WAYPOINT
 	MAV_CMD_NAV_WAYPOINT
-	»ñÈ¡º½µã·ÉĞĞÖ¸ÁîµÄ·ÉĞĞ¾àÀë
-	²ÎÊı:
+	è·å–èˆªç‚¹é£è¡ŒæŒ‡ä»¤çš„é£è¡Œè·ç¦»
+	å‚æ•°:
 		<description>Navigate to waypoint.</description>
 		<param index="0" label="Hold" units="s" minValue="0">Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing)</param>
 		<param index="1" label="Accept Radius" units="m" minValue="0">Acceptance radius (if the sphere with this radius is hit, the waypoint counts as reached)</param>
@@ -42,22 +42,22 @@ inline void init_NavCmdInf( NavCmdInf* inf )
 */
 bool NavCmd16_WAYPOINT_GetAB( uint8_t frame, double params[], vector3<double>* AB );
 
-//¼ìÑéÖ¸ÁîÊÇ·ñ¿ÉÖ´ĞĞ
+//æ£€éªŒæŒ‡ä»¤æ˜¯å¦å¯æ‰§è¡Œ
 bool check_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[] );
 /*
-	Nav·ÉĞĞ¿ØÖÆÖ¸Áî´¦Àí
-	ËùÓĞÖ¸Áî±ØĞëÔÚË®Æ½Î»ÖÃ¿ØÖÆÆ÷´ò¿ªµÄÇ°ÌáÏÂÖ´ĞĞ
-	ËùÓĞ²ÎÊıµ¥Î»½Ç¶ÈÎª¶È£¬¾àÀëËÙ¶ÈÎªÃ×
-	²ÎÊı£º
-		freq£ºÔËĞĞÆµÂÊ
-		params£º7¸ö²ÎÊıÊı×é
-		inf£ºÖĞ¼äĞÅÏ¢£¨Ö´ĞĞÇ°ºóĞèµ÷ÓÃinit_NavCmdInfÇå¿Õ£©
-	·µ»Ø£º
-		<-3£º´íÎó
-		-3£ºÎ´Íê³É£¨¿ÉÖ´ĞĞInFlightCmd£©
-		-2£ºÎ´Íê³É£¨²»¿ÉÖ´ĞĞInFlightCmd£©
-		-1£ºÍê³É
-		>=0£ºÍê³ÉÇÒÒªÇóÇĞ»»µ½Ö¸¶¨Mission
+	Navé£è¡Œæ§åˆ¶æŒ‡ä»¤å¤„ç†
+	æ‰€æœ‰æŒ‡ä»¤å¿…é¡»åœ¨æ°´å¹³ä½ç½®æ§åˆ¶å™¨æ‰“å¼€çš„å‰æä¸‹æ‰§è¡Œ
+	æ‰€æœ‰å‚æ•°å•ä½è§’åº¦ä¸ºåº¦ï¼Œè·ç¦»é€Ÿåº¦ä¸ºç±³
+	å‚æ•°ï¼š
+		freqï¼šè¿è¡Œé¢‘ç‡
+		paramsï¼š7ä¸ªå‚æ•°æ•°ç»„
+		infï¼šä¸­é—´ä¿¡æ¯ï¼ˆæ‰§è¡Œå‰åéœ€è°ƒç”¨init_NavCmdInfæ¸…ç©ºï¼‰
+	è¿”å›ï¼š
+		<-3ï¼šé”™è¯¯
+		-3ï¼šæœªå®Œæˆï¼ˆå¯æ‰§è¡ŒInFlightCmdï¼‰
+		-2ï¼šæœªå®Œæˆï¼ˆä¸å¯æ‰§è¡ŒInFlightCmdï¼‰
+		-1ï¼šå®Œæˆ
+		>=0ï¼šå®Œæˆä¸”è¦æ±‚åˆ‡æ¢åˆ°æŒ‡å®šMission
 */
 int16_t Process_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[], NavCmdInf* inf );
 
@@ -67,7 +67,7 @@ int16_t Process_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[
 #define NavCmdRs_InProgress_CanExInFlightCmd(x) (x==-3)
 #define NavCmdRs_InProgress_CanNotExInFlightCmd(x) (x==-2)
 
-/*frame¶¨Òå£º
+/*frameå®šä¹‰ï¼š
 	<entry value="0" name="MAV_FRAME_GLOBAL">
 		<description>Global (WGS84) coordinate frame + MSL altitude. First value / x: latitude, second value / y: longitude, third value / z: positive altitude over mean sea level (MSL).</description>
 	</entry>
@@ -147,8 +147,8 @@ int16_t Process_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[
 
 /*NavCmd16_WAYPOINT
 	MAV_CMD_NAV_WAYPOINT
-	º½µã·ÉĞĞ£¨µ÷×ª»úÍ·²¢·ÉĞĞµ½Ö¸¶¨µã£©
-	²ÎÊı:
+	èˆªç‚¹é£è¡Œï¼ˆè°ƒè½¬æœºå¤´å¹¶é£è¡Œåˆ°æŒ‡å®šç‚¹ï¼‰
+	å‚æ•°:
 		<description>Navigate to waypoint.</description>
 		<param index="0" label="Hold" units="s" minValue="0">Hold time. (ignored by fixed wing, time to stay at waypoint for rotary wing)</param>
 		<param index="1" label="Accept Radius" units="m" minValue="0">Acceptance radius (if the sphere with this radius is hit, the waypoint counts as reached)</param>
@@ -161,8 +161,8 @@ int16_t Process_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[
 
 /*NavCmd20_RETURN_TO_LAUNCH
 	MAV_CMD_NAV_RETURN_TO_LAUNCH
-	»Øµ½Æğ·Éµã
-	²ÎÊı:
+	å›åˆ°èµ·é£ç‚¹
+	å‚æ•°:
 		<description>Return to launch location</description>
 		<param index="1">Empty</param>
 		<param index="2">Empty</param>
@@ -175,8 +175,8 @@ int16_t Process_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[
 
 /*NavCmd22_TAKEOFF
 	MAV_CMD_NAV_TAKEOFF
-	Æğ·É²¢·ÉÍùÖ¸¶¨µØµã
-	²ÎÊı:
+	èµ·é£å¹¶é£å¾€æŒ‡å®šåœ°ç‚¹
+	å‚æ•°:
 		<description>Takeoff from ground / hand</description>
 		<param index="0" label="Pitch">Minimum pitch (if airspeed sensor present), desired pitch without sensor</param>
 		<param index="1">Empty</param>
@@ -189,8 +189,8 @@ int16_t Process_NavCmd( uint16_t cmd, double freq, uint8_t frame, double params[
 
 /*NavCmd93_DELAY
 	MAV_CMD_NAV_DELAY
-	ÑÓÊ±
-	²ÎÊı:
+	å»¶æ—¶
+	å‚æ•°:
 		<description>Delay the next navigation command a number of seconds or until a specified time</description>
 		<param index="0" label="Delay" units="s" minValue="-1" increment="1">Delay (-1 to enable time-of-day fields)</param>
 		<param index="1" label="Hour" minValue="-1" maxValue="23" increment="1">hour (24h format, UTC, -1 to ignore)</param>
