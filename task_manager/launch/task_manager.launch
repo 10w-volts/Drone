@@ -1,0 +1,4 @@
+<launch>
+	<node pkg="task_manager" type="ctrl.py" name="ctrl" />
+	<node pkg="task_manager" type="main.py" name="main" />
+</launch>

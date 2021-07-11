@@ -1,4 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-	<node pkg="10w_volts_sm" type="ctrl.py" name="ctrl" />
-</launch>

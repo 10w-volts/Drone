@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>10w_volts_sm</name>
+  <name>task_manager</name>
   <version>0.0.0</version>
-  <description>The 10w_volts_sm package</description>
+  <description>The task_manager package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
@@ -19,7 +19,7 @@
   <!-- Url tags are optional, but multiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/10w_volts_sm</url> -->
+  <!-- <url type="website">http://wiki.ros.org/task_manager</url> -->
 
 
   <!-- Author tags are optional, multiple are allowed, one per tag -->
