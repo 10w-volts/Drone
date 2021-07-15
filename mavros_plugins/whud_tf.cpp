@@ -89,14 +89,16 @@ namespace mavros{
                             ROS_WARN("%s", ex.what());
                             return;
                         }
+                        Eigen::Translation3f tl_btol(tf_transform.getOrigin().getX(), tf_transform.getOrigin().getY(), tf_transform.getOrigin().getZ());
+                        double roll, pitch, yaw;
+                        tf::Matrix3x3(transform.getRotation()).getEulerYPR(yaw, pitch, roll);
                         mavlink::common::msg::VISION_POSITION_ESTIMATE msg;
                         msg.x = tf_transform.getOrigin().getX();
                         msg.y = tf_transform.getOrigin().getY();
                         msg.z = tf_transform.getOrigin().getZ();
-                        msg.q[0] = tf_transform.getRotation().getW();
-                        msg.q[1] = tf_transform.getRotation().getAxis().getX();
-                        msg.q[2] = tf_transform.getRotation().getAxis().getY();
-                        msg.q[3] = tf_transform.getRotation().getAxis().getZ();
+                        msg.roll = roll;
+                        msg.pitch = pitch;
+                        msg.yaw = yaw;
 
                         UAS_FCU(m_uas)->send_message_ignore_drop(msg);
                     }                    
