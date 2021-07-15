@@ -89,9 +89,8 @@ namespace mavros{
                             ROS_WARN("%s", ex.what());
                             return;
                         }
-                        Eigen::Translation3f tl_btol(tf_transform.getOrigin().getX(), tf_transform.getOrigin().getY(), tf_transform.getOrigin().getZ());
                         double roll, pitch, yaw;
-                        tf::Matrix3x3(transform.getRotation()).getEulerYPR(yaw, pitch, roll);
+                        tf::Matrix3x3(tf_transform.getRotation()).getEulerYPR(yaw, pitch, roll);
                         mavlink::common::msg::VISION_POSITION_ESTIMATE msg;
                         msg.x = tf_transform.getOrigin().getX();
                         msg.y = tf_transform.getOrigin().getY();
