@@ -8,10 +8,10 @@ source /home/nvidia/Code/cartographer_ws/install_isolated/setup.bash
 source /home/nvidia/Code/catkin_ws/devel/setup.bash
 source /home/nvidia/Code/mavros_ws/devel/setup.bash
 
-export ROS_MASTER_URI=http://localhost:11311
+#export ROS_MASTER_URI=http://localhost:11311
 
-#export ROS_MASTER_URI=http://192.168.1.100:11311
-#export ROS_HOSTNAME=192.168.1.100
+#export ROS_MASTER_URI=http://192.168.0.51:11311
+#export ROS_HOSTNAME=192.168.0.51
 
 sleep 3
-roslaunch whud_union whud_union.launch
+#roslaunch whud_union whud_union.launch

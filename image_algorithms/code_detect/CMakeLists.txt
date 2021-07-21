@@ -7,7 +7,7 @@ project(code_detect)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-set(OpenCV_DIR /usr/share/OpenCV)
+set(OpenCV_DIR /usr/local/opencv-3.4.12/share/OpenCV)
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   image_transport
@@ -121,6 +121,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 include_directories(
   include/code_detect
+  /usr/local/opencv-3.4.12/include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -152,6 +153,7 @@ add_executable(code_detect src/detect.cpp src/get_image.cpp)
 ## Specify libraries to link a library or executable target against
 target_link_libraries(code_detect
   ${catkin_LIBRARIES}
+  ${OpenCV_LIBRARIES}
 )
 
 #############
