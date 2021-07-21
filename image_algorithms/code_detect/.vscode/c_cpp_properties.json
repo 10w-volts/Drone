@@ -1,0 +1,36 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/cjp/px4/volans/devel/include/**",
+        "/home/cjp/Code/catkin_ws/devel/include/**",
+        "/home/cjp/Code/mavros_ws/devel/include/**",
+        "/home/cjp/Code/cartographer_ws/install_isolated/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/cjp/Code/catkin_ws/src/10w_volts_sm/include/**",
+        "/home/cjp/Code/catkin_ws/src/car_detect/include/**",
+        "/home/cjp/Code/catkin_ws/src/code_detect/include/**",
+        "/home/cjp/px4/volans/src/sup/explore/include/**",
+        "/home/cjp/Code/mavros_ws/src/mavros/libmavconn/include/**",
+        "/home/cjp/Code/mavros_ws/src/mavros/mavros/include/**",
+        "/home/cjp/Code/mavros_ws/src/mavros/mavros_msgs/include/**",
+        "/home/cjp/px4/volans/src/sup/path_planning/path_planning/include/**",
+        "/home/cjp/px4/volans/src/modules/px4_control/include/**",
+        "/home/cjp/Code/catkin_ws/src/realsense-ros/realsense2_camera/include/**",
+        "/home/cjp/px4/volans/src/simulation/include/**",
+        "/home/cjp/Code/mavros_ws/src/mavros/test_mavros/include/**",
+        "/home/cjp/Code/catkin_ws/src/usb_cam/include/**",
+        "/home/cjp/Code/catkin_ws/src/whud_gui/include/**",
+        "/home/cjp/Code/catkin_ws/src/whud_serial_bridge/include/**",
+        "/home/cjp/Code/catkin_ws/src/whud_state_machine/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

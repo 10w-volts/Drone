@@ -1,0 +1,19 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/cjp/px4/volans/devel/lib/python2.7/dist-packages",
+        "/home/cjp/Code/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/home/cjp/Code/mavros_ws/devel/lib/python2.7/dist-packages",
+        "/home/cjp/Code/cartographer_ws/install_isolated/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/cjp/px4/volans/devel/lib/python2.7/dist-packages",
+        "/home/cjp/Code/catkin_ws/devel/lib/python2.7/dist-packages",
+        "/home/cjp/Code/mavros_ws/devel/lib/python2.7/dist-packages",
+        "/home/cjp/Code/cartographer_ws/install_isolated/lib/python2.7/dist-packages",
+        "/opt/ros/melodic/lib/python2.7/dist-packages"
+    ],
+    "files.associations": {
+        "iostream": "cpp"
+    }
+}

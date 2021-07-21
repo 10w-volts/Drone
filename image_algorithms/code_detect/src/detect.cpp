@@ -4,11 +4,12 @@
 using namespace cv;
 using namespace std;
 
-Mat get_yellow(Mat img, int min_thred);
+Mat get_yellow(Mat img, int min_h_thred, int min_s_thred);
 Mat dilate_erode(Mat img, int kernel_size);
 Mat erode_dilate(Mat img, int kernel_size);
 Rect code_find(Mat gray, Mat binary, int size_threshold, int gradient_threshold);
 Mat get_x_diff(Mat img);
+Point2f get_ratio(Mat img, Point2i mid_point);
 
 /*************************************************
 Function:       qr_detect
@@ -17,19 +18,29 @@ Description:    Detect qr code
 Input:          Standard image
 Output:         Rect of qr code
 *************************************************/
-void qr_code_detect(Mat img)
+result qr_code_detect(Mat img)
 {
 	Mat gray;
 	cvtColor(img, gray, COLOR_BGR2GRAY);
 	Mat x_diff_img = get_x_diff(gray);
 	threshold(x_diff_img, x_diff_img, 50, 255, THRESH_BINARY);
-	Mat erode = erode_dilate(dilate_erode(x_diff_img, 10), 10);
-	Rect code_rect = code_find(gray, erode, 100, 10);
+	Mat erode = erode_dilate(dilate_erode(x_diff_img, 20), 20);
+	Rect code_rect = code_find(gray, erode, 100, 2);
+
+	Point2i mid_point;
+	Point2f mid_point_ratio;
 
 	if (code_rect.x != -1)
-		cout << "the rect is : " << code_rect.x << " " << code_rect.y << " " << code_rect.width << " " << code_rect.height << endl;
+	{
+		mid_point = Point2i(code_rect.x + code_rect.width / 2, code_rect.y + code_rect.height / 2);
+		mid_point_ratio = get_ratio(img, mid_point);
+	}
 	else
-		cout << "there is no code in the image" << endl;
+		mid_point_ratio = Point2f(-9999, -9999);
+	struct result Result;
+	Result.result_point = mid_point_ratio;
+	Result.result_mat = erode;
+	return Result;
 }
 
 /*************************************************
@@ -39,18 +50,31 @@ Description:    Detect yellow bar code
 Input:          Standard image
 Output:         Rect of yellow bar code
 *************************************************/
-void bar_code_detect(Mat img)
+result bar_code_detect(Mat img)
 {
-	Mat binary = get_yellow(img, 180);
-	Mat dilate = dilate_erode(binary, 10);
+	Mat binary = get_yellow(img, 100, 100);
+	Mat dilate = erode_dilate(dilate_erode(binary, 20), 20);
 	Mat gray;
 	cvtColor(img, gray, COLOR_BGR2GRAY);
-	Rect code_rect =  code_find(gray, dilate, 100, 10);
+	Rect code_rect = code_find(gray, dilate, 100, 2);
+
+	Point2i mid_point;
+	Point2f mid_point_ratio;
 
 	if (code_rect.x != -1)
-		cout << "the rect is : " << code_rect.x << " " << code_rect.y << " " << code_rect.width << " " << code_rect.height << endl;
+	{
+		mid_point = Point2i(code_rect.x + code_rect.width / 2, code_rect.y + code_rect.height / 2);
+		mid_point_ratio = get_ratio(img, mid_point);
+		// ROS_INFO("the rect is %d, %d, %d, %d", code_rect.x, code_rect.y, code_rect.width, code_rect.height);
+		// ROS_INFO("the point is %d, %d", mid_point.x, mid_point.y);
+		// ROS_INFO("the ratio is %f, %f", mid_point_ratio.x, mid_point_ratio.y);
+	}
 	else
-		cout << "there is no code in the image" << endl;
+		mid_point_ratio = Point2f(-9999, -9999);
+	struct result Result;
+	Result.result_point = mid_point_ratio;
+	Result.result_mat = dilate;
+	return Result;
 }
 
 /*************************************************
@@ -60,7 +84,7 @@ Description:    Get yellow area
 Input:          Standard image
 Output:         Yellow binary image
 *************************************************/
-Mat get_yellow(Mat img, int min_thred)
+Mat get_yellow(Mat img, int min_h_thred, int min_s_thred)
 {
 	Mat hsv;
 	cvtColor(img, hsv, COLOR_BGR2HSV);
@@ -71,8 +95,8 @@ Mat get_yellow(Mat img, int min_thred)
 	s_channel = hsv_channels[1];
 
 	Mat h_binary, s_binary;
-	threshold(h_channel, h_binary, min_thred, 255, THRESH_BINARY);
-	threshold(s_channel, s_binary, min_thred, 255, THRESH_BINARY);
+	threshold(h_channel, h_binary, min_h_thred, 255, THRESH_BINARY);
+	threshold(s_channel, s_binary, min_s_thred, 255, THRESH_BINARY);
 
 	Mat dst;
 	bitwise_and(h_binary, s_binary, dst);
@@ -133,7 +157,8 @@ Rect code_find(Mat gray, Mat binary, int size_threshold, int gradient_threshold)
 	int bar_index = -1;
 	int num = connectedComponentsWithStats(binary, labels, stats, centroids);
 	Rect code_rect;
-	if (num > 0)
+	// ROS_INFO("the num is %d", num);
+	if (num > 1)
 	{
 		for (int i = 1; i < num; i++)
 		{
@@ -153,11 +178,13 @@ Rect code_find(Mat gray, Mat binary, int size_threshold, int gradient_threshold)
 				int y_gradient_sum = sum(y_gradient)[0];
 
 				float average_gradient = (float)(x_gradient_sum + y_gradient_sum) / (float)stats.at<int>(i, CC_STAT_AREA);
+				// ROS_INFO("the average_gradient is %f", average_gradient);
+				// ROS_INFO("the %d area is %d", i, stats.at<int>(i, CC_STAT_AREA));
 				if (average_gradient > gradient_threshold)
 				{
 					code_rect = rect;
 					break;
-				}
+				}				
 			}
 			if (i == num - 1)
 				code_rect = Rect(-1, -1, -1, -1);
@@ -181,4 +208,20 @@ Mat get_x_diff(Mat img)
 	Mat x_kernel = (Mat_<char>(1, 2) << -1, 1);
 	filter2D(img, x_gradient, -1, x_kernel);
 	return x_gradient;
+}
+
+/*************************************************
+Function:       get_ratio
+Author:			Junpeng Chen
+Description:    Get the mid point ratio, x in (-1, 1), y in (-1, 1)
+Input:          Standard image and the mid point
+Output:         Mid point ratio, x in (-1, 1), y in (-1, 1)
+*************************************************/
+Point2f get_ratio(Mat img, Point2i mid_point) {
+	int col, row;
+	col = img.cols;
+	row = img.rows;
+	Point2f mid_point_ratio;
+	mid_point_ratio = Point2f((float)mid_point.x / col * 2 - 1, -((float)mid_point.y / row * 2 - 1));
+	return mid_point_ratio;
 }
