@@ -18,6 +18,7 @@ class nav_client{
         ros::Publisher mNavComplete;
     public:
         nav_client()
+        :mNavClient("move_base")
         {
             mNavVelSub = mNh.subscribe("/nav_point", 1, &nav_client::nav_point_cb, this);
             mCmdVelPub = mNh.advertise<geometry_msgs::Twist>("/cmd_vel", 5);
@@ -47,13 +48,12 @@ class nav_client{
                             std::placeholders::_2),
                 std::bind(&nav_client::active_cb, this),
                 std::bind(&nav_client::feedback_cb, this, std::placeholders::_1));
-            }
         }
 
         move_base_msgs::MoveBaseGoal GoalSerialization(geometry_msgs::Pose set_pose)
         {
             move_base_msgs::MoveBaseGoal goal;
-            goal.target_pose.header.frame_id = map_frame_id_;
+            goal.target_pose.header.frame_id = "/map";
             goal.target_pose.header.stamp = ros::Time::now();
             goal.target_pose.pose = set_pose;
             return goal;
