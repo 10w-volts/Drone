@@ -171,10 +171,10 @@ Rect code_find(Mat gray, Mat binary, int size_threshold, int gradient_threshold)
 				Mat x_gradient, y_gradient;
 				//Mat x_kernel = (Mat_<char>(1, 2) << -1, 1);
 				//Mat y_kernel = (Mat_<char>(2, 1) << -1, 1);
-				Mat x_kernel(1, 2, CV_8UC1);
+				Mat x_kernel(1, 2, CV_8SC1);
 				x_kernel.at<schar>(0) = -1;
 				x_kernel.at<schar>(1) = 1;
-				Mat y_kernel(2, 1, CV_8UC1);
+				Mat y_kernel(2, 1, CV_8SC1);
 				y_kernel.at<schar>(0) = -1;
 				y_kernel.at<schar>(1) = 1;
 				filter2D(temp_gray, x_gradient, -1, x_kernel);
@@ -211,8 +211,8 @@ Output:         The x_diff image
 Mat get_x_diff(Mat img)
 {
 	Mat x_gradient;
-	// Mat x_kernel = (Mat_<char>(1, 2) << -1, 1);
-	Mat x_kernel(1, 2, CV_8UC1);
+	//Mat x_kernel = (Mat_<char>(1, 2) << -1, 1);
+	Mat x_kernel(1, 2, CV_8SC1);
 	x_kernel.at<schar>(0) = -1;
 	x_kernel.at<schar>(1) = 1;
 	filter2D(img, x_gradient, -1, x_kernel);

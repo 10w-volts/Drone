@@ -18,14 +18,14 @@ static void Msg0_HEARTBEAT( uint8_t Port_index , const mavlink_message_t* msg )
 {
 	const mavlink_heartbeat_t* msg_rd = (mavlink_heartbeat_t*)msg->payload64;
 	GCS_is_MP = msg_rd->base_mode == 0;
-	//¶Ô·½ÊÇmavlink1¾ÍÓÃmavlink1Ğ­Òé
+	//å¯¹æ–¹æ˜¯mavlink1å°±ç”¨mavlink1åè®®
 	if( msg->magic == MAVLINK_STX )
 		mavlink_set_proto_version( Port_index , 2 );
 	else
 		mavlink_set_proto_version( Port_index , 1 );
 }
 
-//ÇĞ»»Ä£Ê½
+//åˆ‡æ¢æ¨¡å¼
 static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 {
 	const mavlink_set_mode_t* msg_rd = (mavlink_set_mode_t*)msg->payload64;
@@ -45,7 +45,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 	SendMsgToMode( mode_msg, 0.01 );
 }
 
-/*²ÎÊıĞ­Òé*/
+/*å‚æ•°åè®®*/
 	static void Msg20_PARAM_REQUEST_READ( uint8_t Port_index , const mavlink_message_t* msg )
 	{
 		const mavlink_param_request_read_t* msg_rd = (mavlink_param_request_read_t*)msg->payload64;
@@ -59,9 +59,9 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 				
 				if( port != 0 )
 				{
-					//²ÎÊıÖµ
+					//å‚æ•°å€¼
 					float value = *(float*)&param_value;
-					//²ÎÊı¸öÊı
+					//å‚æ•°ä¸ªæ•°
 					uint32_t params_count;
 					GetParametersCount(&params_count);
 					
@@ -97,12 +97,12 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 				
 				if( port && port->write )
 				{
-					//²ÎÊıÃû
+					//å‚æ•°å
 					char pname[17];
 					param_name.get_CharStr(pname);
-					//²ÎÊıÖµ					
+					//å‚æ•°å€¼					
 					float value = *(float*)&param_value;
-					//²ÎÊı¸öÊı
+					//å‚æ•°ä¸ªæ•°
 					uint32_t params_count;
 					GetParametersCount(&params_count);
 					
@@ -206,11 +206,11 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 			
 			if( UpdateParam( msg_rd->param_id, value ) == PR_OK )
 			{		
-				//²ÎÊı¸öÊı
+				//å‚æ•°ä¸ªæ•°
 				uint32_t params_count;
 				GetParametersCount(&params_count);
 				
-				//ÏòÃ¿¸ö¶Ë¿Ú·¢ËÍPARAM_VALUE
+				//å‘æ¯ä¸ªç«¯å£å‘é€PARAM_VALUE
 				for( uint8_t i = 0 ; i < MAVLINK_COMM_NUM_BUFFERS ; ++i )
 				{
 					const Port* port = get_CommuPort(i);
@@ -241,9 +241,9 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 			}
 		}
 	}
-/*²ÎÊıĞ­Òé*/
+/*å‚æ•°åè®®*/
 	
-/*º½µãÈÎÎñĞ­Òé*/
+/*èˆªç‚¹ä»»åŠ¡åè®®*/
 	static void Msg43_MISSION_REQUEST_LIST( uint8_t Port_index , const mavlink_message_t* msg )
 	{
 		const mavlink_mission_request_list_t* msg_rd = (mavlink_mission_request_list_t*)msg->payload64;
@@ -427,7 +427,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 		
 		if( setCurrentMission(msg_rd->seq) )
 		{
-			//ÏòÃ¿¸ö¶Ë¿Ú·¢ËÍMISSION_CURRENT
+			//å‘æ¯ä¸ªç«¯å£å‘é€MISSION_CURRENT
 			for( uint8_t i = 0 ; i < MAVLINK_COMM_NUM_BUFFERS ; ++i )
 			{
 				const Port* port = get_CommuPort(i);
@@ -454,9 +454,9 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 		}
 	}
 	
-	//ÏÂÔØµÄÈÎÎñÊıÁ¿
+	//ä¸‹è½½çš„ä»»åŠ¡æ•°é‡
 	static uint16_t DnlMissionsCount = 0;
-	//ÈÎÎñ³¬Ê±ÔÙ´ÎÇëÇó±äÁ¿
+	//ä»»åŠ¡è¶…æ—¶å†æ¬¡è¯·æ±‚å˜é‡
 	bool RqMissionInt[MAVLINK_COMM_NUM_BUFFERS];
 	int32_t RqMissionInd[MAVLINK_COMM_NUM_BUFFERS];
 	int32_t RqMissionCounter[MAVLINK_COMM_NUM_BUFFERS] = {0};
@@ -512,7 +512,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 					mavlink_unlock_chan(Port_index);
 				}
 				
-//				//³¬Ê±ÇëÇó
+//				//è¶…æ—¶è¯·æ±‚
 //				RqMissionCounter[Port_index] = 100;
 //				RqMissionInd[Port_index] = 0;
 //				RqMissiontarget_sysid[Port_index] = msg->sysid;
@@ -529,7 +529,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 		
 		if( msg_rd->seq == getUploadingMissionsCount() )
 		{
-			//Ìí¼Óº½µãÈÎÎñ
+			//æ·»åŠ èˆªç‚¹ä»»åŠ¡
 			MissionInf wp_inf;
 			wp_inf.cmd = msg_rd->command;
 			wp_inf.frame = msg_rd->frame;
@@ -549,7 +549,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 				if( DnlMissionsCount > 0 )
 				{	
 					--DnlMissionsCount;
-					//·¢ËÍº½µãÉêÇë
+					//å‘é€èˆªç‚¹ç”³è¯·
 					mavlink_message_t msg_sd;
 					if( mavlink_lock_chan( Port_index, 0.01 ) )
 					{
@@ -570,7 +570,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 						mavlink_unlock_chan(Port_index);
 					}
 
-					//³¬Ê±ÇëÇó
+					//è¶…æ—¶è¯·æ±‚
 					RqMissionCounter[Port_index] = 100;
 					RqMissionInd[Port_index] = getUploadingMissionsCount();
 					RqMissionInt[Port_index] = false;
@@ -578,7 +578,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 					RqMissiontarget_compid[Port_index] = msg->compid;
 				}
 				else
-				{	//·¢ËÍACK			
+				{	//å‘é€ACK			
 					mavlink_message_t msg_sd;
 					if( mavlink_lock_chan( Port_index, 0.01 ) )
 					{
@@ -599,10 +599,10 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 						mavlink_unlock_chan(Port_index);
 					}
 					
-					//¸´Î»³¬Ê±ÇëÇó
+					//å¤ä½è¶…æ—¶è¯·æ±‚
 					RqMissionCounter[Port_index] = 0;
 					
-					//±£´æÈÎÎñµ½´æ´¢Æ÷
+					//ä¿å­˜ä»»åŠ¡åˆ°å­˜å‚¨å™¨
 					saveMissions();
 				}
 			}
@@ -615,7 +615,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 		
 		if( msg_rd->seq == getUploadingMissionsCount() )
 		{
-			//Ìí¼Óº½µãÈÎÎñ
+			//æ·»åŠ èˆªç‚¹ä»»åŠ¡
 			MissionInf wp_inf;
 			wp_inf.cmd = msg_rd->command;
 			wp_inf.frame = msg_rd->frame;
@@ -649,7 +649,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 				if( DnlMissionsCount > 0 )
 				{	
 					--DnlMissionsCount;
-					//·¢ËÍº½µãÉêÇë
+					//å‘é€èˆªç‚¹ç”³è¯·
 					mavlink_message_t msg_sd;
 					if( mavlink_lock_chan( Port_index, 0.01 ) )
 					{
@@ -671,7 +671,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 						mavlink_unlock_chan(Port_index);
 					}
 
-					//³¬Ê±ÇëÇó
+					//è¶…æ—¶è¯·æ±‚
 					RqMissionCounter[Port_index] = 100;
 					RqMissionInd[Port_index] = getUploadingMissionsCount();
 					RqMissionInt[Port_index] = true;
@@ -679,7 +679,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 					RqMissiontarget_compid[Port_index] = msg->compid;
 				}
 				else
-				{	//·¢ËÍACK			
+				{	//å‘é€ACK			
 					mavlink_message_t msg_sd;
 					if( mavlink_lock_chan( Port_index, 0.01 ) )
 					{
@@ -700,10 +700,10 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 						mavlink_unlock_chan(Port_index);
 					}
 					
-					//¸´Î»³¬Ê±ÇëÇó
+					//å¤ä½è¶…æ—¶è¯·æ±‚
 					RqMissionCounter[Port_index] = 0;
 					
-					//±£´æÈÎÎñµ½´æ´¢Æ÷
+					//ä¿å­˜ä»»åŠ¡åˆ°å­˜å‚¨å™¨
 					saveMissions();
 				}
 			}
@@ -718,7 +718,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 		
 		const Port* port = get_CommuPort(Port_index);
 		if( port->write != 0 )
-		{	//·¢ËÍACK			
+		{	//å‘é€ACK			
 			mavlink_message_t msg_sd;
 			if( mavlink_lock_chan( Port_index, 0.01 ) )
 			{
@@ -740,7 +740,7 @@ static void Msg11_SET_MODE( uint8_t Port_index , const mavlink_message_t* msg )
 			}
 		}
 	}
-/*º½µãÈÎÎñĞ­Òé*/
+/*èˆªç‚¹ä»»åŠ¡åè®®*/
 
 static void Msg66_REQUEST_DATA_STREAM( uint8_t Port_index , const mavlink_message_t* msg )
 {
@@ -830,7 +830,7 @@ static void Msg102_VISION_POSITION_ESTIMATE( uint8_t Port_index , const mavlink_
 	
 	const mavlink_vision_position_estimate_t* msg_rd = (mavlink_vision_position_estimate_t*)msg->payload64;
 	
-	//º½Ïò¶Ô×¼
+	//èˆªå‘å¯¹å‡†
 	vector3<double> posVSlam;
 	posVSlam.x = BodyHeading2ENU_x(msg_rd->x * 100 , msg_rd->y * 100 , sinYaw , cosYaw);
 	posVSlam.y = BodyHeading2ENU_y(msg_rd->x * 100 , msg_rd->y * 100 , sinYaw , cosYaw);
@@ -894,7 +894,7 @@ static void Msg138_ATT_POS_MOCAP( uint8_t Port_index , const mavlink_message_t* 
 	
 	const mavlink_att_pos_mocap_t* msg_rd = (mavlink_att_pos_mocap_t*)msg->payload64;
 	
-	//º½Ïò¶Ô×¼
+	//èˆªå‘å¯¹å‡†
 	vector3<double> posLidarSlam;
 	posLidarSlam.x = BodyHeading2ENU_x(msg_rd->x * 100 , msg_rd->y * 100 , sinYaw , cosYaw);
 	posLidarSlam.y = BodyHeading2ENU_y(msg_rd->x * 100 , msg_rd->y * 100 , sinYaw , cosYaw);
