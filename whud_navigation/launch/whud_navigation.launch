@@ -9,8 +9,11 @@
         <rosparam file="$(find whud_navigation)/config/whud_robot/global_planner_params.yaml" command="load" />
         <rosparam file="$(find whud_navigation)/config/whud_robot/move_base_params.yaml" command="load" />
 
-        <remap from="/cmd_vel" to="/move_base/cmd_vel" />
+        <!-- <remap from="/cmd_vel" to="/move_base/cmd_vel" /> -->
+	<remap from="/cmd_vel" to="/mavros/whud_navigation/cmd_vel" />
     </node>
+
+    <node pkg="whud_navigation" type="nav_client" name="nav_client" />
 
     <!-- 运行rviz -->
     <?ignore
