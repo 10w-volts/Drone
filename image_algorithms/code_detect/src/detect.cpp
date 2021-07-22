@@ -24,7 +24,7 @@ result qr_code_detect(Mat img)
 	cvtColor(img, gray, COLOR_BGR2GRAY);
 	Mat x_diff_img = get_x_diff(gray);
 	threshold(x_diff_img, x_diff_img, 50, 255, THRESH_BINARY);
-	Mat erode = erode_dilate(dilate_erode(x_diff_img, 20), 20);
+	Mat erode = erode_dilate(dilate_erode(x_diff_img, 10), 10);
 	Rect code_rect = code_find(gray, erode, 100, 2);
 
 	Point2i mid_point;
@@ -53,10 +53,10 @@ Output:         Rect of yellow bar code
 result bar_code_detect(Mat img)
 {
 	Mat binary = get_yellow(img, 100, 100);
-	Mat dilate = erode_dilate(dilate_erode(binary, 20), 20);
+	Mat dilate = erode_dilate(dilate_erode(binary, 10), 10);
 	Mat gray;
 	cvtColor(img, gray, COLOR_BGR2GRAY);
-	Rect code_rect = code_find(gray, dilate, 100, 2);
+	Rect code_rect = code_find(gray, dilate, 100, 6);
 
 	Point2i mid_point;
 	Point2f mid_point_ratio;
