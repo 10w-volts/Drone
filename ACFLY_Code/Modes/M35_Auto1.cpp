@@ -619,6 +619,30 @@ RTL:
 								get_Altitude_ControlMode(&alt_mode);
 								break;
 							}
+							case 5:
+							{
+								//判断滞空
+								bool inFlight;
+								get_is_inFlight(&inFlight);
+								if( inFlight==false )
+								{									
+									//mavlink反馈
+									mavlink_send_command_ack(last_nav_land_local_msg, MAV_RESULT_ACCEPTED, 0, 0);
+								}
+								else
+								{
+									//除控制方向其余锁定
+									Position_Control_set_XYLock();
+									Attitude_Control_set_YawLock();
+									
+									//设置降落速度
+									if(last_nav_land_local_msg.params[2] != 0)
+										Position_Control_set_TargetVelocityZ(last_nav_land_local_msg.params[2]*100);
+									else
+										Position_Control_set_TargetVelocityZ(-40);
+								}
+								break;
+							}
 							default:
 							{
 								//无指令控制则刹车
@@ -887,19 +911,21 @@ RTL:
 							Position_Control_set_TargetVelocityZ(-40);
 						
 						//判断滞空
-						bool inFlight;
-						get_is_inFlight(&inFlight);
-						if( inFlight==false )
-						{
-							//关闭角度控制器
-							// Attitude_Control_Disable();
+						// bool inFlight;
+						// get_is_inFlight(&inFlight);
+						// if( inFlight==false )
+						// {
+						// 	//关闭角度控制器
+						// 	// Attitude_Control_Disable();
 							
-							//回到mavlink控制模式
-							mission_ind = mavlink_control;
+						// 	//回到mavlink控制模式
+						// 	mission_ind = mavlink_control;
 							
-							//mavlink反馈
-							mavlink_send_command_ack(last_nav_land_local_msg, MAV_RESULT_ACCEPTED, 0, 0);
-						}
+						// 	//mavlink反馈
+						// 	mavlink_send_command_ack(last_nav_land_local_msg, MAV_RESULT_ACCEPTED, 0, 0);
+						// }
+						mission_ind = mavlink_control;
+
 						break;
 					}
 					
