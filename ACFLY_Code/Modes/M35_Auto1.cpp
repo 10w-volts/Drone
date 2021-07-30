@@ -684,7 +684,18 @@ RTL:
 						{
 							if(msg_available)
 							{
-								if(msg.cmd == MAV_CMD_USER_1)
+								if(msg.cmd == MAV_CMD_NAV_LAND_LOCAL)
+								{
+									mavlink_send_command_ack(msg, MAV_RESULT_IN_PROGRESS, 0, 0);
+									
+									//记录数据，用于结束反馈
+									last_nav_land_local_msg = msg;
+									
+									//转到降落任务
+									mission_ind = land;
+									last_mode = 5;
+								}
+								else if(msg.cmd == MAV_CMD_USER_1)
 								{
 									/*
 									* MAV_CMD_USER_1:
