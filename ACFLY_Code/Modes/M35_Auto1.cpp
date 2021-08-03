@@ -628,6 +628,7 @@ RTL:
 								{									
 									//mavlink反馈
 									mavlink_send_command_ack(last_nav_land_local_msg, MAV_RESULT_ACCEPTED, 0, 0);
+									last_mode = 0;
 								}
 								else
 								{

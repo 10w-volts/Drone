@@ -5,14 +5,14 @@
 #include "Quaternion.hpp"
 #include "map_projection.hpp"
 
-//»ñÈ¡Èı×Ö½ÚWGAÊ¶±ğÂë
+//è·å–ä¸‰å­—èŠ‚WGAè¯†åˆ«ç 
 void MS_get_WGA( uint32_t* WGA );
-//»ñÈ¡Õı°æÑéÖ¤½á¹û
+//è·å–æ­£ç‰ˆéªŒè¯ç»“æœ
 bool MS_WGA_Correct();
 
-//»ñÈ¡µ±Ç°Ê¹ÓÃµÄÍÓÂİÒÇ
+//è·å–å½“å‰ä½¿ç”¨çš„é™€èºä»ª
 uint8_t get_current_use_IMUGyroscope();
-//»ñÈ¡µ±Ç°Ê¹ÓÃµÄ¼ÓËÙ¶È¼Æ
+//è·å–å½“å‰ä½¿ç”¨çš„åŠ é€Ÿåº¦è®¡
 uint8_t get_current_use_IMUAccelerometer();
 
 enum MS_Status
@@ -22,215 +22,215 @@ enum MS_Status
 	MS_Err ,
 };
 
-/*½¡¿µ¶ÈĞÅÏ¢*/
+/*å¥åº·åº¦ä¿¡æ¯*/
 	struct PosSensorHealthInf1
 	{
-		//´«¸ĞÆ÷ĞòºÅ
+		//ä¼ æ„Ÿå™¨åºå·
 		uint8_t sensor_ind;
-		//½âËãÎ»ÖÃ
+		//è§£ç®—ä½ç½®
 		vector3<double> PositionENU;
-		//´«¸ĞÆ÷Î»ÖÃ
+		//ä¼ æ„Ÿå™¨ä½ç½®
 		double sensor_pos;
-		//´«¸ĞÆ÷Æ«ÒÆ£¨´«¸ĞÆ÷½¡¿µÊ±¸üĞÂ£©
-		//HOffset+PositionENU = ´«¸ĞÆ÷¹À¼ÆÖµ
+		//ä¼ æ„Ÿå™¨åç§»ï¼ˆä¼ æ„Ÿå™¨å¥åº·æ—¶æ›´æ–°ï¼‰
+		//HOffset+PositionENU = ä¼ æ„Ÿå™¨ä¼°è®¡å€¼
 		double HOffset;
-		//ÉÏ´Î½¡¿µÊ±¼ä
+		//ä¸Šæ¬¡å¥åº·æ—¶é—´
 		TIME last_healthy_TIME;
-		//ÊÇ·ñ¿ÉÓÃ£¨²»¿ÉÓÃÊ±ÔëÉùÎŞĞ§£©
+		//æ˜¯å¦å¯ç”¨ï¼ˆä¸å¯ç”¨æ—¶å™ªå£°æ— æ•ˆï¼‰
 		bool available;
-		//´«¸ĞÆ÷ÔëÉùÉÏÏÂ½ç£¨´«¸ĞÆ÷-½âËã£©
+		//ä¼ æ„Ÿå™¨å™ªå£°ä¸Šä¸‹ç•Œï¼ˆä¼ æ„Ÿå™¨-è§£ç®—ï¼‰
 		double NoiseMin, NoiseMax;
-		//ËÙ¶ÈÔëÉù
+		//é€Ÿåº¦å™ªå£°
 		double VNoise;
 	};
 	struct PosSensorHealthInf2
 	{
-		//´«¸ĞÆ÷ĞòºÅ
+		//ä¼ æ„Ÿå™¨åºå·
 		uint8_t sensor_ind;
-		//ÊÇ·ñÈ«Çò¶¨Î»´«¸ĞÆ÷
-		//ÊÇ²ÅÓĞ¶¨Î»×ª»»ĞÅÏ¢
+		//æ˜¯å¦å…¨çƒå®šä½ä¼ æ„Ÿå™¨
+		//æ˜¯æ‰æœ‰å®šä½è½¬æ¢ä¿¡æ¯
 		bool global_sensor;
-		//¶¨Î»×ø±ê×ª»»ĞÅÏ¢
+		//å®šä½åæ ‡è½¬æ¢ä¿¡æ¯
 		Map_Projection mp;
-		//½âËãÎ»ÖÃ
+		//è§£ç®—ä½ç½®
 		vector3<double> PositionENU;
-		//´«¸ĞÆ÷Î»ÖÃ
+		//ä¼ æ„Ÿå™¨ä½ç½®
 		vector2<double> sensor_pos;
-		//´«¸ĞÆ÷Æ«ÒÆ£¨´«¸ĞÆ÷½¡¿µÊ±¸üĞÂ£©
-		//HOffset+PositionENU = ´«¸ĞÆ÷¹À¼ÆÖµ
+		//ä¼ æ„Ÿå™¨åç§»ï¼ˆä¼ æ„Ÿå™¨å¥åº·æ—¶æ›´æ–°ï¼‰
+		//HOffset+PositionENU = ä¼ æ„Ÿå™¨ä¼°è®¡å€¼
 		vector2<double> HOffset;
-		//ÉÏ´Î½¡¿µÊ±¼ä
+		//ä¸Šæ¬¡å¥åº·æ—¶é—´
 		vector2<TIME> last_healthy_TIME;
-		//ÊÇ·ñ¿ÉÓÃ£¨²»¿ÉÓÃÊ±ÔëÉùÎŞĞ§£©
+		//æ˜¯å¦å¯ç”¨ï¼ˆä¸å¯ç”¨æ—¶å™ªå£°æ— æ•ˆï¼‰
 		bool available;
-		//´«¸ĞÆ÷ÔëÉùÉÏÏÂ½ç£¨´«¸ĞÆ÷-½âËã£©
+		//ä¼ æ„Ÿå™¨å™ªå£°ä¸Šä¸‹ç•Œï¼ˆä¼ æ„Ÿå™¨-è§£ç®—ï¼‰
 		vector2<double> NoiseMin, NoiseMax;
-		//ËÙ¶ÈÔëÉù
+		//é€Ÿåº¦å™ªå£°
 		vector2<double> VNoise;
 	};
 	struct PosSensorHealthInf3
 	{
-		//´«¸ĞÆ÷ĞòºÅ
+		//ä¼ æ„Ÿå™¨åºå·
 		uint8_t sensor_ind;
-		//ÊÇ·ñÈ«Çò¶¨Î»´«¸ĞÆ÷
-		//ÊÇ²ÅÓĞ¶¨Î»×ª»»ĞÅÏ¢
+		//æ˜¯å¦å…¨çƒå®šä½ä¼ æ„Ÿå™¨
+		//æ˜¯æ‰æœ‰å®šä½è½¬æ¢ä¿¡æ¯
 		bool global_sensor;
-		//¶¨Î»×ø±ê×ª»»ĞÅÏ¢
+		//å®šä½åæ ‡è½¬æ¢ä¿¡æ¯
 		Map_Projection mp;
-		//½âËãÎ»ÖÃ
+		//è§£ç®—ä½ç½®
 		vector3<double> PositionENU;
-		//´«¸ĞÆ÷Î»ÖÃ
+		//ä¼ æ„Ÿå™¨ä½ç½®
 		vector3<double> sensor_pos;
-		//´«¸ĞÆ÷Æ«ÒÆ£¨´«¸ĞÆ÷½¡¿µÊ±¸üĞÂ£©
-		//HOffset+PositionENU = ´«¸ĞÆ÷¹À¼ÆÖµ
+		//ä¼ æ„Ÿå™¨åç§»ï¼ˆä¼ æ„Ÿå™¨å¥åº·æ—¶æ›´æ–°ï¼‰
+		//HOffset+PositionENU = ä¼ æ„Ÿå™¨ä¼°è®¡å€¼
 		vector3<double> HOffset;
-		//ÉÏ´Î½¡¿µÊ±¼ä
+		//ä¸Šæ¬¡å¥åº·æ—¶é—´
 		vector3<TIME> last_healthy_TIME;
-		//ÊÇ·ñ¿ÉÓÃ£¨²»¿ÉÓÃÊ±ÔëÉùÎŞĞ§£©
+		//æ˜¯å¦å¯ç”¨ï¼ˆä¸å¯ç”¨æ—¶å™ªå£°æ— æ•ˆï¼‰
 		bool available;
-		//´«¸ĞÆ÷ÔëÉùÉÏÏÂ½ç£¨´«¸ĞÆ÷-½âËã£©
+		//ä¼ æ„Ÿå™¨å™ªå£°ä¸Šä¸‹ç•Œï¼ˆä¼ æ„Ÿå™¨-è§£ç®—ï¼‰
 		vector3<double> NoiseMin, NoiseMax;
-		//ËÙ¶ÈÔëÉù
+		//é€Ÿåº¦å™ªå£°
 		vector3<double> VNoise;		
 	};
 
-	/*XY´«¸ĞÆ÷½¡¿µ¶È*/
-		//»ñÈ¡µ±Ç°XY´«¸ĞÆ÷
+	/*XYä¼ æ„Ÿå™¨å¥åº·åº¦*/
+		//è·å–å½“å‰XYä¼ æ„Ÿå™¨
 		int8_t get_Current_XYSensor();
 	
-		//Ö¸¶¨ĞòºÅ´«¸ĞÆ÷½¡¿µ¶È
+		//æŒ‡å®šåºå·ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_PosSensorHealth_XY( PosSensorHealthInf2* result, uint8_t sensor_ind, double TIMEOUT = -1 );
-		//µ±Ç°´«¸ĞÆ÷½¡¿µ¶È
+		//å½“å‰ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_Health_XY( PosSensorHealthInf2* result, double TIMEOUT = -1 );
-		//×îÓÅ²â¾à´«¸ĞÆ÷½¡¿µ¶È
+		//æœ€ä¼˜æµ‹è·ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_OptimalRange_XY( PosSensorHealthInf2* result, double TIMEOUT = -1 );
-		//×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷½¡¿µ¶È
+		//æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_OptimalGlobal_XY( PosSensorHealthInf2* result, double TIMEOUT = -1 );
-	/*XY´«¸ĞÆ÷½¡¿µ¶È*/
+	/*XYä¼ æ„Ÿå™¨å¥åº·åº¦*/
 	
-	/*Z´«¸ĞÆ÷½¡¿µ¶È*/
-		//»ñÈ¡µ±Ç°Z´«¸ĞÆ÷
+	/*Zä¼ æ„Ÿå™¨å¥åº·åº¦*/
+		//è·å–å½“å‰Zä¼ æ„Ÿå™¨
 		int8_t get_Current_ZSensor();
 	
-		//Ö¸¶¨ĞòºÅ´«¸ĞÆ÷½¡¿µ¶È
+		//æŒ‡å®šåºå·ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_PosSensorHealth_Z( PosSensorHealthInf1* result, uint8_t sensor_ind, double TIMEOUT = -1 );
-		//µ±Ç°´«¸ĞÆ÷½¡¿µ¶È
+		//å½“å‰ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_Health_Z( PosSensorHealthInf1* result, double TIMEOUT = -1 );
-		//×îÓÅ²â¾à´«¸ĞÆ÷½¡¿µ¶È
+		//æœ€ä¼˜æµ‹è·ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_OptimalRange_Z( PosSensorHealthInf1* result, double TIMEOUT = -1 );
-		//×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷½¡¿µ¶È
+		//æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_OptimalGlobal_Z( PosSensorHealthInf1* result, double TIMEOUT = -1 );
-	/*Z´«¸ĞÆ÷½¡¿µ¶È*/
+	/*Zä¼ æ„Ÿå™¨å¥åº·åº¦*/
 	
-	/*XYZ´«¸ĞÆ÷½¡¿µ¶È*/
-		//Ö¸¶¨ĞòºÅ´«¸ĞÆ÷½¡¿µ¶È
+	/*XYZä¼ æ„Ÿå™¨å¥åº·åº¦*/
+		//æŒ‡å®šåºå·ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_PosSensorHealth_XYZ( PosSensorHealthInf3* result, uint8_t sensor_ind, double TIMEOUT = -1 );
-		//×îÓÅ²â¾à´«¸ĞÆ÷½¡¿µ¶È
+		//æœ€ä¼˜æµ‹è·ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_OptimalRange_XYZ( PosSensorHealthInf3* result, double TIMEOUT = -1 );
-		//×îÓÅÈ«Çò¶¨Î»´«¸ĞÆ÷½¡¿µ¶È
+		//æœ€ä¼˜å…¨çƒå®šä½ä¼ æ„Ÿå™¨å¥åº·åº¦
 		bool get_OptimalGlobal_XYZ( PosSensorHealthInf3* result, double TIMEOUT = -1 );
-	/*XYZ´«¸ĞÆ÷½¡¿µ¶È*/
-/*½¡¿µ¶ÈĞÅÏ¢*/
+	/*XYZä¼ æ„Ÿå™¨å¥åº·åº¦*/
+/*å¥åº·åº¦ä¿¡æ¯*/
 
-/*×ËÌ¬ĞÅÏ¢»ñÈ¡½Ó¿Ú*/
-	//»ñÈ¡½âËãÏµÍ³×´Ì¬
+/*å§¿æ€ä¿¡æ¯è·å–æ¥å£*/
+	//è·å–è§£ç®—ç³»ç»ŸçŠ¶æ€
 	MS_Status get_Attitude_MSStatus();
 
-	//»ñÈ¡ÓÃÓÚ¿ØÖÆµÄÂË²¨ºóµÄ½Ç£¨¼Ó£©ËÙ¶È
+	//è·å–ç”¨äºæ§åˆ¶çš„æ»¤æ³¢åçš„è§’ï¼ˆåŠ ï¼‰é€Ÿåº¦
 	bool get_AngularRate_Ctrl( vector3<double>* result, double TIMEOUT = -1 );
 	bool get_AngularAcc_Ctrl( vector3<double>* result, double TIMEOUT = -1 );
-	//»ñÈ¡×ËÌ¬ËÄÔªÊı
+	//è·å–å§¿æ€å››å…ƒæ•°
 	bool get_Attitude_quat( Quaternion* result, double TIMEOUT = -1 );	
-	//»ñÈ¡»úÌåËÄÔªÊı£¨Æ«º½²»¶Ô×¼£©
+	//è·å–æœºä½“å››å…ƒæ•°ï¼ˆåèˆªä¸å¯¹å‡†ï¼‰
 	bool get_Airframe_quat( Quaternion* result, double TIMEOUT = -1 );
-	//»ñÈ¡»úÌåËÄÔªÊı£¨Æ«º½¶Ô×¼£©
+	//è·å–æœºä½“å››å…ƒæ•°ï¼ˆåèˆªå¯¹å‡†ï¼‰
 	bool get_AirframeY_quat( Quaternion* result, double TIMEOUT = -1  );
-	//»ñÈ¡Æ«º½¶Ô×¼Æ«½Ç£¨´ÅÆ«½Ç£©
+	//è·å–åèˆªå¯¹å‡†åè§’ï¼ˆç£åè§’ï¼‰
 	bool get_YawDeclination( double* result, double TIMEOUT = -1  );
-	//»ñÈ¡ÀúÊ·ËÄÔªÊı
+	//è·å–å†å²å››å…ƒæ•°
 	bool get_history_AttitudeQuat( Quaternion* result, double t, double TIMEOUT = -1 );
-	//»ñÈ¡ÀúÊ·»úÌåËÄÔªÊı£¨Æ«º½²»¶Ô×¼£©
+	//è·å–å†å²æœºä½“å››å…ƒæ•°ï¼ˆåèˆªä¸å¯¹å‡†ï¼‰
 	bool get_history_AirframeQuat( Quaternion* result, double t, double TIMEOUT = -1 );
-	//»ñÈ¡ÀúÊ·»úÌåËÄÔªÊı£¨Æ«º½¶Ô×¼£©
+	//è·å–å†å²æœºä½“å››å…ƒæ•°ï¼ˆåèˆªå¯¹å‡†ï¼‰
 	bool get_history_AirframeQuatY( Quaternion* result, double t, double TIMEOUT = -1 );
-/*×ËÌ¬ĞÅÏ¢»ñÈ¡½Ó¿Ú*/
+/*å§¿æ€ä¿¡æ¯è·å–æ¥å£*/
 
-/*Î»ÖÃĞÅÏ¢»ñÈ¡½Ó¿Ú*/
-	//»ñÈ¡½âËãÏµÍ³×´Ì¬
+/*ä½ç½®ä¿¡æ¯è·å–æ¥å£*/
+	//è·å–è§£ç®—ç³»ç»ŸçŠ¶æ€
 	MS_Status get_Altitude_MSStatus();
 	MS_Status get_Position_MSStatus();
 	
-	//»ñÈ¡ÊµÊ±Î»ÖÃ
+	//è·å–å®æ—¶ä½ç½®
 	bool get_Position( vector3<double>* result, double TIMEOUT = -1 );
-	//»ñÈ¡ÊµÊ±ËÙ¶È£¨¶«±±Ìì·½Ïò£©
+	//è·å–å®æ—¶é€Ÿåº¦ï¼ˆä¸œåŒ—å¤©æ–¹å‘ï¼‰
 	bool get_VelocityENU( vector3<double>* result, double TIMEOUT = -1 );
-	//»ñÈ¡ÊµÊ±µØÀíÏµ¼ÓËÙ¶È£¨¶«±±Ìì£©
+	//è·å–å®æ—¶åœ°ç†ç³»åŠ é€Ÿåº¦ï¼ˆä¸œåŒ—å¤©ï¼‰
 	bool get_AccelerationENU( vector3<double>* result, double TIMEOUT = -1 );
-	//»ñÈ¡ÓÃÓÚ¿ØÖÆµÄÂË²¨ºóµÄµØÀíÏµ¼ÓËÙ¶È£¨¶«±±Ìì£©
+	//è·å–ç”¨äºæ§åˆ¶çš„æ»¤æ³¢åçš„åœ°ç†ç³»åŠ é€Ÿåº¦ï¼ˆä¸œåŒ—å¤©ï¼‰
 	bool get_AccelerationENU_Ctrl( vector3<double>* result, double TIMEOUT = -1 );
-	//»ñÈ¡ÓÃÓÚ¿ØÖÆµÄÂË²¨ºóµÄµØÀíÏµËÙ¶È£¨¶«±±Ìì£©
+	//è·å–ç”¨äºæ§åˆ¶çš„æ»¤æ³¢åçš„åœ°ç†ç³»é€Ÿåº¦ï¼ˆä¸œåŒ—å¤©ï¼‰
 	bool get_VelocityENU_Ctrl( vector3<double>* result, double TIMEOUT = -1 );
-	//»ñÈ¡ÓÃÓÚ¿ØÖÆµÄÂË²¨ºóµÄ»úÌåÏµ¼ÓËÙ¶È£¨Ç°×óÉÏ£©
+	//è·å–ç”¨äºæ§åˆ¶çš„æ»¤æ³¢åçš„æœºä½“ç³»åŠ é€Ÿåº¦ï¼ˆå‰å·¦ä¸Šï¼‰
 	bool get_VelocityFLU_Ctrl( vector3<double>* result, double TIMEOUT = -1 );
 	bool get_Position_Ctrl( vector3<double>* result, double TIMEOUT = -1 );
-	//»ñÈ¡µÍÍ¨ÂË²¨ºóµÄÎ´²¹³¥£¨ÁãÆ«ÁéÃô¶ÈÎÂ¶È£©µÄÍÓÂİ¼ÓËÙ¶ÈÊı¾İ
+	//è·å–ä½é€šæ»¤æ³¢åçš„æœªè¡¥å¿ï¼ˆé›¶åçµæ•åº¦æ¸©åº¦ï¼‰çš„é™€èºåŠ é€Ÿåº¦æ•°æ®
 	bool get_AccelerationNC_filted( vector3<double>* vec, double TIMEOUT = -1 );
 	bool get_AngularRateNC_filted( vector3<double>* vec, double TIMEOUT = -1 );
 	
-	/*¿ìËÙÊı¾İ*/
+	/*å¿«é€Ÿæ•°æ®*/
 		float get_VelocityENU_Ctrl_x();
 		float get_VelocityENU_Ctrl_y();
 		float get_VelocityENU_Ctrl_z();
-	/*¿ìËÙÊı¾İ*/
-/*Î»ÖÃĞÅÏ¢»ñÈ¡½Ó¿Ú*/
+	/*å¿«é€Ÿæ•°æ®*/
+/*ä½ç½®ä¿¡æ¯è·å–æ¥å£*/
 
-/*µç³ØĞÅÏ¢½Ó¿Ú*/
+/*ç”µæ± ä¿¡æ¯æ¥å£*/
 	struct BatteryCfg
 	{
-		//±ê×¼µçÑ¹£¨V£©
+		//æ ‡å‡†ç”µå‹ï¼ˆVï¼‰
 		float STVoltage[2];
-		//µçÑ¹²âÁ¿ÔöÒæ£¨V£©
+		//ç”µå‹æµ‹é‡å¢ç›Šï¼ˆVï¼‰
 		float VoltMKp[2];
-		//µçÁ÷²âÁ¿ÔöÒæ£¨A£©
+		//ç”µæµæµ‹é‡å¢ç›Šï¼ˆAï¼‰
 		float CurrentMKp[2];
-		//ÈİÁ¿£¨W*h£©
+		//å®¹é‡ï¼ˆW*hï¼‰
 		float Capacity[2];
-		//¹¦ÂÊµçÑ¹µã0£¨0%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹0ï¼ˆ0%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP0[2];
-		//¹¦ÂÊµçÑ¹µã1£¨10%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹1ï¼ˆ10%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP1[2];
-		//¹¦ÂÊµçÑ¹µã2£¨20%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹2ï¼ˆ20%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP2[2];
-		//¹¦ÂÊµçÑ¹µã3£¨30%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹3ï¼ˆ30%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP3[2];
-		//¹¦ÂÊµçÑ¹µã4£¨40%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹4ï¼ˆ40%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP4[2];
-		//¹¦ÂÊµçÑ¹µã5£¨50%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹5ï¼ˆ50%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP5[2];
-		//¹¦ÂÊµçÑ¹µã6£¨60%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹6ï¼ˆ60%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP6[2];
-		//¹¦ÂÊµçÑ¹µã7£¨70%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹7ï¼ˆ70%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP7[2];
-		//¹¦ÂÊµçÑ¹µã8£¨80%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹8ï¼ˆ80%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP8[2];
-		//¹¦ÂÊµçÑ¹µã9£¨90%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹9ï¼ˆ90%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP9[2];
-		//¹¦ÂÊµçÑ¹µã10£¨100%µçÁ¿Ê±Ïà¶Ô±ê×¼µçÑ¹µÄµçÑ¹²î£¬´ËĞòÁĞ±ØĞëµİÔö£©
+		//åŠŸç‡ç”µå‹ç‚¹10ï¼ˆ100%ç”µé‡æ—¶ç›¸å¯¹æ ‡å‡†ç”µå‹çš„ç”µå‹å·®ï¼Œæ­¤åºåˆ—å¿…é¡»é€’å¢ï¼‰
 		float VoltP10[2];
 	}__PACKED;
 	
-	//µçÑ¹
+	//ç”µå‹
 	float get_MainBatteryVoltage();
-	//ÂË²¨µçÑ¹£¨V£©
+	//æ»¤æ³¢ç”µå‹ï¼ˆVï¼‰
 	float get_MainBatteryVoltage_filted();
-	//×ÜÊ¹ÓÃ¹¦ºÄ£¨W*h£©
+	//æ€»ä½¿ç”¨åŠŸè€—ï¼ˆW*hï¼‰
 	float get_MainBatteryPowerUsage();
-	//ÂË²¨¹¦ÂÊ£¨W£©
+	//æ»¤æ³¢åŠŸç‡ï¼ˆWï¼‰
 	float get_MainBatteryPower_filted();
-	//µç³ØµçÁ÷£¨A£©
+	//ç”µæ± ç”µæµï¼ˆAï¼‰
 	float get_MainBatteryCurrent();
-	//CPUÎÂ¶È£¨¡æ£©
+	//CPUæ¸©åº¦ï¼ˆâ„ƒï¼‰
 	float get_CPUTemerature();
-	//»ñÈ¡µç³ØĞÅÏ¢
+	//è·å–ç”µæ± ä¿¡æ¯
 	void get_MainBatteryInf( float* Volt, float* Current, float* PowerUsage, float* Power_filted, float* RMPercent );
-/*µç³ØĞÅÏ¢½Ó¿Ú*/
+/*ç”µæ± ä¿¡æ¯æ¥å£*/
